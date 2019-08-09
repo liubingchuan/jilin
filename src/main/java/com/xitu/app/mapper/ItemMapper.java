@@ -15,7 +15,7 @@ import com.xitu.app.model.Item;
 @Component
 public interface ItemMapper {
 
-	@Select("SELECT * FROM yiyao_item")
+	@Select("SELECT * FROM jilin_item")
 	List<Item> getServiceItems();
 	
 //	@Update("update secret_key set secret_key = #{secretKey.secretKey} where aliyunid = #{secretKey.aliyunid}")
@@ -24,9 +24,9 @@ public interface ItemMapper {
 	@InsertProvider(type = BasedProvider.class, method = BasedProvider.INSERT)
 	int insertItem(Item item);
 	
-	@Delete("delete from yiyao_item where service = #{service}")
+	@Delete("delete from jilin_item where service = #{service}")
     void deleteItemByService(@Param("service") String service);
 	
-	@Select("select * from yiyao_item where service = #{service} limit 1")
+	@Select("select * from jilin_item where service = #{service} limit 1")
 	Item selectItemByService(@Param("service") String service);
 }

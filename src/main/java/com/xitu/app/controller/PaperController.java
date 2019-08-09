@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import javax.security.auth.Subject;
-
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -60,7 +58,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.xitu.app.common.R;
 import com.xitu.app.common.request.SavePaperRequest;
 import com.xitu.app.mapper.PatentMapper;
@@ -1114,69 +1111,70 @@ public class PaperController {
 		}
     	return R.ok();
     }
+
     @ResponseBody
-	@RequestMapping(value = "paper/paperInsList", method = RequestMethod.POST,consumes = "application/json")
-	public R expertInsList(@RequestBody JSONObject insname) {
-    	int pageSize = 10;
-//		if(pageIndex == null) {
-//		   pageIndex = 0;
-//		}
-    	int pageIndex = (int) insname.get("pageIndex");
-		int i = 5;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
-		// TODO 静态变量未环绕需调整
-		JSONObject rs = new JSONObject();
-		//rs.put("list", sources);
-		//rs.put("totalPages", totalPages);
-		//rs.put("totalCount", totalCount);
-		rs = paperService.executeIns(insname.getString("insname"),pageIndex, pageSize, "institution",i);
-		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
+   	@RequestMapping(value = "paper/paperInsList", method = RequestMethod.POST,consumes = "application/json")
+   	public R expertInsList(@RequestBody JSONObject insname) {
+       	int pageSize = 10;
+//   		if(pageIndex == null) {
+//   		   pageIndex = 0;
+//   		}
+       	int pageIndex = (int) insname.get("pageIndex");
+   		int i = 5;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+   		// TODO 静态变量未环绕需调整
+   		JSONObject rs = new JSONObject();
+   		//rs.put("list", sources);
+   		//rs.put("totalPages", totalPages);
+   		//rs.put("totalCount", totalCount);
+   		rs = paperService.executeIns(insname.getString("insname"),pageIndex, pageSize, "institution",i);
+   		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
     @ResponseBody
-	@RequestMapping(value = "paper/paperExpList", method = RequestMethod.POST,consumes = "application/json")
-	public R expertpaperList(@RequestBody JSONObject insname) {
-    	int pageSize = 10;
-//		if(pageIndex == null) {
-//		   pageIndex = 0;
-//		}
-    	int pageIndex = (int) insname.get("pageIndex");
-		int i = 5;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
-		// TODO 静态变量未环绕需调整
-		JSONObject rs = new JSONObject();
-		rs = paperService.executeIns(insname.getString("insname"),pageIndex, pageSize, "author",i);
-		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
-    }
-    
+   	@RequestMapping(value = "paper/paperExpList", method = RequestMethod.POST,consumes = "application/json")
+   	public R expertpaperList(@RequestBody JSONObject insname) {
+       	int pageSize = 10;
+//   		if(pageIndex == null) {
+//   		   pageIndex = 0;
+//   		}
+       	int pageIndex = (int) insname.get("pageIndex");
+   		int i = 5;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+   		// TODO 静态变量未环绕需调整
+   		JSONObject rs = new JSONObject();
+   		rs = paperService.executeIns(insname.getString("insname"),pageIndex, pageSize, "author",i);
+   		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
+       }
+       
     @ResponseBody
-	@RequestMapping(value = "paper/xiangguanpaperList", method = RequestMethod.POST,consumes = "application/json")
-	public R xiangguanpaperList(@RequestBody JSONObject insname) {
-    	int pageSize = 10;
-//		if(pageIndex == null) {
-//		   pageIndex = 0;
-//		}
-    	int pageIndex = (int) insname.get("pageIndex");
-    	String query = (String) insname.get("query");
-    	String id=(String) insname.get("id");
-    	String keywords=(String) insname.get("keywords");
-    	String title=(String) insname.get("title");
-    	List<String> ss = new ArrayList<String>();
-    	if (keywords != null && keywords.length() >0) {
-			if (keywords.contains(",")) {
-				for(String key : keywords.split(",")){
-					ss.add(key);
-				}
-			}else {
-				ss.add(keywords);
-			}
-    	}else if (query != null && query.length() > 0 ) {
-    		ss.add(query);
-		}else {
-			ss.add(title);
-		}
-		int i = 1;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
-		// TODO 静态变量未环绕需调整
-		JSONObject rs = new JSONObject();
-		rs = paperService.executeXiangguan(pageIndex, pageSize, i,id,ss);
-		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
-    }
+   	@RequestMapping(value = "paper/xiangguanpaperList", method = RequestMethod.POST,consumes = "application/json")
+   	public R xiangguanpaperList(@RequestBody JSONObject insname) {
+       	int pageSize = 10;
+//   		if(pageIndex == null) {
+//   		   pageIndex = 0;
+//   		}
+       	int pageIndex = (int) insname.get("pageIndex");
+       	String query = (String) insname.get("query");
+       	String id=(String) insname.get("id");
+       	String keywords=(String) insname.get("keywords");
+       	String title=(String) insname.get("title");
+       	List<String> ss = new ArrayList<String>();
+       	if (keywords != null && keywords.length() >0) {
+   			if (keywords.contains(",")) {
+   				for(String key : keywords.split(",")){
+   					ss.add(key);
+   				}
+   			}else {
+   				ss.add(keywords);
+   			}
+       	}else if (query != null && query.length() > 0 ) {
+       		ss.add(query);
+   		}else {
+   			ss.add(title);
+   		}
+   		int i = 1;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+   		// TODO 静态变量未环绕需调整
+   		JSONObject rs = new JSONObject();
+   		rs = paperService.executeXiangguan(pageIndex, pageSize, i,id,ss);
+   		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
+       }
 	
 }

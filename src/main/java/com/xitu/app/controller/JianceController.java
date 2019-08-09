@@ -1,12 +1,19 @@
 package com.xitu.app.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -37,6 +44,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 import com.xitu.app.common.R;
 import com.xitu.app.mapper.TaskMapper;
 import com.xitu.app.model.Jiance;
@@ -63,6 +74,9 @@ public class JianceController {
 	
 	@Autowired
 	private JianceService jianceService;
+	
+	@Autowired
+    private JianceRepository jianceRepository;
 	
 	
 	
@@ -386,9 +400,75 @@ public class JianceController {
 		}
 		return "T-jianceCon";
 	}
+	
+	@GetMapping(value = "jiance/subcribe")
+	public String subcribe() {
+		List<Jiance> objs = new LinkedList<Jiance>();
+    	try {
+    		Map<String, String> map = new TreeMap<String, String>();
+    		map.put("http://35.201.235.191:3000/users/1/web_requests/15/xituzixun.xml", "新闻动态");
+    		map.put("http://35.201.235.191:3000/users/1/web_requests/18/xituguojiazhengce.xml", "国家政策");
+    		map.put("http://35.201.235.191:3000/users/1/web_requests/37/xituzaixian.xml", "新闻动态");
+    		map.put("http://35.201.235.191:3000/users/1/web_requests/40/ruidaoxitu.xml", "新闻动态");
+    		map.put("http://35.201.235.191:3000/users/1/web_requests/42/SCI.xml", "科研进展");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			int i=1;
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+						System.out.println(entry.getPublishedDate());
+						if(this.isNow(sdf.format(entry.getPublishedDate()))) {
+							System.out.println();
+						}else {
+							System.out.println();
+						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						if(i==3){
+							jiance.setInstitution("稀土在线");
+						}else if(i==4) {
+							jiance.setInstitution("瑞道稀土");
+						}else if(i==5) {
+							jiance.setInstitution("科睿唯安");
+						}else {
+							jiance.setInstitution("中国稀土网");
+						}
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+				i++;
+			}
+//			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return "success";
+	}
+	
+	private boolean isNow(String date) {
+        //当前时间
+        Date now = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        //获取今天的日期
+        String nowDay = sf.format(now);
+        //对比的时间
+        return date.equals(nowDay);
+    }
+	
 	@ResponseBody
 	@RequestMapping(value = "jiance/jianceInsList", method = RequestMethod.POST,consumes = "application/json")
-	public R expertInsList(@RequestBody JSONObject insname) {
+	public R expertInsList(@RequestBody JSONObject insname,Model model) {
     	int pageSize = 10;
 //		if(pageIndex == null) {
 //		   pageIndex = 0;
@@ -397,7 +477,11 @@ public class JianceController {
 		int i = 5;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
 		// TODO 静态变量未环绕需调整
 		JSONObject rs = new JSONObject();
-		rs = jianceService.executeIns(insname.getString("insname"),pageIndex, pageSize, "institution",i);
+		ThreadLocalUtil.set(model);
+		//rs = jianceService.executeIns(insname.getString("insname"),pageIndex, pageSize, "institution",i);
+		rs = jianceService.execute(pageIndex, pageSize, 3,insname.getString("insname"),"","","");
+		ThreadLocalUtil.remove();
 		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
+	
 }

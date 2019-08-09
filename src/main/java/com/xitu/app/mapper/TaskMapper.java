@@ -11,7 +11,7 @@ import com.xitu.app.model.Task;
 @Component
 public interface TaskMapper {
 
-	@Select("SELECT * FROM yiyao_task where id = #{id} limit 1")
+	@Select("SELECT * FROM jilin_task where id = #{id} limit 1")
 	Task getTaskById(@Param("id") Integer id);
 	
 //	@Select("select * from yiyao_user limit #{pageIndex}, #{pageSize}")

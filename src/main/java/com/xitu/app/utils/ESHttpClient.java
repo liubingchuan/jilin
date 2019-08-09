@@ -330,7 +330,7 @@ public class ESHttpClient implements Serializable {
     //生成查询的json
     public static JSONObject conES(String conn){
 //    	ESHttpClient indexer = new ESHttpClient("10.3.11.23:9201", "t_ods_las_nstl_value_journalarticle_v5","t_ods_las_nstl_value");
-    	ESHttpClient indexer = new ESHttpClient("45.77.86.209:9200", "jiance","jc");
+    	ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "jiance","jc");
     	//ESHttpClient indexer = new ESHttpClient("10.3.11.6:9201", "t_ods_las_nstl_value","t_ods_las_nstl_value");
         ESHttpClient.debug = true;
         JSONObject json = indexer.execute(conn);

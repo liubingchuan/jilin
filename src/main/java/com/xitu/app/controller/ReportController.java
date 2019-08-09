@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -78,7 +79,7 @@ public class ReportController {
 		Report report = new Report();
 		BeanUtil.copyBean(request, report);
 		if(report.getId() == null || "".equals(report.getId())) {
-			report.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+			report.setId(UUID.randomUUID().toString());
 		}
 		report.setNow(System.currentTimeMillis());
 		report.setYear(request.getPtime().substring(0, 4));
@@ -103,6 +104,7 @@ public class ReportController {
 			
 		}
 		report.setAuthor(authors);
+		
 		reportRepository.save(report);
 		return "redirect:/report/list";
 	}
@@ -193,9 +195,6 @@ public class ReportController {
 //		long totalPages = 0L;
 //		List<Report> reportList = new ArrayList<Report>();
 //		String view = "qiyezhikufenxibaogaoliebiao";
-//		if (front != null) {
-//			view = "qiyezhikufenxibaogaoqiantai";
-//		}
 //		if(esTemplate.indexExists(Report.class)) {
 //			if(q == null || q.equals("")) {
 //				totalCount = reportRepository.count();
@@ -206,6 +205,9 @@ public class ReportController {
 //							.withPageable(pageable).build();
 //					Page<Report> reportsPage = reportRepository.search(searchQuery);
 //					reportList = reportsPage.getContent();
+//					if (front != null) {
+//						view = "qiyezhikufenxibaogaoqiantai";
+//					}
 //					if(totalCount % pageSize == 0){
 //						totalPages = totalCount/pageSize;
 //					}else{
@@ -251,7 +253,6 @@ public class ReportController {
 //			
 //		return view;
 //	}
-	
 	@GetMapping(value = "report/list")
 	public String projects(@RequestParam(required=false,value="front") String front,
 			@RequestParam(required=false,value="q") String q,
@@ -282,3 +283,5 @@ public class ReportController {
 	}
 	
 }
+
+

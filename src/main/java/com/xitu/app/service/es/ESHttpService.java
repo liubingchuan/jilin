@@ -12,6 +12,6 @@ public interface ESHttpService extends ESService {
     String composeInsDSL(String insNamearr,int pageIndex, int pageSize, String field, int type);
     String composeXiangguanDSL(int pageIndex, int pageSize,int type,String uuid,List<String> args);
     String composefamingrenDSL(int pageIndex, int pageSize,int type,String q,String person,String creator);
-    void convert(JSONObject response);
+    JSONObject convert(JSONObject response);
     JSONObject convertIns(JSONObject response,int pageSize);
 }

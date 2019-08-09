@@ -1,56 +1,58 @@
 package com.xitu.app.controller;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONReader;
 import com.xitu.app.common.R;
 import com.xitu.app.common.request.SaveOrgRequest;
 import com.xitu.app.mapper.ItemMapper;
+import com.xitu.app.model.Expert;
 import com.xitu.app.model.Item;
 import com.xitu.app.model.Org;
-import com.xitu.app.model.OrgVO;
-import com.xitu.app.model.Project;
 import com.xitu.app.repository.OrgRepository;
 import com.xitu.app.service.es.ESHttpClient;
 import com.xitu.app.service.es.OrgService;
 import com.xitu.app.utils.BeanUtil;
+import com.xitu.app.utils.Scpclient;
 import com.xitu.app.utils.ThreadLocalUtil;
 
 
@@ -103,6 +105,7 @@ public class OrgController {
 		org.setDescription(request.getInfo());
 		org.setNow(System.currentTimeMillis());
 		org.setCtime(df.format(new Date()));
+		
 		List<String> alias = new ArrayList<String>();
 		if (request.getAlias() != null && !request.getAlias().equals("")) {
 			if(request.getAlias().contains(";")){
@@ -126,6 +129,69 @@ public class OrgController {
 		return "redirect:/org/list";
 	}
 	
+	@GetMapping(value = "org/update")
+	public String updateOrg() {
+		
+//		Iterator<Org> orgs = orgRepository.findAll().iterator();
+//		while(orgs.hasNext()) {
+//			Org org = orgs.next();
+//			System.out.println(org.getId());
+//			boolean flag = false;
+//			if(org.getFrontend() == null || org.getFrontend().equals("")) {
+//				org.setFrontend("");
+//				flag = true;
+//			}
+//			if(org.getFrontendFileName()==null || org.getFrontendFileName().equals("")) {
+//				org.setFrontendFileName("");
+//				flag = true;
+//			}
+//			if(org.getFrontendSize()==null || org.getFrontendSize().equals("")) {
+//				org.setFrontendSize("");
+//				flag = true;
+//			}
+//			if(flag) {
+//				orgRepository.save(org);
+//			}
+//		}
+		
+		
+		Iterator<Org> orgs = orgRepository.findAll().iterator();
+		while(orgs.hasNext()) {
+			Org org = orgs.next();
+			System.out.println(org.getId());
+			String anotherName = "";
+			if(org.getName() != null && !org.getName().equals("")) {
+				anotherName = org.getName();
+			}
+			org.setAnotherName(anotherName);
+			orgRepository.save(org);
+		}
+		return "fasdf";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "org/getByName", method = RequestMethod.POST,consumes = "application/json")
+	public JSONObject getExpertByname(
+			@RequestBody JSONObject insname) {
+		//String id = "1f93a2c9b53c4b10ac68c330a9f23234";
+		Org org = new Org();
+		if(insname != null ) {
+			//expert = expertRepository.findById(id).get();
+			//expert = expertRepository.findByName(name).get();
+			String name = insname.getString("name");
+			JSONObject rs = new JSONObject();
+			rs = orgService.executeOneFiled("anotherName",name);
+			List sources = new LinkedList();
+			if(rs != null) {
+				sources = (List) rs.get("list");
+				if(sources != null) {
+					//return "redirect:/expert/get?front=0&id="+expert.getId();
+					return (JSONObject) sources.get(0);
+				}
+			}
+		}
+		return null;
+	}
 	@GetMapping(value = "org/get")
 	public String getOrg(@RequestParam(required=false,value="front") String front,
 			@RequestParam(required=false,value="disable") String disable,
@@ -135,6 +201,7 @@ public class OrgController {
 		if(id != null) {
 			org = orgRepository.findById(id).get();
 			String name = org.getName();
+			model.addAttribute("name", name);
 			String bieming = null;
 			List<String> alias = org.getAlias();
 			if (alias != null && alias.size() > 0) {
@@ -217,6 +284,7 @@ public class OrgController {
 		
 		return "redirect:/org/list";
 	}
+	
 	@GetMapping(value = "org/list")
 	public String patents(@RequestParam(required=false,value="front") String front,
 			@RequestParam(required=false,value="q") String q,
@@ -245,6 +313,7 @@ public class OrgController {
 		}
 		return view;
 	}
+	
 //	@GetMapping(value = "org/list")
 //	public String orgs(@RequestParam(required=false,value="front") String front,
 //			@RequestParam(required=false,value="q") String q,
@@ -327,46 +396,46 @@ public class OrgController {
 	 /**
      * 文件解析
      * */
-    @GetMapping(value="org/import")
-    @ResponseBody 
-    public R importJson(){
-    	try {
-			String filePath = String.format("/Users/liubingchuan/git/xitu/src/main/resources/efg.json");
-			File file = new File(filePath);
-			JSONReader reader=new JSONReader(new FileReader(file));
-			reader.startArray();
-			List<Org> orgs = new LinkedList<Org>();
-			int i=1;
-			while (reader.hasNext()) {
-				if(i==1148){
-					System.out.println();
-				}
-				if(orgs.size()>=1000) {
-					orgRepository.saveAll(orgs);
-					orgs.clear();
-				}
-				OrgVO vo = new OrgVO();
-				try{
-					vo = reader.readObject(OrgVO.class);
-				}catch(Exception e) {
-					continue;
-				}
-				Org org = new Org();
-				org.setId(UUID.randomUUID().toString());
-				org.setName(vo.getKey());
-				org.setNow(System.currentTimeMillis());
-				orgs.add(org);
-				i++;
-				System.out.println("当前id---------》" + i);
-			}
-			reader.endArray();
-	        reader.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	return R.ok();
-    }
+//    @GetMapping(value="org/import")
+//    @ResponseBody 
+//    public R importJson(){
+//    	try {
+//			String filePath = String.format("/Users/liubingchuan/git/xitu/src/main/resources/efg.json");
+//			File file = new File(filePath);
+//			JSONReader reader=new JSONReader(new FileReader(file));
+//			reader.startArray();
+//			List<Org> orgs = new LinkedList<Org>();
+//			int i=1;
+//			while (reader.hasNext()) {
+//				if(i==1148){
+//					System.out.println();
+//				}
+//				if(orgs.size()>=1000) {
+//					orgRepository.saveAll(orgs);
+//					orgs.clear();
+//				}
+//				OrgVO vo = new OrgVO();
+//				try{
+//					vo = reader.readObject(OrgVO.class);
+//				}catch(Exception e) {
+//					continue;
+//				}
+//				Org org = new Org();
+//				org.setId(UUID.randomUUID().toString());
+//				org.setName(vo.getKey());
+//				org.setNow(System.currentTimeMillis());
+//				orgs.add(org);
+//				i++;
+//				System.out.println("当前id---------》" + i);
+//			}
+//			reader.endArray();
+//	        reader.close();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//    	return R.ok();
+//    }
     @ResponseBody
 	@PostMapping(value = "org/searchNum")
     public JSONObject searchNum(@RequestBody Map<String, Object> map) {
@@ -437,7 +506,6 @@ public class OrgController {
     		Map<String, Integer> paperaggcountMap = new HashMap<String, Integer>();
         	Map<String, Integer> paperinscountMap = new HashMap<String, Integer>();
     		JSONObject paperInsName = ESHttpClient.conpaperESIns(orgService.createQqueryByListIns(insNamearr,aggsize,"institution"));
-    		
     		JSONObject paperaggregations = paperInsName.getJSONObject("aggregations");
     		JSONObject paperagg = (JSONObject) paperaggregations.get("institution");
     		for(Object s:(JSONArray)paperagg.get("buckets")){
@@ -487,10 +555,207 @@ public class OrgController {
     			jianceinscountMap.put(name, count);
     		}
     		reData.put("JianceNum", jianceinscountMap);
-    		
     	}
 		return reData;
 		
 	}
+    
+    /**
+     * 文件解析
+     * */
+    @GetMapping(value="org/import")
+    @ResponseBody 
+    public R importExcel(){
+    	
+    	Workbook wb =null;
+        Sheet sheet = null;
+        Row row = null;
+        List<Map<String,String>> list = null;
+        String cellData = null;
+        String filePath = "/Users/liubingchuan/Desktop/hangzhou/dierpijigouxinxihuizong597/jigouxinxihuizongdierpi.xlsx";
+        String photoLocalPath = "/Users/liubingchuan/Desktop/hangzhou/dierpijigouxinxihuizong597/jigouzhaopianhuizong0514";
+        wb = readExcel(filePath);
+        Scpclient client = Scpclient.getInstance("45.76.75.11", 22, "root", "6c]V=*z2bY=mRZ2)");
+        Set<String> jigouleixings = new HashSet<String>();
+        Set<String> suoshuguojias = new HashSet<String>();
+        Set<String> chanyelians = new HashSet<String>();
+        Set<String> chanpinleixings = new HashSet<String>();
+        if(wb != null){
+            //用来存放表中数据
+            list = new ArrayList<Map<String,String>>();
+            //获取第一个sheet
+            sheet = wb.getSheetAt(0);
+            //获取最大行数
+            int rownum = sheet.getPhysicalNumberOfRows();
+            //获取第一行
+            row = sheet.getRow(0);
+            //获取最大列数
+            int colnum = row.getPhysicalNumberOfCells();
+            for (int i = 1; i<rownum; i++) {
+            	Org org = new Org();
+            	System.out.println("id------>" + i);
+                row = sheet.getRow(i);
+                if(row !=null){
+                    for (int j=0;j<colnum;j++){
+                        cellData = (String) getCellFormatValue(row.getCell(j));
+                        if(cellData.contains(".0")) {
+                        	cellData = cellData.split("\\.")[0];
+                        }
+                        if(j==0) {
+                        	UUID uuid = UUID.randomUUID();
+                        	String fileName = cellData;
+                        	System.out.println("fileId ---------->" + cellData);
+                        	fileName = fileName + ".jpg";
+                        	File photo = new File(photoLocalPath + File.separator + fileName);
+                        	if(photo.exists()) {
+                        		org.setFrontend(uuid+"_"+fileName);
+                        		org.setFrontendFileName(fileName);
+                        		org.setFrontendSize(String.valueOf(Math.round(photo.length()/1000)));
+                        		client.putFile(photoLocalPath + File.separator + fileName, uuid+"_"+fileName, "/root/files", "0755");
+                        	}else {
+                        		fileName = cellData + ".png";
+                        		photo = new File(photoLocalPath + File.separator + fileName);
+                        		if(photo.exists()) {
+                        			org.setFrontend(uuid+"_"+fileName);
+                        			org.setFrontendFileName(fileName);
+                        			org.setFrontendSize(String.valueOf(Math.round(photo.length()/1000)));
+                        			client.putFile(photoLocalPath + File.separator + fileName, uuid+"_"+fileName, "/root/files", "0755");
+                        		}
+                        	}
+                        }else if(j==1){
+                        	org.setName(cellData);
+                        }else if(j==2) {
+                        	String[] str = cellData.split("、");
+                        	List<String> alias = new ArrayList<String>();
+                        	for(String s: str) {
+                        		alias.add(s);
+                        	}
+                        	org.setAlias(alias);
+                        }else if(j==3) {
+                        	org.setDescription(cellData);
+                        }else if(j==4) {
+                        	org.setType(cellData);
+                        }else if(j==5) {
+                        	org.setCountry(cellData);
+                        }else if(j==6) {
+                        	org.setLink(cellData);
+                        }else if(j==7) {
+                        	List<String> classices = new ArrayList<String>();
+                        	classices.add(cellData);
+                        	org.setClassic(classices);
+                        }else if(j==8) {
+                        	org.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+                        }
+                    }
+                    orgRepository.save(org);
+                }else{
+                    break;
+                }
+            }
+        }
+        Item jglx = new Item();
+        jglx.setService("jglx");
+        StringBuilder bufferJglx = new StringBuilder();
+		boolean append = false;
+		for(String s: jigouleixings) {
+			if("".equals(s)) {
+				append=false;
+				continue;
+			}
+			if(append) bufferJglx.append(";"); else append = true; 
+			bufferJglx.append(s);
+		}
+		jglx.setItem(bufferJglx.toString().length()==0?"":bufferJglx.substring(0, bufferJglx.length()));
+		itemMapper.insertItem(jglx);
+		Item gj = new Item();
+		gj.setService("gj");
+		StringBuilder bufferGj = new StringBuilder();
+		append = false;
+		for(String s: suoshuguojias) {
+			if("".equals(s)) {
+				append=false;
+				continue;
+			}
+			if(append) bufferGj.append(";"); else append = true; 
+			bufferGj.append(s);
+		}
+		gj.setItem(bufferGj.toString().length()==0?"":bufferGj.substring(0, bufferGj.length()));
+		itemMapper.insertItem(gj);
+		
+		
+		Item cyl = new Item();
+		cyl.setService("cyl");
+		StringBuilder bufferCyl = new StringBuilder();
+		append = false;
+		for(String s: chanyelians) {
+			if("".equals(s)) {
+				append=false;
+				continue;
+			}
+			if(append) bufferCyl.append(";"); else append = true; 
+			bufferCyl.append(s);
+		}
+		cyl.setItem(bufferCyl.toString().length()==0?"":bufferCyl.substring(0, bufferCyl.length()));
+		itemMapper.insertItem(cyl);
+    	return R.ok();
+    }
+    
+  //读取excel
+    private static Workbook readExcel(String filePath){
+        Workbook wb = null;
+        if(filePath==null){
+            return null;
+        }
+        String extString = filePath.substring(filePath.lastIndexOf("."));
+        InputStream is = null;
+        try {
+            is = new FileInputStream(filePath);
+            if(".xls".equals(extString)){
+                return wb = new HSSFWorkbook(is);
+            }else if(".xlsx".equals(extString)){
+                return wb = new XSSFWorkbook(is);
+            }else{
+                return wb = null;
+            }
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return wb;
+    }
+    private static Object getCellFormatValue(Cell cell){
+        Object cellValue = null;
+        if(cell!=null){
+            //判断cell类型
+            switch(cell.getCellType()){
+            case Cell.CELL_TYPE_NUMERIC:{
+                cellValue = String.valueOf(cell.getNumericCellValue());
+                break;
+            }
+            case Cell.CELL_TYPE_FORMULA:{
+                //判断cell是否为日期格式
+                if(DateUtil.isCellDateFormatted(cell)){
+                    //转换为日期格式YYYY-mm-dd
+                    cellValue = cell.getDateCellValue();
+                }else{
+                    //数字
+                    cellValue = String.valueOf(cell.getNumericCellValue());
+                }
+                break;
+            }
+            case Cell.CELL_TYPE_STRING:{
+                cellValue = cell.getRichStringCellValue().getString();
+                break;
+            }
+            default:
+                cellValue = "";
+            }
+        }else{
+            cellValue = "";
+        }
+        return cellValue;
+    }
 	
 }

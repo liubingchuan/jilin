@@ -3,7 +3,7 @@ package com.xitu.app.model;
 import com.xitu.app.annotation.IdFlag;
 import com.xitu.app.annotation.TableName;
 
-@TableName("yiyao_linkuser")
+@TableName("jilin_linkuser")
 public class Linkuser {
 
 	public Linkuser() {

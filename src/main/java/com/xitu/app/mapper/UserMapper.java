@@ -15,29 +15,29 @@ import com.xitu.app.model.User;
 @Component
 public interface UserMapper {
 
-	@Select("SELECT * FROM yiyao_user where account = #{account} limit 1")
+	@Select("SELECT * FROM jilin_user where account = #{account} limit 1")
 	User getUserByAccount(@Param("account") String account);
 	
-	@Select("SELECT * FROM yiyao_user where open_id = #{openId} limit 1")
+	@Select("SELECT * FROM jilin_user where open_id = #{openId} limit 1")
 	User getUserByOpenId(@Param("openId") String openId);
 	
-	@Select("select * from yiyao_user limit #{pageIndex}, #{pageSize}")
+	@Select("select * from jilin_user limit #{pageIndex}, #{pageSize}")
     List<User> getUsers(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);
 	
-	@Select("select count(*) from yiyao_user")
+	@Select("select count(*) from jilin_user")
     int getUserCount();
 	
 	@InsertProvider(type = BasedProvider.class, method = BasedProvider.INSERT)
 	int insertUser(User user);
 	
-	@Update("UPDATE yiyao_user SET account = #{user.account}, password = #{user.password}, name = #{user.name}, "
+	@Update("UPDATE jilin_user SET account = #{user.account}, password = #{user.password}, name = #{user.name}, "
 			    + "identity = #{user.identity}, unit = #{user.unit}, job = #{user.job}, "
 			    + "duty = #{user.duty}, major = #{user.major}, role = #{user.role}, email = #{user.email}, "
 			    + "phone = #{user.phone}, stamp = #{user.stamp} "
 		        + "WHERE id = #{user.id}")
 	void updateById(@Param("user") User user);
 	
-	@Update("UPDATE yiyao_user SET account = #{user.account}, password = #{user.password}, email = #{user.email} "
+	@Update("UPDATE jilin_user SET account = #{user.account}, password = #{user.password}, email = #{user.email} "
 			+ "WHERE open_id = #{user.openId}")
 	void updateByOpenId(@Param("user") User user);
 	

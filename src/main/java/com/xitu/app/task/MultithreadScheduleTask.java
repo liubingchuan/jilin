@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.jsoup.Jsoup;
@@ -103,26 +104,23 @@ jump:
             	}
             	Elements tdes = tdelement.select("td");
             	Price price = new Price();
-            	price.setUpdateTime(formatter.format(date));
-        		price.setName(tdes.get(0).text());
-        		price.setDescription(tdes.get(1).text());
-        		price.setUnit(tdes.get(6).text());
-        		price.setPrice(tdes.get(3).text());
-        		price.setAvg(tdes.get(4).text());
-        		Price yesterday = priceMapper.getLatestPrice(price.getName());
-        		if(yesterday == null) {
-        			price.setFloating("100%");
+            	if(tdes.size()==7) {
+            		price.setUpdateTime(formatter.format(date));
+        			price.setName(tdes.get(0).text());
+        			price.setDescription(tdes.get(1).text());
+        			price.setUnit(tdes.get(6).text());
+        			price.setPrice(tdes.get(3).text());
+        			price.setAvg(tdes.get(4).text());
+        			price.setFloating(tdes.get(5).text());
         		}else {
-        			float before = Float.valueOf(yesterday.getAvg());
-        			float now = Float.valueOf(tdes.get(4).text());
-        			float delta = now - before;
-        			if(delta != 0) {
-        				System.out.println();
-        			}
-        			NumberFormat numberFormat = NumberFormat.getInstance();
-        			numberFormat.setMaximumFractionDigits(2);
-        			String result = numberFormat.format(delta / before * 100);
-        			price.setFloating(result + "%");
+        			price.setUpdateTime(formatter.format(date));
+        			price.setName(tdes.get(0).text());
+        			price.setDescription(tdes.get(1).text());
+        			price.setUnit(tdes.get(7).text());
+        			price.setPrice(tdes.get(3).text()+"-"+tdes.get(4).text());
+        			price.setAvg(tdes.get(5).text());
+        			price.setFloating(tdes.get(6).text());
+        			
         		}
             	priceMapper.insertPrice(price);
             }
@@ -140,15 +138,50 @@ jump:
 	@Async
     @Scheduled(cron = "0 0 13 * * ?")
 //	@Scheduled(cron = "*/30 * * * * ?")  //间隔十五秒
-	public void jiance(){
+	public void jiance1(){
     	List<Jiance> objs = new LinkedList<Jiance>();
     	try {
-    		Map<String, String> map = new HashMap<String, String>();
+    		Map<String, String> map = new TreeMap<String, String>();
     		map.put("http://35.201.235.191:3000/users/1/web_requests/15/xituzixun.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/18/xituguojiazhengce.xml", "国家政策");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/37/xituzaixian.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/40/ruidaoxitu.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/42/SCI.xml", "科研进展");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+							continue;
+						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("中国稀土网");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Async
+	@Scheduled(cron = "0 0 13 * * ?")
+//	@Scheduled(cron = "*/30 * * * * ?")  //间隔十五秒
+	public void jiance2(){
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/18/xituguojiazhengce.xml", "国家政策");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			int i=1;
 			for(Map.Entry<String, String> kv: map.entrySet()) {
@@ -157,21 +190,16 @@ jump:
 					System.out.println(feed.getTitle());
 					System.out.println("***********************************");
 					for (SyndEntry entry : feed.getEntries()) {
+						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+							continue;
+						}
 						Jiance jiance = new Jiance();
 						jiance.setId(UUID.randomUUID().toString());
 						jiance.setTitle(entry.getTitle());
 						jiance.setDescription(entry.getDescription().getValue());
 						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
 						jiance.setLanmu(kv.getValue());
-						if(i==3){
-							jiance.setInstitution("稀土在线");
-						}else if(i==4) {
-							jiance.setInstitution("瑞道稀土");
-						}else if(i==5) {
-							jiance.setInstitution("科睿唯安");
-						}else {
-							jiance.setInstitution("中国稀土网");
-						}
+						jiance.setInstitution("中国稀土网");
 						objs.add(jiance);
 						System.out.println("***********************************");
 					}
@@ -186,4 +214,135 @@ jump:
 			e.printStackTrace();
 		}
 	}
+	
+	private boolean isNow(String date) {
+        //当前时间
+        Date now = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        //获取今天的日期
+        String nowDay = sf.format(now);
+        //对比的时间
+        return date.equals(nowDay);
+    }
+	
+	@Async
+	@Scheduled(cron = "0 0 13 * * ?")
+//	@Scheduled(cron = "*/30 * * * * ?")  //间隔十五秒
+	public void jiance3(){
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/37/xituzaixian.xml", "新闻动态");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+							continue;
+						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("稀土在线");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Async
+	@Scheduled(cron = "0 0 13 * * ?")
+//	@Scheduled(cron = "*/30 * * * * ?")  //间隔十五秒
+	public void jiance4(){
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/40/ruidaoxitu.xml", "新闻动态");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+							continue;
+						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("瑞道稀土");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Async
+	@Scheduled(cron = "0 0 13 * * ?")
+//	@Scheduled(cron = "*/30 * * * * ?")  //间隔十五秒
+	public void jiance5(){
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/42/SCI.xml", "科研进展");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+							continue;
+						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("科睿唯安");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
  }

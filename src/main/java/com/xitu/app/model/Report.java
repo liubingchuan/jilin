@@ -12,7 +12,7 @@ import com.xitu.app.annotation.AggQuery;
 import com.xitu.app.annotation.CrossQuery;
 import com.xitu.app.annotation.SingleQuery;
 
-@Document(indexName = "reportyiyao", type = "rt")
+@Document(indexName = "reportjilin", type = "rt")
 public class Report implements Serializable{
 
 	private static final long serialVersionUID = 1L;

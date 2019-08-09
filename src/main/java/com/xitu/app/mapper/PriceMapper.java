@@ -19,21 +19,21 @@ public interface PriceMapper {
 	@InsertProvider(type = BasedProvider.class, method = BasedProvider.INSERT)
 	int insertPrice(Price price);
 	
-	@Select("SELECT * FROM yiyao_price where update_time = #{updateTime} limit 1")
+	@Select("SELECT * FROM jilin_price where update_time = #{updateTime} limit 1")
 	Price getPriceByUpdateTime(@Param("updateTime") String updateTime);
 	
-	@Select("SELECT * FROM yiyao_price where name = #{name} order by update_time desc limit 1")
+	@Select("SELECT * FROM jilin_price where name = #{name} order by update_time desc limit 1")
 	Price getLatestPrice(@Param("name") String name);
 	
-	@Select("SELECT * FROM yiyao_price where update_time = #{updateTime}")
+	@Select("SELECT * FROM jilin_price where update_time = #{updateTime}")
 	List<Price> getPricesByUpdateTime(@Param("updateTime") String updateTime);
 	
-	@Select("SELECT name FROM yiyao_price group by name")
+	@Select("SELECT name FROM jilin_price group by name")
 	List<String> getPricesGroupByName();
 	
-	@Select("SELECT avg(avg) FROM yiyao_price where update_time >= #{start} and update_time < #{end} and name = #{name} group by name")
+	@Select("SELECT avg(avg) FROM jilin_price where update_time >= #{start} and update_time < #{end} and name = #{name} group by name")
 	String getAvgPricesGroupByName(@Param("start") String start, @Param("end") String end, @Param("name") String name);
 	
-	@Select("SELECT MAX(update_time) FROM yiyao_price;")
+	@Select("SELECT MAX(update_time) FROM jilin_price;")
 	String getLatestUpdateTime();
 }

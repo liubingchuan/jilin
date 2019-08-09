@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebListener;
 
 /**
  */
-//@WebListener
+@WebListener
 public class AccessTokenListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {

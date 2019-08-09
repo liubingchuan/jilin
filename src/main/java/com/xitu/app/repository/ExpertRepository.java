@@ -9,4 +9,5 @@ import com.xitu.app.model.Org;
 
 public interface ExpertRepository extends ElasticsearchRepository<Expert,String>{
 	Optional<Expert> findById(String id);
+	Optional<Expert> findByName(String name);
 }

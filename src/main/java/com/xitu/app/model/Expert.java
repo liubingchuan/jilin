@@ -12,7 +12,7 @@ import com.xitu.app.annotation.AggQuery;
 import com.xitu.app.annotation.CrossQuery;
 import com.xitu.app.annotation.SingleQuery;
 
-@Document(indexName = "expertyiyao", type = "et")
+@Document(indexName = "expertjilin", type = "et")
 public class Expert implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -21,6 +21,8 @@ public class Expert implements Serializable{
 	private String id;
 	@CrossQuery
 	private String name; // 姓名
+	@Field(type=FieldType.Keyword)
+	private String anotherName; // 姓名
 	
 	@Field(type=FieldType.Keyword)
 	private List<String> alias; // 其他姓名
@@ -52,11 +54,18 @@ public class Expert implements Serializable{
 	private String resume; // 简历
 	@Field(type=FieldType.Keyword)
 	private List<String> project; // 科研项目
+	@CrossQuery
+	@Field(type=FieldType.Keyword)
+	private List<String> tags; // xitu 元素标签
 	private String photo;   // 照片
 	private String ctime;  // 提交时间
 	private String uploader; // 提交人
 	private Long now;
 	private String frontend; // 专家照片
+	@Field(type=FieldType.Keyword)
+	private String order; // 顺序
+	@Field(type=FieldType.Keyword)
+	private String seq; // 顺序
 	private String frontendFileName; // 专家照片名
 	private String frontendSize; // 专家照片大小
 	public String getId() {
@@ -187,6 +196,30 @@ public class Expert implements Serializable{
 	}
 	public void setFrontendSize(String frontendSize) {
 		this.frontendSize = frontendSize;
+	}
+	public List<String> getTags() {
+		return tags;
+	}
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	public String getOrder() {
+		return order;
+	}
+	public void setOrder(String order) {
+		this.order = order;
+	}
+	public String getSeq() {
+		return seq;
+	}
+	public void setSeq(String seq) {
+		this.seq = seq;
+	}
+	public String getAnotherName() {
+		return anotherName;
+	}
+	public void setAnotherName(String anotherName) {
+		this.anotherName = anotherName;
 	}
 	
 }

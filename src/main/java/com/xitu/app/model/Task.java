@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.xitu.app.annotation.IdFlag;
 import com.xitu.app.annotation.TableName;
 
-@TableName("yiyao_task")
+@TableName("jilin_task")
 public class Task implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

@@ -324,6 +324,150 @@ public class PatentController {
 //			
 //		return view;
 //	}
+	
+	@GetMapping(value = "patent/transfer")
+	@ResponseBody
+	public R transferPaper() {
+		int currentPage = 0;
+		int pageSize = 0;
+		int index = 0;
+		for(int i=544;i<957;i++){
+			
+			currentPage = (currentPage <= 0) ?1:currentPage;
+			pageSize = (pageSize<=0) ? 100:pageSize;
+			index = (currentPage - 1) * pageSize;
+			System.out.println(i);
+			List<PatentMysql> patents = patentMapper.getPatents(index, pageSize);
+			currentPage++;
+			List<Patent> tobesaved = new LinkedList<Patent>();
+			for(PatentMysql patentMysql: patents) {
+				Patent patentES = new Patent();
+				
+				patentES.setId(patentMysql.getId()+"");
+				
+				if (patentMysql.getTitle() != null) {
+					patentES.setTitle(patentMysql.getTitle().trim());
+				}
+				
+				String subject = patentMysql.getSubject();
+				if (subject != null) {
+					patentES.setSubject(subject);
+				}
+				
+				String person = patentMysql.getPerson();
+				if (person != null && !person.trim().equals("")) {
+					person = person.trim();
+					
+					List<String> personlist = new ArrayList<String>();
+					if (person.contains(";")) {
+						String[] persons = person.split(";");
+						for(String s:persons){
+							personlist.add(s);
+						}
+					}else{
+						personlist.add(person);
+					}
+					patentES.setPerson(personlist);
+				}
+				
+				String creator = patentMysql.getCreator();
+				if (creator != null && !creator.trim().equals("")) {
+					creator = creator.trim();
+					
+					List<String> creatorlist = new ArrayList<String>();
+					if (creator.contains(";")) {
+						String[] creators = creator.split(";");
+						for(String s:creators){
+							creatorlist.add(s);
+						}
+					}else{
+						creatorlist.add(creator);
+					}
+					patentES.setCreator(creatorlist);
+				}
+				
+				if (patentMysql.getApplytime() != null) {
+					patentES.setApplytime(patentMysql.getApplytime().trim());
+				}
+				
+				if (patentMysql.getPublictime() != null) {
+					patentES.setPublictime(patentMysql.getPublictime().trim());
+				}
+				
+				if (patentMysql.getApplyyear() != null) {
+					patentES.setApplyyear(patentMysql.getApplyyear().trim());
+				}
+				
+				if (patentMysql.getPublicyear() != null) {
+					patentES.setPublicyear(patentMysql.getPublicyear().trim());
+				}
+				
+				if (patentMysql.getPtype() != null) {
+					patentES.setType(patentMysql.getPtype().trim());
+				}
+				
+				if (patentMysql.getDescription() != null) {
+					patentES.setDescription(patentMysql.getDescription().trim());
+				}
+				
+				if (patentMysql.getClaim() != null) {
+					patentES.setClaim(patentMysql.getClaim().trim());
+				}
+				
+				if (patentMysql.getPublicnumber() != null) {
+					patentES.setPublicnumber(patentMysql.getPublicnumber().trim());
+				}
+				
+				if (patentMysql.getApplynumber() != null) {
+					patentES.setApplynumber(patentMysql.getApplynumber().trim());
+				}
+				
+				String ipc = patentMysql.getIpc();
+				if (ipc != null && !ipc.trim().equals("")) {
+					ipc = ipc.trim();
+					
+					List<String> ipclist = new ArrayList<String>();
+					if (ipc.contains(";")) {
+						String[] ipcs = ipc.split(";");
+						for(String s:ipcs){
+							ipclist.add(s);
+						}
+					}else{
+						ipclist.add(ipc);
+					}
+					patentES.setIpc(ipclist);
+				}
+				
+				if (patentMysql.getPiroryear() != null) {
+					patentES.setPiroryear(patentMysql.getPiroryear().trim());
+				}
+				
+				if (patentMysql.getCountry() != null) {
+					patentES.setCountry(patentMysql.getCountry().trim());
+				}
+				
+				if (patentMysql.getLawstatus() != null) {
+					patentES.setLawstatus(patentMysql.getLawstatus().trim());
+				}
+				
+				if (patentMysql.getNow() != null) {
+					patentES.setNow(patentMysql.getNow());
+				}
+				tobesaved.add(patentES);
+//				paperRepository.save(paperES);
+			}
+			patentRepository.saveAll(tobesaved);
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+		return R.ok();
+	}
+	
 	@RequestMapping(value = "patent/list")
 	public String patents(@RequestParam(required=false,value="q") String q,
 			@RequestParam(required=false,value="person") String person,
@@ -549,34 +693,6 @@ public class PatentController {
 		return "zhuanlifenxifamingrenjizhuanliquanren";
 	}
 	
-	@GetMapping(value = "patent/agtype")
-	public String agtype() {
-		return "zhuanlifenxizhuanlileixing";
-	}
-	@GetMapping(value = "patent/agmount")
-	public String agmount() {
-		return "zhuanlifenxizhuanlishenqingliang";
-	}
-	@GetMapping(value = "patent/agcountry")
-	public String agcountry() {
-		return "zhuanlifenxizhuanlishenqingguo";
-	}
-	@GetMapping(value = "patent/agpeople")
-	public String agpeople(Model model) {
-		
-		int pageSize = 10;
-		int pageIndex = 0;
-		
-		//model.addAttribute("pageIndex", pageIndex);
-		//model.addAttribute("pageSize", pageSize);
-		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测
-		// TODO 静态变量未环绕需调整
-		ThreadLocalUtil.set(model);
-		patentService.executefamingren(pageIndex, pageSize, i,null,"person","creator");
-		ThreadLocalUtil.remove();
-		return "zhuanlifenxifamingrenjizhuanliquanren";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value = "patent/agpersons", method = RequestMethod.POST,consumes = "application/json")
 	public R persons(@RequestBody AgPersonRequest request) {
@@ -643,21 +759,31 @@ public class PatentController {
 	}
 	
 	
-	
-//	@GetMapping(value = "patent/agmount")
-//	public String agmount(Model model) {
-//		String time = priceMapper.getLatestUpdateTime();
-//		if(time != null) {
-//			List<Price> prices = priceMapper.getPricesByUpdateTime(time);
-//			model.addAttribute("prices", prices);
-//		}else {
-//			model.addAttribute("prices", new ArrayList<String>());
-//		}
-//		List<String> items = priceMapper.getPricesGroupByName();
-//		model.addAttribute("items", items);
-//		return "zhuanlifenxizhuanlishenqingliang";
-//	}
-	
+	@GetMapping(value = "patent/agtype")
+	public String agtype() {
+		return "zhuanlifenxizhuanlileixing";
+	}
+	@GetMapping(value = "patent/agmount")
+	public String agmount(Model model) {
+		String time = priceMapper.getLatestUpdateTime();
+		if(time != null) {
+			List<Price> prices = priceMapper.getPricesByUpdateTime(time);
+			model.addAttribute("prices", prices);
+		}else {
+			model.addAttribute("prices", new ArrayList<String>());
+		}
+		List<String> items = priceMapper.getPricesGroupByName();
+		model.addAttribute("items", items);
+		return "zhuanlifenxizhuanlishenqingliang";
+	}
+	@GetMapping(value = "patent/agcountry")
+	public String agcountry() {
+		return "zhuanlifenxizhuanlishenqingguo";
+	}
+	@GetMapping(value = "patent/agpeople")
+	public String agpeople() {
+		return "zhuanlifenxifamingrenjizhuanliquanren";
+	}
 	@GetMapping(value = "patent/agpeoplecon")
 	public String agpeoplecon() {
 		return "T-hangyeCon";
@@ -679,10 +805,10 @@ public class PatentController {
 	}
 	
 	@GetMapping(value = "price")
-	public String price() {
+	public void price() {
 		
 
-		for(int i=4;i>0;i--) {
+		for(int i=7;i>0;i--) {
 			String url="http://nm.sci99.com/news/?page=" + i + "&sid=8784&siteid=10" ;
 			String base = "http://nm.sci99.com";
 			try {
@@ -730,29 +856,48 @@ public class PatentController {
 	            			continue;
 	            		}
 	            		Elements tdes = tdelement.select("td");
+	            		System.out.println(tdes.size());
 	            		Price price = new Price();
-	            		price.setUpdateTime(entry.getValue());
-	            		price.setName(tdes.get(0).text());
-	            		price.setDescription(tdes.get(1).text());
-	            		price.setUnit(tdes.get(6).text());
-	            		price.setPrice(tdes.get(3).text());
-	            		price.setAvg(tdes.get(4).text());
-	            		Price yesterday = priceMapper.getLatestPrice(price.getName());
-	            		if(yesterday == null) {
-	            			price.setFloating("100%");
+	            		if(tdes.size()==7) {
+	            			price.setUpdateTime(entry.getValue());
+	            			price.setName(tdes.get(0).text());
+	            			price.setDescription(tdes.get(1).text());
+	            			price.setUnit(tdes.get(6).text());
+	            			price.setPrice(tdes.get(3).text());
+	            			price.setAvg(tdes.get(4).text());
+	            			price.setFloating(tdes.get(5).text());
 	            		}else {
-	            			float before = Float.valueOf(yesterday.getAvg());
-	            			float now = Float.valueOf(tdes.get(4).text());
-	            			float delta = now - before;
-	            			if(delta != 0) {
-	            				System.out.println();
-	            			}
-	            			NumberFormat numberFormat = NumberFormat.getInstance();
-	            			numberFormat.setMaximumFractionDigits(2);
-	            			String result = numberFormat.format(delta / before * 100);
-	            			price.setFloating(result + "%");
+	            			price.setUpdateTime(entry.getValue());
+	            			price.setName(tdes.get(0).text());
+	            			price.setDescription(tdes.get(1).text());
+	            			price.setUnit(tdes.get(7).text());
+	            			price.setPrice(tdes.get(3).text()+"-"+tdes.get(4).text());
+	            			price.setAvg(tdes.get(5).text());
+	            			price.setFloating(tdes.get(6).text());
+	            			
 	            		}
+//	            		Price yesterday = priceMapper.getLatestPrice(price.getName());
+//	            		if(yesterday == null) {
+//	            			price.setFloating("100%");
+//	            		}else {
+//	            			float before = Float.valueOf(yesterday.getAvg());
+//	            			float now = Float.valueOf(tdes.get(4).text());
+//	            			float delta = now - before;
+//	            			if(delta != 0) {
+//	            				System.out.println();
+//	            			}
+//	            			NumberFormat numberFormat = NumberFormat.getInstance();
+//	            			numberFormat.setMaximumFractionDigits(2);
+//	            			String result = numberFormat.format(delta / before * 100);
+//	            			price.setFloating(result + "%");
+//	            		}
 	            		priceMapper.insertPrice(price);
+	            		try {
+	        				Thread.sleep(1000);
+	        			} catch (InterruptedException e) {
+	        				// TODO Auto-generated catch block
+	        				e.printStackTrace();
+	        			}
 	            		System.out.println("插入成功" + price.getName());
 	            	}
 	            	//  String title = clearfixli.getElementsByTag("a").text();
@@ -770,7 +915,95 @@ public class PatentController {
 				e.printStackTrace();
 			}
 		}
-		return "T-rencaiCon";
+		
+//		final String url="http://nm.sci99.com/news/s8784.html" ;
+//		String single = "http://nm.sci99.com";
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+//		Date date = new Date();
+//		String ymd = formatter.format(date);
+//
+//        try {
+//        	
+//        	Price exist = priceMapper.getPriceByUpdateTime(ymd);
+//        	
+////        	if(exist != null) {
+////        		return;
+//////        		System.out.println("exist");
+////        	}
+//
+//            Document doc = Jsoup.connect(url).get();
+//
+//            Elements module = doc.getElementsByClass("ul_w690");
+//            if(!module.text().contains(ymd)) {
+//            	return;
+////            	System.out.println("");
+//            }
+//            System.out.println(module.text());
+//
+//            Document moduleDoc = Jsoup.parse(module.toString());
+//
+//            Elements lis = moduleDoc.getElementsByTag("li");  //选择器的形式
+//
+//jump:
+//            for (Element li : lis){
+//                Document liDoc = Jsoup.parse(li.toString());
+//                Elements hrefs = liDoc.select("a[href]");
+//                for(Element elem: hrefs) {
+//                	if(!"".equals(elem.attr("href"))){
+//                		String href = elem.attr("href");
+//                		single = single + href;
+//                		break jump;
+//                	}
+//                }
+//
+//            }
+//            
+//            Document singleDoc = Jsoup.connect(single).get();
+////            if(!singleDoc.toString().contains(ymd)){
+////            	return;
+////            }
+//            Element zoom = singleDoc.getElementById("zoom");
+//            Elements trElements = zoom.select("tr");
+//            boolean ignore = true;
+//            for(Element tdelement : trElements) {
+//            	if(ignore) {
+//            		ignore = false;
+//            		continue;
+//            	}
+//            	Elements tdes = tdelement.select("td");
+//            	Price price = new Price();
+//            	price.setUpdateTime(formatter.format(date));
+//        		price.setName(tdes.get(0).text());
+//        		price.setDescription(tdes.get(1).text());
+//        		price.setUnit(tdes.get(6).text());
+//        		price.setPrice(tdes.get(3).text());
+//        		price.setAvg(tdes.get(4).text());
+//        		Price yesterday = priceMapper.getLatestPrice(price.getName());
+//        		if(yesterday == null) {
+//        			price.setFloating("100%");
+//        		}else {
+//        			float before = Float.valueOf(yesterday.getAvg());
+//        			float now = Float.valueOf(tdes.get(4).text());
+//        			float delta = now - before;
+//        			if(delta != 0) {
+//        				System.out.println();
+//        			}
+//        			NumberFormat numberFormat = NumberFormat.getInstance();
+//        			numberFormat.setMaximumFractionDigits(2);
+//        			String result = numberFormat.format(delta / before * 100);
+//        			price.setFloating(result + "%");
+//        		}
+////            	priceMapper.insertPrice(price);
+//            }
+//              //  String title = clearfixli.getElementsByTag("a").text();
+//            System.out.println("fasdf");
+//
+//          //  System.out.println(clearfix);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//		return "T-rencaiCon";
 	}
 	
 	@ResponseBody
@@ -799,6 +1032,26 @@ public class PatentController {
 				map.put(date.substring(4, 6), avg);
 				
 			}
+		}else if("1".equals(time)) {
+			for(int i=0;i<12;i++) {
+				Calendar c = Calendar.getInstance();
+				c.setTime(new Date());
+				c.add(Calendar.MONTH, -i);
+				Date lastmonth = c.getTime();
+				date = formatter.format(lastmonth);
+				String start = date.substring(0, 6) + "00";
+				String end = date.substring(0,6) + "32";
+				String avg = priceMapper.getAvgPricesGroupByName(start, end , name);
+				if(avg == null) {
+					continue;
+//					avg = "0";
+				}else if(avg.contains(".")) {
+					avg = avg.split("\\.")[0];
+				}
+				map.put(date.substring(4, 6), avg);
+				
+			}
+			
 		}
 		return R.ok().put("avg", map);
 	}
@@ -1132,15 +1385,14 @@ public class PatentController {
 		List<String> missedList = new ArrayList<String>();
 		Random random = new Random();
 		Map<String, String> map = new HashMap<String, String>();
-		int month = 69;
-		while(month<=450) {
+		int month = 103;
+		while(month<=149) {
 //			if(month==10) {
 //				System.out.println();
 //			}
 			System.out.println("已经到了"+month);
 			String date = getLastMonth(month);
-//			map.put("SearchWord", "(ZY:( 生物医药 ) OR MC:( 生物医药 ) OR SMS:(生物医药)) AND GKRQ:(" + date + ")");
-			map.put("SearchWord", "(ZY:( 医疗器械 ) OR MC:( 医疗器械 ) OR SMS:(医疗器械) OR QLYQ (医疗器械)) AND GKRQ:( " + date + " )");
+			map.put("SearchWord", "(ZY:( 稀土 ) OR MC:( 稀土 ) OR SMS:(稀土)) AND GKRQ:(" + date + ")");
 //		map.put("SearchWord", "稀土");
 			map.put("FMZL", "Y");
 			map.put("SYXX", "Y");
@@ -1177,7 +1429,7 @@ public class PatentController {
 					}
 					missedList.clear();
 				}
-				map.put("PatentIndex", String.valueOf(patentIndex));
+//				map.put("PatentIndex", String.valueOf(patentIndex));
 				patentIndex += 10;
 				
 				try {
@@ -1210,22 +1462,22 @@ public class PatentController {
 							break;
 						}
 						if(patentBlocks.size()>0) {
-							Elements right = doc.getElementsByClass("right");
-//							System.out.println(right.text());
-							s:
-								for(Element e: right) {
-									Elements ele = e.getElementsByTag("b");
-									for(Element elet: ele) {
-										if(!"".equals(elet.text())) {
-											tail = Integer.valueOf(elet.text());
-											if(tail > 1000) {
-												tail = 1000;
-											}
-										}
-										break s;
-									}
-//									System.out.println(e.text());
-								}
+//							Elements right = doc.getElementsByClass("right");
+////							System.out.println(right.text());
+//							s:
+//								for(Element e: right) {
+//									Elements ele = e.getElementsByTag("b");
+//									for(Element elet: ele) {
+//										if(!"".equals(elet.text())) {
+//											tail = Integer.valueOf(elet.text());
+//											if(tail > 1000) {
+//												tail = 1000;
+//											}
+//										}
+//										break s;
+//									}
+////									System.out.println(e.text());
+//								}
 							for(Element patentBlock: patentBlocks) {
 								Document patentDoc = Jsoup.parse(patentBlock.toString());
 								Elements patentTypeElements = patentDoc.getElementsByClass("PatentTypeBlock");

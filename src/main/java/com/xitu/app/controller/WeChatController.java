@@ -2,6 +2,9 @@ package com.xitu.app.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.client.methods.HttpPost;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xitu.app.common.R;
 import com.xitu.app.constant.Constant;
 import com.xitu.app.mapper.UserMapper;
@@ -31,6 +37,7 @@ import com.xitu.app.model.WeChatUserInfo;
 import com.xitu.app.service.Cache;
 import com.xitu.app.service.IMsgService;
 import com.xitu.app.utils.GsonUtil;
+import com.xitu.app.utils.HttpClientOperation;
 import com.xitu.app.utils.HttpRequest;
 import com.xitu.app.utils.XmlUtil;
 import com.xitu.app.utils.aes.AesException;
@@ -57,6 +64,10 @@ public class WeChatController {
 	private static final String QR_CODE_URL = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={TICKET}";
 	// 获取用户信息
 	private static final String GETUSERINFOURL = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={ACCESS_TOKEN}&openid={OPENID}";
+	// 跳转的menu url
+	private static final String MENUREDIRECTURL = "http://mp.weixin.qq.com/mp/homepage?__biz=MzU1Mjk4NDcyMQ==&hid=1&sn=24e77ed747822cc25bc1b31b0357db6f&scene=18#wechat_redirect";
+	// 创建自定义菜单的url
+	private static final String MENUCREATIONURL = "https://api.weixin.qq.com/cgi-bin/menu/create";
 
 	@RequestMapping(value = "/wx", produces = "application/json;charset=utf-8")
 	public void entry(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -263,7 +274,154 @@ public class WeChatController {
 		return R.ok().put("openId", openId).put("bind", bind).put("nickName", nickName).put("headUrl", headUrl).put("role", role);
 
 	}
+	
+	/**
+	 * 初始化菜单
+	 *
+	 * @return
+	 */
+	@RequestMapping("wechat/menu")
+	@ResponseBody
+	public R menu(HttpServletRequest request) {
+		HttpClientOperation httpClientOperation = new HttpClientOperation();
+//		Map<String,Object> bodyParam = new HashMap<>();
+		JSONObject viewButton = new JSONObject();
+		viewButton.put("name", "往期精选");
+		viewButton.put("type", "view");
+		viewButton.put("url", "http://mp.weixin.qq.com/mp/homepage?__biz=MzU1Mjk4NDcyMQ==&hid=1&sn=24e77ed747822cc25bc1b31b0357db6f&scene=18#wechat_redirect");
+		JSONObject viewButton1 = new JSONObject();
+		viewButton1.put("name", "服务中心");
+		viewButton1.put("type", "view");
+		viewButton1.put("url", "https://mp.weixin.qq.com/s?__biz=MzU1Mjk4NDcyMQ==&tempkey=MTAwOV9BdEw4RC9sNXVuQzdsQXpYT21UR1Fzd25OSkJIWVZoZHNMUlNoR0drRlJmNkliVjBVVnVhU0JreHFaT2g0WUxWOTFpai03cE4yTU16RG9YLUt3a0NDZWhUMlhycmwxZ1ZYZEJkV0VDdnJ5RGo5VXdBM3NMNWpRQTFsTUZLbHI5YzhBdXhkZWhLQ0RZMEw2cmZ0Q1o2UlI4Z3gwdUhNYzFTMWl5a2Vnfn4%3D&chksm=7bf8887e4c8f0168df535641092dbf35bee0f8eeb98c22f3944e85ff6fb1c6e951e21ddf708e#rd");
+		JSONObject viewButton2 = new JSONObject();
+		viewButton2.put("name", "合作交流");
+		viewButton2.put("type", "view");
+		viewButton2.put("url", "https://mp.weixin.qq.com/s?__biz=MzU1Mjk4NDcyMQ==&tempkey=MTAwOV9qOTZibEdCbGxXRXJUeXozT21UR1Fzd25OSkJIWVZoZHNMUlNoR0drRlJmNkliVjBVVnVhU0JreHFaT1pZS3A2dTZ0Mzk3bXRIeGQyZUxqR242NGlXRzB3c3l0NnpEeG1sd04zREs0Uml3VnVhX0s3bmJQdzljUzkyLWcxRXJiekRIaGxSRXRJWFJDdU9JaG9XcVQ5anpudG1TcG1oSHpMRnkzSWpRfn4%3D&chksm=7bf888204c8f0136bd1dcec6062db3d0cd97b5e6b7bf294ee1595d011f31f9cd52272e1ecf7a#rd");
+		JSONObject viewButton3 = new JSONObject();
+		viewButton3.put("name", "关于我们");
+		viewButton3.put("type", "view");
+		viewButton3.put("url", "https://mp.weixin.qq.com/s?__biz=MzU1Mjk4NDcyMQ==&tempkey=MTAwOV9CdTJ3VCtQbjN2S0tBY1J1T21UR1Fzd25OSkJIWVZoZHNMUlNoR0drRlJmNkliVjBVVnVhU0JreHFaUHR2M3A0T05kbTB4a0V0X1hxaWowSkFNOEZUblg1MEttdnZJUHMyaU5tWUw2MVJNNm93dC1fN1g4YjduTmtrejZ0dTJ2c3JiYzVuaUJKam9CU2NpRWJpMWlOeGhCaGlIZE5uSWgyNmtKZnhBfn4%3D&chksm=7bf8881f4c8f0109e87b7a7a7342d386f78f6cd848eddb0d044875f23041638ada1d4d328235#rd");
+		JSONArray subButton = new JSONArray();
+		subButton.add(viewButton);
+		JSONArray subButton2 = new JSONArray();
+		subButton2.add(viewButton1);
+		subButton2.add(viewButton2);
+		subButton2.add(viewButton3);
+		JSONObject button1 = new JSONObject();
+		button1.put("name", "数据窗");
+		button1.put("sub_button", subButton);
+		JSONObject button2 = new JSONObject();
+		button2.put("name", "服务云");
+		button2.put("sub_button", subButton2);
+		JSONObject menu = new JSONObject();
+		JSONArray buttons = new JSONArray();
+		buttons.add(button1);
+		buttons.add(button2);
+		menu.put("button", buttons);
+		Map<String,Object> param = new HashMap<>();
+		param.put("access_token",Constant.ACCESS_TOKEN);
+		httpClientOperation.setEndpoint(MENUCREATIONURL);
+		HttpPost httpPost;
+		try {
+			System.out.println(menu);
+			System.out.println(param);
+			httpPost = httpClientOperation.buildHttpPost("", param,menu);
+			JSONObject jsonObject = httpClientOperation.doAction(httpPost);
+			System.out.println("jsonObject {}" + jsonObject);
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return R.ok();
+		
+	}
 
+	public Menu getMenu() {
+		Menu menu = new Menu();
+		ViewButton buttonV1 = new ViewButton();
+		buttonV1.setName("往期精选");
+		buttonV1.setType("view");
+		buttonV1.setUrl("http://mp.weixin.qq.com/mp/homepage?__biz=MzU1Mjk4NDcyMQ==&hid=1&sn=24e77ed747822cc25bc1b31b0357db6f&scene=18#wechat_redirect");
+		
+		Button button1 = new Button();
+		button1.setName("数据窗");
+		button1.setSub_button(new Button[]{buttonV1});
+		menu.setButton(new Button[]{button1});
+		return menu;
+		
+	}
+	
+	class Button{
+		private String type;
+		private String name;
+		private Button[] sub_button;
+		public String getType() {
+			return type;
+		}
+		public void setType(String type) {
+			this.type = type;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public Button[] getSub_button() {
+			return sub_button;
+		}
+		public void setSub_button(Button[] sub_button) {
+			this.sub_button = sub_button;
+		}
+		
+	}
+	
+	class ClickButtion extends Button{
+		private String key;
+
+		public String getKey() {
+			return key;
+		}
+
+		public void setKey(String key) {
+			this.key = key;
+		}
+		
+	}
+	
+	class ViewButton extends Button{
+		private String url;
+
+		public String getUrl() {
+			return url;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
+	}
+	
+	class Menu {
+		private Button[] button;
+
+		public Button[] getButton() {
+			return button;
+		}
+
+		public void setButton(Button[] button) {
+			this.button = button;
+		}
+	}
+	
 	// @RequestMapping(value = "wx",method=RequestMethod.GET)
 	// public void login(HttpServletRequest request,HttpServletResponse
 	// response){
