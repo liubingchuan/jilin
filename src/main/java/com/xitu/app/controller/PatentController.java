@@ -1385,14 +1385,14 @@ public class PatentController {
 		List<String> missedList = new ArrayList<String>();
 		Random random = new Random();
 		Map<String, String> map = new HashMap<String, String>();
-		int month = 103;
-		while(month<=149) {
+		int month = 12;
+		while(month<=450) {
 //			if(month==10) {
 //				System.out.println();
 //			}
 			System.out.println("已经到了"+month);
 			String date = getLastMonth(month);
-			map.put("SearchWord", "(ZY:( 稀土 ) OR MC:( 稀土 ) OR SMS:(稀土)) AND GKRQ:(" + date + ")");
+			map.put("SearchWord", "(ZY:( 工业大数据 ) OR MC:( 工业大数据 ) OR SMS:(工业大数据) OR QLYQ (工业大数据)) AND GKRQ:(" + date + ")");
 //		map.put("SearchWord", "稀土");
 			map.put("FMZL", "Y");
 			map.put("SYXX", "Y");
@@ -1429,7 +1429,7 @@ public class PatentController {
 					}
 					missedList.clear();
 				}
-//				map.put("PatentIndex", String.valueOf(patentIndex));
+				map.put("PatentIndex", String.valueOf(patentIndex));
 				patentIndex += 10;
 				
 				try {
@@ -1462,22 +1462,22 @@ public class PatentController {
 							break;
 						}
 						if(patentBlocks.size()>0) {
-//							Elements right = doc.getElementsByClass("right");
-////							System.out.println(right.text());
-//							s:
-//								for(Element e: right) {
-//									Elements ele = e.getElementsByTag("b");
-//									for(Element elet: ele) {
-//										if(!"".equals(elet.text())) {
-//											tail = Integer.valueOf(elet.text());
-//											if(tail > 1000) {
-//												tail = 1000;
-//											}
-//										}
-//										break s;
-//									}
-////									System.out.println(e.text());
-//								}
+							Elements right = doc.getElementsByClass("right");
+//							System.out.println(right.text());
+							s:
+								for(Element e: right) {
+									Elements ele = e.getElementsByTag("b");
+									for(Element elet: ele) {
+										if(!"".equals(elet.text())) {
+											tail = Integer.valueOf(elet.text());
+											if(tail > 1000) {
+												tail = 1000;
+											}
+										}
+										break s;
+									}
+//									System.out.println(e.text());
+								}
 							for(Element patentBlock: patentBlocks) {
 								Document patentDoc = Jsoup.parse(patentBlock.toString());
 								Elements patentTypeElements = patentDoc.getElementsByClass("PatentTypeBlock");
