@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body class="whitebg">
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<div class="left menu clearfix">
+					<a href="/">平台首页</a>
+					<a th:href="@{/jiance/jiancelist}">产业监测</a>
+					<a th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>
+					<a href="#">知识服务</a>
+					<a th:href="@{/patent/agmount}">专利分析</a>
+					<a href="#">园区介绍</a>
+					<a href="#">关于我们</a>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    <div class="chaxinOne">
+		    	<h1>
+		    		产业监测 
+		    	</h1>
+		    	<div class="chaxinOneText">
+		    	围绕传统产业转型和战略性新兴产业发展，面向战略决策，提供政策与技术发展态势监测、市场分析与投资咨询、前沿技术趋势预见等服务，为用户在市场拓展、技术引进、技术研发决策提供帮助。提供三类情报调研服务：产业细分领域前沿技术研究；产业细分领域市场分析；产业细分领域态势监测。
+		    	</div>
+		    	
+		    </div>
+			</div>
+			<div class="chaxinBottom">
+				<div class="nycontainer">
+					<div class="clearfix jianceOne">
+						<span class="left jianceOneName">
+							产业监测
+						</span>
+						<div class="left usermanageOneSS">
+							<input type="text"  id="keywords" th:value="${query}"/>
+							<em onClick="search();"></em>
+						</div>
+					</div>
+					<div class="clearfix">
+						<div class="left jiansuoLf jianceLf">
+							
+		        		<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(lanmu)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				栏目
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(lanmu) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${lanmu}">
+		        					<span th:if="${lanmus != null && lanmus != ''}">
+		        						<span th:if="${#strings.contains(lanmus,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lanmus,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lanmus == null || lanmus == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="l : ${lanmu}" th:if=" ${#arrays.length(lanmu) <= 5}">
+		        					<span th:if="${lanmus != null && lanmus != ''}">
+		        						<span th:if="${#strings.contains(lanmus,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lanmus,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lanmus == null || lanmus == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="lanmu" th:value="${l.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(lanmu) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+						    <div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(institution)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				来源机构
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(institution) > 5}">
+		        				<div class="jiansuoLfGx" th:each="i : ${institution}">
+		        					<span th:if="${institutions != null && institutions != ''}">
+		        						<span th:if="${#strings.contains(institutions,i.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(institutions,i.key)}">
+		        							<input type="checkbox" th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${institutions == null || institutions == ''}">
+		        						<input type="checkbox" th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        						<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        			<div class="jiansuoLfGx" th:each="i : ${institution}" th:if=" ${#arrays.length(institution) <= 5}">
+		        					<span th:if="${institutions != null && institutions != ''}">
+		        						<span th:if="${#strings.contains(institutions,i.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(institutions,i.key)}">
+		        							<input type="checkbox" th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${institutions == null || institutions == ''}">
+		        						<input type="checkbox" th:id="'i'+${i.key}" th:name="institution" th:value="${i.key}" onclick="checkfm('institution','institution')"/>
+		        						<label th:for="'i'+${i.key}" th:text="${i.key} + '(' + ${i.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(institution) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+						     <div class="jiansuoLfGp">
+		        			<h3 class="jiansuoLfGpTl">
+		        				发布日期
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList">
+		        				<div class="jiansuoLfGx">
+		        					
+		        					<span th:if="${pubtimes != null && pubtimes != ''}">
+		        						<span th:if="${pubtimes == '近一天'}">
+		        							<input type="checkbox" checked="checked" id="28" name="pubtime1" value="近一天" onclick="checkpub('pubtime1','近一天')">
+		        							<label for="28">近一天</label>
+		        						</span>
+		        						<span th:if="${pubtimes != '近一天'}">
+		        							<input type="checkbox" id="28" name="pubtime1" value="近一天" onclick="checkpub('pubtime1','近一天')">
+		        							<label for="28">近一天</label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${pubtimes == null || pubtimes == ''}">
+		        							<input type="checkbox" id="28" name="pubtime1" value="近一天" onclick="checkpub('pubtime1','近一天')">
+		        							<label for="28">近一天</label>
+		        					</span>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<span th:if="${pubtimes != null && pubtimes != ''}">
+		        						<span th:if="${pubtimes == '近三天'}">
+		        							<input type="checkbox" checked="checked" id="29" name="pubtime2" value="近三天" onclick="checkpub('pubtime2','近三天')">
+		        							<label for="28">近三天</label>
+		        						</span>
+		        						<span th:if="${pubtimes != '近三天'}">
+		        							<input type="checkbox"  name="pubtime2" id="29" value="近三天" onclick="checkpub('pubtime2','近三天')">
+		        							<label for="28">近三天</label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${pubtimes == null || pubtimes == ''}">
+		        							<input type="checkbox" name="pubtime2" id="29" value="近三天" onclick="checkpub('pubtime2','近三天')">
+		        							<label for="28">近三天</label>
+		        					</span>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<span th:if="${pubtimes != null && pubtimes != ''}">
+		        						<span th:if="${pubtimes == '近一周'}">
+		        							<input type="checkbox" checked="checked" id="30" name="pubtime3" value="近一周" onclick="checkpub('pubtime3','近一周')">
+		        							<label for="28">近一周</label>
+		        						</span>
+		        						<span th:if="${pubtimes != '近一周'}">
+		        							<input type="checkbox"  name="pubtime3" id="30" value="近一周" onclick="checkpub('pubtime3','近一周')">
+		        							<label for="28">近一周</label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${pubtimes == null || pubtimes == ''}">
+		        							<input type="checkbox" name="pubtime3" id="30" value="近一周" onclick="checkpub('pubtime3','近一周')">
+		        							<label for="28">近一周</label>
+		        					</span>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<span th:if="${pubtimes != null && pubtimes != ''}">
+		        						<span th:if="${pubtimes == '近三周'}">
+		        							<input type="checkbox" checked="checked" id="31" name="pubtime4" value="近三周" onclick="checkpub('pubtime4','近三周')">
+		        							<label for="28">近三周</label>
+		        						</span>
+		        						<span th:if="${pubtimes != '近三周'}">
+		        							<input type="checkbox"  name="pubtime4" id="31" value="近三周" onclick="checkpub('pubtime4','近三周')">
+		        							<label for="28">近三周</label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${pubtimes == null || pubtimes == ''}">
+		        							<input type="checkbox" name="pubtime4" id="31" value="近三周" onclick="checkpub('pubtime4','近三周')">
+		        							<label for="28">近三周</label>
+		        					</span>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<span th:if="${pubtimes != null && pubtimes != ''}">
+		        						<span th:if="${pubtimes == '近一个月'}">
+		        							<input type="checkbox" checked="checked" name="pubtime5" id="32" value="近三周" onclick="checkpub('pubtime5','近一个月')">
+		        							<label for="28">近一个月</label>
+		        						</span>
+		        						<span th:if="${pubtimes != '近一个月'}">
+		        							<input type="checkbox"  name="pubtime5" id="32" value="近一个月" onclick="checkpub('pubtime5','近一个月')">
+		        							<label for="28">近一个月</label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${pubtimes == null || pubtimes == ''}">
+		        							<input type="checkbox" name="pubtime5" id="32" value="近一个月" onclick="checkpub('pubtime5','近一个月')">
+		        							<label for="28">近一个月</label>
+		        					</span>
+		        				</div>
+		        				
+		        			</div>
+		        		    
+		        		    </div>
+		        		</div>
+						</div>
+					    <div class="right jiansuoRt jianceRt">
+		            	<ul class="jiansuoUl">
+		            		<li th:each="paper: ${list}">
+		            			<div class="jiansuoLiTL">
+		            				<a th:href="@{/jiance/get(id=${paper.id})}" th:text="${paper.title}">
+		            				</a>
+		            			</div>
+		            			
+		            			<div class="jiansuoLiText">
+		            				<span class="jiansuoLiTextSpan" th:utext="${paper.description}">
+		            				</span>
+		            				
+		            			</div>
+		            			<div class="jianceTag">
+		            				<span>
+		            					<b>发布日期：</b><span th:text="${paper.pubtime}"></span>
+		            				</span>
+		            				<!-- <span>
+		            					<b>学科分类：</b>生物医药 
+		            				</span> -->
+		            				<span>
+		            					<b>来源机构：</b><span th:text="${paper.institution}"></span>
+		            				</span>
+		            				<span>
+		            					<b>栏目分类：</b><span th:text="${paper.lanmu}"></span>
+		            				</span>
+		            			</div>
+		            		</li>
+		            		
+		            	</ul>
+					    <div class="sqPage">
+					    	<span th:text="'共 ' + ${totalCount}+' 条监测信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/jiance/jiancelist(q=${query},pageIndex=0,pageSize=10,lanmu=${lanmus},institution=${institutions},pubtime=${pubtimes})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${pageIndex}-1),pageSize=10,lanmu=${lanmus},institution=${institutions},pubtime=${pubtimes})}"><上一页</a>
+ 							<a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a>
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${pageIndex}+1),pageSize=10,lanmu=${lanmus},institution=${institutions},pubtime=${pubtimes})}">下一页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${totalPages}-1),pageSize=10,lanmu=${lanmus},institution=${institutions},pubtime=${pubtimes})}">尾页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=999,pageSize=10,lanmu=${lanmus},institution=${institutions},pubtime=${pubtimes})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</div>
+		            </div>
+					</div>
+				</div>
+			</div>
+			</div>
+		 <div th:replace="footer :: myfooter"></div>
+		<!--弹窗-->
+		<div class="alertBg"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/huakuai.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		
+		 var institution =  [[${institutions}]];
+		 var lanmu =  [[${lanmus}]];
+		 var pubtime =  [[${pubtimes}]];
+		 var query =  [[${query}]];
+		 	$(document).ready(function () {
+		 		showLoginInfoFrontend();
+			});
+		
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/jiance/jiancelist?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+			
+			function checkfm(name,fmtype){
+		        obj = document.getElementsByName(name);
+		        check_val = [];
+		        for(var i=0;i<obj.length;i++){ 
+		        	if(obj[i].checked){ 
+		        		 check_val.push(obj[i].value);
+		        	} 
+		        }
+		        ss =  check_val.toString();
+		        
+		        if(fmtype == 'lanmu'){
+		        	var url = "/jiance/jiancelist?q="+query + "&lanmu=" + encodeURI(encodeURIComponent(ss));
+		        	
+		        	if (institution != "" && institution != null) {
+		        		url+="&institution="+encodeURI(encodeURIComponent(institution));
+		        	} 
+		        	if (pubtime != "" && pubtime != null) {
+		        		url+="&pubtime="+encodeURI(encodeURIComponent(pubtime));
+		        	}
+		        	window.location.href=url;
+		        }
+		        if(fmtype == 'institution'){
+		        	var url = "/jiance/jiancelist?q="+query + "&institution=" + encodeURI(encodeURIComponent(ss));
+		        	
+		        	if (lanmu != "" && lanmu != null) {
+		        		url+="&lanmu="+encodeURI(encodeURIComponent(lanmu));
+		        	}
+		        	if (pubtime != "" && pubtime != null) {
+		        		url+="&pubtime="+encodeURI(encodeURIComponent(pubtime));
+		        	}
+		        	window.location.href=url;
+		        }
+		        
+		    }
+			function checkpub(name,fmtype){
+				 obj = document.getElementsByName(name);
+			     ss='';   
+			     if(obj[0].checked){ 
+			    	 ss = obj[0].value;
+			      } 
+				
+		        var url = "/jiance/jiancelist?q="+query + "&pubtime=" + encodeURI(encodeURIComponent(ss));
+		        	
+		        if (institution != "" && institution != null) {
+		        	url+="&institution="+encodeURI(encodeURIComponent(institution));
+		        }
+		        if (lanmu != "" && lanmu != null) {
+		        	url+="&lanmu="+encodeURI(encodeURIComponent(lanmu));
+		        } 
+		        window.location.href=url;
+		        
+		        
+		    }
+				</script>
+	</body>
+</html>

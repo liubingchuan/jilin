@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/xinit.css}" />
+		<link rel="stylesheet" th:href="@{/css/xmain.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+	</head>
+	<body class="whitebg">
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<div class="left menu clearfix">
+					<a href="/">平台首页</a>
+					<a th:href="@{/patent/agmount}">稀土智库</a>
+					<a href="#">材料计算</a>
+					<a th:href="@{/jiance/jiancelist}">产业监测</a>
+					<a th:href="@{/zhishifuwu/zhishifuwu}">知识服务</a>
+					<a href="#">合作交流</a>
+					<a href="#">关于我们</a>
+				</div>
+				<div class="right">
+					<!--登录前-->
+					<!--<div class="loginbefore">
+						<a href="javascript:;" class="loginBtn">登录</a><span>/</span><a href="loginBtn">注册</a>
+					</div>-->
+					<!--登陆后-->
+					<div class="loginAfter">
+						<div class="loginAfterM">
+							<a href="#" class="loginAfterTx">
+								<img id="headImg" th:src="@{/images/jiazai.png}" />
+							</a>
+							<div class="loginAfterNo">
+								
+								<div class="loginAfterNoM">
+									<em class="loginAfterNoMSj"></em>
+									<p>
+										<!-- <span class="loginName" th:text="${user.account}"></span> -->
+										<span class="loginName" id="logoinName"></span>
+										<span class="vip">
+										</span>
+									</p>
+									<p id="backgroud">
+										<!-- <a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}"  th:href="@{/user/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}"> -->
+										<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
+											<img th:src="@{/images/houtai.png}" />
+											进入管理后台
+										</a>
+									</p>
+									<p>
+										<a href="#">
+											<img th:src="@{/images/dingdan.png}" />
+											我的申请
+										</a>
+									</p>
+									<p>
+										<a id="quit" href="/">
+											<img th:src="@{/images/tuichu.png}" />
+											退出
+										</a>
+									</p>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>              
+		    <div class="chaxinOne">
+		    	<h1>
+		    		产业监测
+		    	</h1>
+		    	<div class="chaxinOneText">
+		    	围绕传统产业转型和战略性新兴产业发展，面向战略决策，提供政策与技术发展态势监测、市场分析与投资咨询、前沿技术趋势预见等服务，为用户在市场拓展、技术引进、技术研发决策提供帮助。提供三类情报调研服务：产业细分领域前沿技术研究；产业细分领域市场分析；产业细分领域态势监测。
+		    	</div>
+		    	
+		    </div>
+			</div>
+			<div class="chaxinBottom">
+				<div class="nycontainer">
+					<div class="clearfix jianceOne">
+						<span class="left jianceOneName">
+							产业监测
+						</span>
+						<div class="left usermanageOneSS">
+							<input type="text"  id="keywords"/>
+							<em onClick="search();"></em>
+						</div>
+					</div>
+					<div class="clearfix">
+						<div class="left jiansuoLf jianceLf">
+							
+		        		<div class="jiansuoLfGp" th:if=" ${not #maps.isEmpty(aglanmu)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				栏目
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#maps.size(aglanmu) > 5}">
+		        				<div class="jiansuoLfGx" th:each="institution : ${aglanmu}">
+		        					<span th:if="${lanmu != null && lanmu != ''}">
+		        						<span th:if="${#strings.contains(lanmu,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lanmu,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lanmu == null || lanmu == ''}">
+		        						<input type="checkbox" th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        						<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="institution : ${aglanmu}" th:if=" ${#maps.size(aglanmu) <= 5}">
+		        		    		<span th:if="${lanmu != null && lanmu != ''}">
+		        						<span th:if="${#strings.contains(lanmu,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lanmu,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lanmu == null || lanmu == ''}">
+		        						<input type="checkbox" th:id="'institution'+${institution.key}" th:name="lanmu" th:value="${institution.key}" onclick="checkfm('lanmu','lanmu')"/>
+		        						<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        					</span>
+		        			</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#maps.size(aglanmu) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+						    <div class="jiansuoLfGp" th:if=" ${not #maps.isEmpty(aginstitution)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				来源机构
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#maps.size(aginstitution) > 5}">
+		        				<div class="jiansuoLfGx" th:each="institution : ${aginstitution}">
+		        					<span th:if="${ins != null && ins != ''}">
+		        						<span th:if="${#strings.contains(ins,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(ins,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${ins == null || ins == ''}">
+		        						<input type="checkbox" th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        						<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="institution : ${aginstitution}" th:if=" ${#maps.size(aginstitution) <= 5}">
+		        					<span th:if="${ins != null && ins != ''}">
+		        						<span th:if="${#strings.contains(ins,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(ins,institution.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        							<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${ins == null || ins == ''}">
+		        						<input type="checkbox" th:id="'institution'+${institution.key}" th:name="institution" th:value="${institution.key}" onclick="checkfm('institution','institution')"/>
+		        						<label th:for="'institution'+${institution.key}" th:text="${institution.key} + '(' + ${institution.value} + ')'"></label>
+		        					</span>
+		        			</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#maps.size(aginstitution) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+						     <!-- <div class="jiansuoLfGp">
+		        			<h3 class="jiansuoLfGpTl">
+		        				发布日期
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList">
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="28">
+		        					<label for="28">近一天</label>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="29">
+		        					<label for="29">近三天</label>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="30">
+		        					<label for="30">近一周</label>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="31">
+		        					<label for="31">近三周</label>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="32">
+		        					<label for="32">近一个月</label>
+		        				</div>
+		        				<div class="jiansuoLfGx">
+		        					<input type="checkbox" id="33">
+		        					<label for="33">热点新闻</label>
+		        				</div>
+		        			</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div> -->
+						</div>
+					    <div class="right jiansuoRt jianceRt">
+		            	<ul class="jiansuoUl">
+		            		<li th:each="paper: ${paperList}">
+		            			<div class="jiansuoLiTL">
+		            				<a th:href="@{/jiance/get(id=${paper.id})}" th:text="${paper.title}">
+		            				</a>
+		            			</div>
+		            			
+		            			<div class="jiansuoLiText">
+		            				<span class="jiansuoLiTextSpan" th:utext="${paper.description}">
+		            				</span>
+		            				
+		            			</div>
+		            			<div class="jianceTag">
+		            				<span>
+		            					<b>发布日期：</b><span th:text="${paper.pubtime}"></span>
+		            				</span>
+		            				<!-- <span>
+		            					<b>学科分类：</b>生物医药 
+		            				</span> -->
+		            				<span>
+		            					<b>来源机构：</b><span th:text="${paper.institution}"></span>
+		            				</span>
+		            				<span>
+		            					<b>栏目分类：</b><span th:text="${paper.lanmu}"></span>
+		            				</span>
+		            			</div>
+		            		</li>
+		            		
+		            	</ul>
+					    <div class="sqPage">
+					    	<span th:text="'共 ' + ${totalCount}+' 条监测信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/jiance/jiancelist(q=${query},pageIndex=0,pageSize=10,lanmu=${lanmu},institution=${institution})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${pageIndex}-1),pageSize=10,lanmu=${lanmu},institution=${institution})}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${pageIndex}+1),pageSize=10,lanmu=${lanmu},institution=${institution})}">下一页<em>></em></a>
+							<a th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/jiance/jiancelist(q=${query},pageIndex=(${totalPages}-1),pageSize=10,lanmu=${lanmu},institution=${institution})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</div>
+		            </div>
+					</div>
+				</div>
+			</div>
+			</div>
+		 <div class="footer">
+	    	<div class="footerTop">
+	    		<div class="index-container clearfix">
+	    			<div class="left footerTopLf">
+	    				<img th:src="@{/images/wb.png}" class="xitufooterIMg" />
+	    			</div>
+	    			<div class="left footerTopMiddle">
+	    				<div class="footerTopMiddleTop">
+	    				<p class="footerTopTl">
+	    					<img th:src="@{/images/pingtai.png}" />
+	    					平台介绍
+	    				</p>
+	    				<div class="footerTopText">
+	    					平台围绕稀土领域进行信息监测与情报服务，结合文献情报中心的文献服务、情报咨询服务等，为稀土研究相关科研机构、政府部门、企业等提供产业技术情报服务和科技咨询服务。
+	    				</div>
+	    				</div>
+	    				<p class="footerTopTl">	    				
+	    					<img th:src="@{/images/lianxifangshi.png}" />联系方式
+	    				</p>
+	    				<div class="footerTopText">
+	    					<p>电话：010-82626611-6302</p>
+                             <p>邮箱：chinakx@mail.las.ac.cn</p>
+	    				</div>
+	    			</div>
+	    		    <div class="left footerTopLX">
+	    		    	
+	    		        <div class="footerTopText">
+	    		        	<p class="footerTopTl">	    				
+	    				 	<img th:src="@{/images/jigou.png}" />合作机构
+	    				    </p>
+	    		        	<ul>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;中国科学院分院</a>
+	    		        		</li>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;中国科学院文献情报中心</a>
+	    		        		</li>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;中国科学院分院</a>
+	    		        		</li>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;国家科学图书文献中心</a>
+	    		        		</li>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;中国科学院文献情报中心</a>
+	    		        		</li>
+	    		        		<li>
+	    		        			<a href="#">•&nbsp;国家科学图书文献中心</a>
+	    		        		</li>
+	    		        	</ul>
+	    		        </div>
+	    		    </div>
+	    		    <div class="right footerTopErw">
+	    		    	<img th:src="@{/images/erw.jpg}" />
+	    		    	<p>
+	    		    		<em></em>扫码快速关注公众号
+	    		    	</p>
+	    		    </div>
+	    		</div>
+	    	</div>
+	        <!-- <div class="footerB">
+	        	<div class="index-container">
+	        		版权所有 @ 2017 沈阳高新区生物医药知识服务云平台 中国科学院文献情报中心,京ICP证030173号
+	        	</div>
+	        </div> -->
+	    </div>
+		<!--弹窗-->
+		<div class="alertBg"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/huakuai.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		
+		 var institution =  [[${ins}]];
+		 var lanmu =  [[${lanmu}]];
+		 var query =  [[${query}]];
+		
+		 	$(document).ready(function () {
+			    if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
+					$("#backgroud").css('display','none'); 
+				}
+				$("#logoinName").html($.cookie("nickName"));
+			    $("#headImg").attr("src", $.cookie("headImg"));
+			});
+		
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/jiance/jiancelist?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+			
+			function checkfm(name,fmtype){
+		        obj = document.getElementsByName(name);
+		        check_val = [];
+		        for(var i=0;i<obj.length;i++){ 
+		        	if(obj[i].checked){ 
+		        		 check_val.push(obj[i].value);
+		        	} 
+		        }
+		        ss =  check_val.toString();
+		        if(fmtype == 'lanmu'){
+		        	var url = "/jiance/jiancelist?q="+query + "&lanmu=" + encodeURI(encodeURIComponent(ss));
+		        	
+		        	if (institution != "" && institution != null) {
+		        		url+="&institution="+encodeURI(encodeURIComponent(institution));
+		        	} 
+		        	window.location.href=url;
+		        }
+		        if(fmtype == 'institution'){
+		        	var url = "/jiance/jiancelist?q="+query + "&institution=" + encodeURI(encodeURIComponent(ss));
+		        	
+		        	if (lanmu != "" && lanmu != null) {
+		        		url+="&lanmu="+encodeURI(encodeURIComponent(lanmu));
+		        	} 
+		        	window.location.href=url;
+		        }
+		   
+		        
+		    }
+				</script>
+	</body>
+</html>

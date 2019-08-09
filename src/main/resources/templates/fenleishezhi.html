@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					分类设置<span>选择服务对应的栏目</span>
+				</div>
+				<div class="xiangguan">
+					<div class="clearfix xiangguanTop">
+						<div class="left xiangguanOne">
+							<p class="xiangguanTl">
+								服务
+							</p>
+							<div class="xiangguanOneM xiangguanTwoM">
+								<p>
+									<a href="javascript:;" class="ahover abc" value="xxcjlm">
+										信息采集栏目 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="yhsf">
+										用户身份
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="xxcjlyjg">
+										信息采集来源机构
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="cyfl">
+										产业分类 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="xkfl">
+										学科分类 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="rczc">
+										人才职称 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="xmfl">
+										项目分类 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="bglx">
+										报告类型 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="yjly">
+										研究领域 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="jglx">
+										机构类型 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="gj">
+										国家 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="cyl">
+										产业链 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="cplx">
+										产品类型 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="zw">
+										职务 
+									</a>
+								</p>
+								<p>
+									<a href="javascript:;" class="abc" value="zc">
+										职称
+									</a>
+								</p>
+							</div>
+						</div>
+					    <div class="left xiangguanThree">
+							<p class="xiangguanTl">
+								栏目
+							</p>
+							<div class="xiangguanOneM xiangguanTwoM" id="itemlist">  
+<!-- 								<div class="gouxuan"> -->
+<!-- 									<input type="checkbox" id="1" /> -->
+<!-- 									<label for="1"> -->
+<!-- 										中成药 -->
+<!-- 									</label> -->
+<!-- 								</div> -->
+<!-- 								<div class="gouxuan"> -->
+<!-- 									<input type="checkbox" id="2" /> -->
+<!-- 									<label for="2"> -->
+<!-- 										医疗器械 -->
+<!-- 									</label> -->
+<!-- 								</div> -->
+<!-- 								<div class="gouxuan"> -->
+<!-- 									<input type="checkbox" id="3" /> -->
+<!-- 									<label for="3"> -->
+<!-- 										化合物 -->
+<!-- 									</label> -->
+<!-- 								</div> -->
+<!-- 								<div class="gouxuan"> -->
+<!-- 									<input type="checkbox" id="4" /> -->
+<!-- 									<label for="4"> -->
+<!-- 										基因治疗 -->
+<!-- 									</label> -->
+<!-- 								</div> -->
+							</div>
+						</div>
+					</div>
+				    <div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				增加栏目
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<input type="text" class="left M_messInp" id="newitems">
+			    				<input type="button" class="left btnblue jbsztjbtn" value="提交" id="submitButton">
+			    				</div>
+			    				<div class="zidingyitext zidingyitext1">
+			    					用 ; 可添加多个栏目，如技术；科研；政策
+			    				</div>
+			    			</div>
+			    	</div>
+				    <div class="clearfix bianjinrbtn">
+			    		<input type="button" value="保存修改" class="M_messSub left" id="save">
+			    		<a href="javascript:;" class="colorRed left shanchubtn" id="delete">删除</a>
+			    		</div>
+				</div>
+			   
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript">
+			Array.prototype.indexOf = function (val) {for (var i = 0; i < this.length; i++) {if (this[i] == val) return i;}return -1;};
+			Array.prototype.remove = function (val) {var index = this.indexOf(val);if (index > -1) {this.splice(index, 1);}};
+			function uniq(array){var temp = [];for(var i = 0; i < array.length; i++){if(temp.indexOf(array[i]) == -1){temp.push(array[i]);}}return temp;}
+			var services = {}
+			$(document).ready(function () {
+				let url = "/item/getServiceItems";
+				$.get(url,function(data){
+					services = data.services
+					refresh_items();
+				});
+				showLoginInfo();
+			});
+			
+			$("#submitButton").click(function(){
+				 let newitems = $("#newitems").val()
+				 if(newitems==="") {
+					 return;
+				 }
+				 let service = $(".ahover").attr("value").trim()
+				 newitems = newitems.split(";")
+				 $.each(newitems,function(index,value){
+					if(value===""){
+						return true; 
+					}
+					services[service].push(value);
+				 });
+				 //去重，以免后续冲突
+				 services[service] = uniq(services[service])
+				 refresh_items();
+			});
+			
+			$("#save").click(function(){
+				$("#save").attr('disabled',true);				
+				$.ajax({
+		            url:"/item/save",
+		            type:"post",
+		            contentType: "application/json; charset=utf-8",
+		            data: JSON.stringify(services),
+		            dataType: "json",
+		            success:function(data){
+		                alert("保存成功！")
+						$("#save").attr('disabled',false);				
+		            },
+		            error:function(e){
+		                alert("保存错误！！");
+						$("#save").attr('disabled',false);				
+		            }
+		        });
+			});
+			
+			$("#delete").click(function(){
+				let service = $(".ahover").attr("value").trim()
+				let items = services[service];
+				$("input[name='serviceitem']:checked").each(function() { 
+				    items.remove($(this).val()); 
+				});
+				refresh_items();
+			});
+			
+			
+			$(".abc").click(function(){
+				$(".ahover").removeClass("ahover");
+				$(this).addClass('ahover');
+				refresh_items();
+			});
+			
+			function refresh_items(){
+				$("#itemlist").empty();
+				let service = $(".ahover").attr("value").trim()
+				let items = services[service];
+				$.each(items,function(index,value){
+					if(value===""){
+						return true;
+					}
+					let div = $('<div class="gouxuan"></div>');
+					let input = $('<input name="serviceitem" type="checkbox"/>');
+					input.attr("id",index);
+					input.attr("value",value);
+					let label = $('<label></label>');
+					label.attr("for",index);
+					label.text(" " + value)
+					div.append(input);
+					div.append(label);
+					$("#itemlist").append(div)
+				});
+				$("#newitems").attr("value","");
+			}
+    </script>
+	</body>
+</html>

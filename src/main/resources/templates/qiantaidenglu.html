@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<!-- th:fragment 定义需要引入的代码块，该div包含的内容即为引用的公共内容 -->
+     <div th:fragment="myqiantaidenglu">
+	 	<div class="right">
+					<!--登录前-->
+					<!-- <th:block th:if="${user}==null"> -->
+					<div class="loginbefore" id="loginBefore">
+						<a href="javascript:;" class="loginBtn">登录</a><span>/</span>
+						<a href="javascript:;" class="loginBtn">注册</a>
+					</div>
+					<!-- </th:block> -->
+					<!--登陆后-->
+					<!-- <th:block th:unless="${user}==null"> -->
+					<th:block >
+					<div class="loginAfter" id="loginAfter">
+						<div class="loginAfterM">
+							<a href="#" class="loginAfterTx">
+								<img id="headImg" th:src="@{/images/jiazai.png}" />
+							</a>
+							<div class="loginAfterNo">
+
+								<div class="loginAfterNoM">
+									<em class="loginAfterNoMSj"></em>
+									<p>
+										<!-- <span class="loginName" th:text="${user.account}"></span> -->
+										<span class="loginName" id="logoinName"></span>
+										<span class="vip">
+										</span>
+									</p>
+									<p id="backgroud">
+										<a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}"  th:href="@{/user/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}">
+										<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
+											<img th:src="@{/images/houtai.png}" />
+											进入管理后台
+										</a>
+									</p>
+									<p>
+										<a href="#">
+											<img th:src="@{/images/dingdan.png}" />
+											我的申请
+										</a>
+									</p>
+									<p>
+										<a id="quit" href="/">
+											<img th:src="@{/images/tuichu.png}" />
+											退出
+										</a>
+									</p>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					</th:block>
+				</div>
+    </div>
+</html>

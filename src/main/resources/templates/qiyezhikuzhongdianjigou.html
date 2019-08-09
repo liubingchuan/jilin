@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" />
+					<input type="text" class="headsuosInp" />
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="nycontainer rencaiM">
+				<div class="rencaiTl">
+					重点机构
+				</div>
+				<div class="rencaiNr clearfix">
+					<div class="rencaiLf left">
+						<div class="rencaiLfTl">
+							目录导航
+						</div>
+						<ul class="rencaiLfUl">
+							<li>
+								<a th:href="@{/org/list(front=0)}" class="ahover">
+									<span>重点机构</span>
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/expert/list(front=0)}">
+									<span>行业人才</span>
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/report/list(front=0)}">
+									<span>分析报告</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				    <div class="rencaiRt right">
+				    	<form>
+				    		<div class="recaiForm clearfix">
+				    			<select class="left" id="linkselect">
+				    				<option>
+				    					全产业链
+				    				</option>
+				    				<option th:each="item : ${link}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<select class="left" id="classicselect">
+				    				<option>
+				    					所有产品类型
+				    				</option>
+				    				<option th:each="item : ${classic}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<select class="left" id="typeselect">
+				    				<option>
+				    					所有机构类型
+				    				</option>
+				    				<option th:each="item : ${type}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<input type="button" class="left shaixuanbtn" value="筛选" onClick="shuaixuan();">
+				    		</div>
+				    	</form>
+				       <ul class="clearfix jigouUl">
+				       	<li class="clearfix" th:each="org: ${list}">
+				       		<a th:href="@{/org/get(id=${org.id},front=0)}" class="left jigouliLf">
+				       			<!-- <img th:src="@{/file/fileDownload(filename=${org.frontend})}" /> -->
+				       			<img th:if=" ${org.frontend !=null && org.frontend != ''}" th:src="@{/file/fileDownload(filename=${org.frontend})}" />
+				        			<img th:if=" ${org.frontend ==null || org.frontend == ''}" th:src="@{/images/default.png}" />
+				       			
+				       		</a>
+				       		<div class="right jigouRt">
+				       			<div class="jiansuoLiTL">
+		            				<a th:href="@{/org/get(id=${org.id},front=0)}" th:text="${org.name}">
+		            				</a>
+		            			</div>
+		            			<div class="jiansuoLiTag">
+		            				<span>相关成果：专家 <i class="colorBlue" th:id = "ex+${org.name}"></i>人 </span>
+		            				<span>专利：<i class="colorBlue" th:id = "pa+${org.name}"></i>件 </span>
+		            				<span>文献：<i class="colorBlue" th:id = "par+${org.name}"></i>条</span>
+		            				<span>报道：<i class="colorBlue" th:id = "jc+${org.name}"></i>条</span>
+		            			</div>
+		            			<div class="jiansuoLiText">
+		            				<span class="jiansuoLiTextSpan" th:utext="${org.description}">
+		            				</span>
+		            				
+		            			</div>
+				       		</div>
+				       	</li>
+				       </ul>
+				       <div class="sqPage">
+		            	 <span th:if=" ${totalCount > 0}">
+					    	<span th:text="'共 ' + ${totalCount}+' 条机构信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/org/list(q=${query},front=0,pageIndex=0,pageSize=10,type=${types},link=${links},classic=${classics})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/org/list(q=${query},front=0,pageIndex=(${pageIndex}-1),pageSize=10,type=${types},link=${links},classic=${classics})}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/org/list(q=${query},front=0,pageIndex=(${pageIndex}+1),pageSize=10,type=${types},link=${links},classic=${classics})}">下一页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/org/list(q=${query},front=0,pageIndex=(${totalPages}-1),pageSize=10,type=${types},link=${links},classic=${classics})}">尾页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/org/list(q=${query},front=0,pageIndex=999,pageSize=10,type=${types},link=${links},classic=${classics})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</span>
+		            	</div>
+				    </div>
+				</div>
+			</div>
+			</div>
+			<div th:replace="footer :: myfooter"></div>		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var type =  [[${types}]];
+		var link =  [[${links}]];
+		var classic =  [[${classics}]];
+		var list =  [[${list}]];
+		 	$(document).ready(function () {
+				showLoginInfoFrontend();
+				
+				if(type != null){
+			    	document.getElementById('typeselect').value=type;
+			    }
+			    if(link != null){
+			    	document.getElementById('linkselect').value=link;
+			    }
+			    if(classic != null){
+			    	document.getElementById('classicselect').value=classic;
+			    }
+			    if(list != null && list.length>0){
+			    	searchNum();
+			    }
+		 	});
+		 	function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			     window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+		 	$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+		 	function shuaixuan(){
+				var linkse = $('#linkselect  option:selected').val();
+				var typese = $('#typeselect  option:selected').val();
+				var classicse = $('#classicselect  option:selected').val();
+				if (typese != null && typese == "所有机构类型") {
+					typese = null;
+				}
+				if (linkse != null && linkse == "全产业链") {
+					linkse = null;
+				}
+				if (classicse !=null && classicse == "所有产品类型") {
+					classicse = null;
+				}
+				window.location.href="/org/list?front=0&link=" + encodeURI(encodeURIComponent(linkse)) + "&type=" + encodeURI(encodeURIComponent(typese)) + "&classic="+encodeURI(encodeURIComponent(classicse));
+			}
+			
+			function searchNum(){
+				var param = {}
+				for(var q= 0;q<list.length;q++){  
+					param[list[q].name] = list[q].alias
+				}
+				var url = "/org/searchNum";
+				$.ajax({
+					url : url,
+					data : JSON.stringify(param),
+					contentType: "application/json; charset=utf-8",
+					dataType : 'json',
+					type : 'post',
+					success : function(data) {
+						for(var s in data.ExpertNum){
+							var countcgs =  data.ExpertNum[s];
+							var ss = "#ex"+s;
+							$(ss).html(" "+countcgs+" "); 
+						}
+						for(var s in data.PatentNum){
+							var countcgs =  data.PatentNum[s];
+							var ss = "#pa"+s;
+							$(ss).html(" "+countcgs+" "); 
+						}
+						for(var s in data.PaperNum){
+							var countcgs =  data.PaperNum[s];
+							var ss = "#par"+s;
+							$(ss).html(" "+countcgs+" "); 
+						}
+						for(var s in data.JianceNum){
+							var countcgs =  data.JianceNum[s];
+							var ss = "#jc"+s;
+							$(ss).html(" "+countcgs+" "); 
+						}
+						
+					}
+				}); 
+			}
+		</script>
+
+	</body>
+</html>
+

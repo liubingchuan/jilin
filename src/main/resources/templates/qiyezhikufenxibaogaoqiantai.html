@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<!--<<返回首页-->
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="nycontainer rencaiM">
+				<div class="rencaiTl">
+					分析报告
+				</div>
+				<div class="rencaiNr clearfix">
+					<div class="rencaiLf left">
+						<div class="rencaiLfTl">
+							目录导航
+						</div>
+						<ul class="rencaiLfUl">
+							<ul class="rencaiLfUl">
+							<li>
+								<a th:href="@{/org/list(front=0)}">
+									<span>重点机构</span>
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/expert/list(front=0)}">
+									<span>行业人才</span>
+								</a>
+							</li>
+							<li>
+								<a th:href="@{/report/list(front=0)}" class="ahover">
+									<span>分析报告</span>
+								</a>
+							</li>
+						</ul>
+						</ul>
+					</div>
+				    <div class="rencaiRt right">
+				    	<form>
+				    		<div class="recaiForm clearfix">
+				    			<select class="left" id="unitselect">
+				    				<option>
+				    					全部发布机构
+				    				</option>
+				    				<option th:each="item : ${unit}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<select class="left" id="yearselect">
+				    				<option>
+				    					全部发布年份
+				    				</option>
+				    				<option th:each="item : ${year}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<select class="left" id="typeselect">
+				    				<option>
+				    					全部报告类型
+				    				</option>
+				    				<option th:each="item : ${type}" th:value="${item.key}" th:text="${item.key}"></option>
+				    			</select>
+				    			<input type="button" class="left shaixuanbtn" value="筛选" onClick="shuaixuan();">
+				    		</div>
+				    	</form>
+				       <ul class="clearfix jigouUl fenxiUl">
+				       	<li class="clearfix" th:each="report: ${list}">
+				       		<a th:href="@{/report/get(id=${report.id},front=0)}" class="left jigouliLf">
+				       			<!-- <img th:src="@{/images/fenxi_03.png}" /> -->
+				       			<img th:if=" ${report.frontend !=null && report.frontend != ''}" th:src="@{/file/fileDownload(filename=${report.frontend})}" />
+				        		<img th:if=" ${report.frontend ==null || report.frontend == ''}" th:src="@{/images/fenxi_03.png}" />
+				       		</a>
+				       		<div class="left jigouRt">
+				       			<div class="jiansuoLiTL">
+		            				<a th:href="@{/report/get(id=${report.id},front=0)}" th:text="${report.name}">
+		            				</a>
+		            			</div>
+		            			<div class="jiansuoLiTag">
+		            				<span>完成单位：<i class="colorBlue" th:text="${report.unit}"></i></span>
+		            				<span>发布时间：<i class="colorBlue" th:text="${report.ptime}"></i> </span>
+		            				<span>分类：<i class="colorBlue" th:text="${report.type}"></i></span>
+		            			</div>
+		            			<div class="jiansuoLiText">
+		            				<span class="jiansuoLiTextSpan" th:utext="${report.subject}">
+		            				
+		            				</span>
+		            				
+		            			</div>
+				       		</div>
+				       	</li>
+				       </ul>
+				       <div class="sqPage">
+		            	 <span th:if=" ${totalCount > 0}">
+					    	<span th:text="'共 ' + ${totalCount}+' 条报告信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/report/list(q=${query},front=0,pageIndex=0,pageSize=10,unit=${units},year=${years},type=${types})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/report/list(q=${query},front=0,pageIndex=(${pageIndex}-1),pageSize=10,unit=${units},year=${years},type=${types})}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/report/list(q=${query},front=0,pageIndex=(${pageIndex}+1),pageSize=10,unit=${units},year=${years},type=${types})}">下一页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/report/list(q=${query},front=0,pageIndex=(${totalPages}-1),pageSize=10,unit=${units},year=${years},type=${types})}">尾页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/report/list(q=${query},front=0,pageIndex=999,pageSize=10,unit=${units},year=${years},type=${types})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</span>
+		            	</div>
+				    </div>
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var unit =  [[${units}]];
+		var year =  [[${years}]];
+		var type =  [[${types}]];
+		 	$(document).ready(function () {
+				showLoginInfoFrontend();
+				
+				if(type != null){
+			    	document.getElementById('typeselect').value=type;
+			    }
+			    if(unit != null){
+			    	document.getElementById('unitselect').value=unit;
+			    }
+			    if(year != null){
+			    	document.getElementById('yearselect').value=year;
+			    }
+		 	});
+		 	function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			     window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+			
+			function shuaixuan(){
+				var unitse = $('#unitselect  option:selected').val();
+				var yearse = $('#yearselect  option:selected').val();
+				var typese = $('#typeselect  option:selected').val();
+				if (unitse != null && unitse == "全部发布机构") {
+					unitse = null;
+				}
+				if (yearse != null && yearse == "全部发布年份") {
+					yearse = null;
+				}
+				if (typese !=null && typese == "全部报告类型") {
+					typese = null;
+				}
+				window.location.href="/report/list?front=0&unit=" + encodeURI(encodeURIComponent(unitse)) + "&year=" + yearse + "&type="+encodeURI(encodeURIComponent(typese));
+			}
+		</script>
+
+	</body>
+</html>

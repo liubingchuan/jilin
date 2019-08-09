@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		<div class="manageNr">
+			<div class="usermanageOne">
+				<form>
+					<div class="clearfix">
+						<span class="left usermanageOneTl" th:text="'行业人才' + '(' + ${totalCount} + ')'">
+						</span>
+						<a th:href="@{/expert/get(disable='0')}" class="left manageproAddA">
+							新增人才
+						</a>
+						<div class="right usermanageOneSS">
+							<input type="text" id="keywords" />
+							<em onClick="search();"></em>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		    <div class="usermanageTwo">
+		    	<table cellpadding="0" cellspacing="0" width="100%" class="usermanageTable">
+		    		<tr>
+		    			<th>
+		    				姓名
+		    			</th>
+		    			<th>
+		    				单位
+		    			</th>
+		    			<th>
+		    				邮箱
+		    			</th>
+		    			<th>
+		    				研究领域
+		    			</th>
+		    			<th>
+		    				提交时间
+		    			</th>
+		    			<th>
+		    				操作
+		    			</th>
+		    			
+		    		</tr>
+		    		<tr th:each="expert : ${list}">
+		    			<td>
+		    				<a th:href="@{/expert/get(id=${expert.id},disable='0')}" th:text="${expert.name}" class="colorBlue">
+		    				</a>
+		    			</td>
+		    			<td th:text="${expert.unit}">
+		    			</td>
+		    			<td th:text="${expert.email}">
+		    			</td>
+		    			<td>
+		    				<span class="colorGreen" th:text="${expert.area}">细胞生物学</span>
+		    			</td>
+		    			<td th:text="${expert.ctime}">
+		    			</td>
+		    			<td>
+		    				<a th:href="@{/expert/get(id=${expert.id},disable='0')}" class="manageProBj">
+		    					编辑
+		    				</a>
+		    				<a th:href="@{/expert/delete(id=${expert.id})}" onclick="if(confirm('确定删除?')==false)return false;" class="manageProsc">
+		    					删除
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	    
+		    	</table>
+		        <!-- <div class="page">
+		        	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}" th:href="@{/expert/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}">首页</a>
+      				<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}" th:href="@{/expert/list(token=${cookie.getValue()},pageIndex=(${pageIndex}-1),pageSize=10)}">上一页</a>
+		        	<a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}" th:href="@{/expert/list(token=${cookie.getValue()},pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a>
+		        	<a th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}" th:href="@{/expert/list(token=${cookie.getValue()},pageIndex=(${pageIndex}+1),pageSize=10)}">下一页<em>></em></a>
+		        	<a th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}" th:href="@{/expert/list(token=${cookie.getValue()},pageIndex=(${totalPages}-1),pageSize=10)}">尾页<em>></em></a>
+		        </div> -->
+		        <div class="sqPage">
+			    	<span th:text="'共 ' + ${totalCount}+' 名行业人才'"></span>
+			    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/expert/list(q=${query},pageIndex=0,pageSize=10)}"><首页</a>
+						<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/expert/list(q=${query},pageIndex=(${pageIndex}-1),pageSize=10)}"><上一页</a>
+						<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+					<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/expert/list(q=${query},pageIndex=(${pageIndex}+1),pageSize=10)}">下一页<em>></em></a>
+					<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/expert/list(q=${query},pageIndex=(${totalPages}-1),pageSize=10)}">尾页<em>></em></a>
+					<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/expert/list(q=${query},pageIndex=999,pageSize=10)}">尾页<em>></em></a>
+			    </div>
+		    </div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		 <script type="text/javascript" th:inline="javascript">
+ 			$(document).ready(function () {
+				showLoginInfo();
+		 	});
+ 			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/expert/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+		</script>
+	</body>
+</html>

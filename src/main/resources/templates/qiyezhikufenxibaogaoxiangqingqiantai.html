@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.media.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/pdfobject.js}" ></script>
+		<!-- <style>
+			.pdfobject-container{height:1000px;}
+			.pdfobject{border:1px solid #666;}
+		</style> -->
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="nycontainer rencaiM">
+			
+				<div class="rencaiNr clearfix" th:object="${report}">
+					<div class="rencaiLf left">
+						<div class="rencaiLFmess">
+							<div class="jiansuoTl" style="border-bottom: none;">
+		        	
+		        			<a th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>&gt;<span>行业报告</span>
+		        		    </div>
+							<!-- <img id="frontendImg" th:src="@{/images/hangye_03.png}" /> -->
+							<img th:if=" ${report.frontend !=null && report.frontend != ''}" th:src="@{/file/fileDownload(filename=${report.frontend})}" />
+				        	<img th:if=" ${report.frontend ==null || report.frontend == ''}" th:src="@{/images/fenxi_03.png}" />
+							<div class="rencaiLFmessText">
+								<p class="rencaiLFmessName">
+									报告作者：  
+								</p>
+								<p th:text="*{author}">
+								</p>
+								<p class="rencaiLFmessName">
+									完成单位：  
+								</p>
+								<p th:text="*{unit}">
+								</p>
+								<p class="rencaiLFmessName">
+									发布时间：  
+								</p>
+								<p th:text="*{ptime}">
+								</p>
+								<p class="rencaiLFmessName">
+									主题分类： 
+								</p>
+								<p th:text="*{type}">
+								</p>
+							</div>
+						</div>
+						
+					</div>
+				    <div class="rencaiRt right rencaiRtMess">
+				    	<div class="hangyeContl" th:text="*{name}">
+				    	</div>
+		            	<div class="zhuanliConOne">
+		            	 <P th:utext="*{subject}"></P>
+		            	</div>
+		            	<div class="hangyeContlSmall" id="yulan" style = "display:none">
+		            		报告预览:
+		            	</div>
+		            	<div id="pdf">
+		            		
+		            	</div>
+				    </div>
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+			
+			var frontendId =  [[${frontendId}]];
+			var pdfId =  [[${pdfId}]];
+			
+			
+				$(document).ready(function () {
+					showLoginInfoFrontend();
+					if(pdfId != null && pdfId != ''){
+						
+						document.getElementById('yulan').style.display='block';
+						var pdfcon = "<object data=\"/file/fileDownload?filename="+pdfId+"\" type=\"application/pdf\" width=\"100%\" height=\"500px\" internalinstanceid=\"6\"></object>";
+						$("#pdf").html(pdfcon);
+					}
+				});
+			
+			 /* window.onload = function (){
+				 	if(pdfId != null && pdfId != ''){
+				 		document.getElementById('yulan').style.display='block';
+				 		var myPDF = new PDFObject({ url: "/file/fileDownload?filename="+pdfId }).embed("pdf");
+				 	}
+			        
+			 }; */
+			
+			function search(){
+				    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+				     window.location.href="/patent/list?q=" + $("#keywords").val();
+					/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+				}
+				$("#keywords").keypress(function(e) {
+		            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+		             if (eCode == 13){
+		                 search();
+		             }
+		     	});
+			
+		</script>
+
+	</body>
+</html>

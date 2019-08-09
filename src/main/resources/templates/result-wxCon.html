@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/xinit.css}" />
+		<link rel="stylesheet" th:href="@{/css/datePicker.css}" />
+		<link rel="stylesheet" th:href="@{/css/xmain.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    <div class="jiansuoNR">
+		    	<!-- <div class="jiansuoOne clearfix">
+		    		<div class="left jiansuoOnelf">
+		    			检索结果：43,345
+		    		</div>
+		    		<div class="jiansuoOneRt">
+		    			<a href="#">
+		    				专利
+		    			</a>
+		    			<a href="#">
+		    				论文
+		    			</a>
+		    			<a href="#">
+		    				项目
+		    			</a>
+		    		</div>
+		    		<em class="jiansuoOneIco">
+		    			<a th:href="@{/patent/agmount}">进入稀土智库</a>
+		    		</em>
+		    	</div> -->
+		        <div class="jiansuoCon clearfix" th:object="${paper}">
+		        	<div class="left jiansuoLf">
+		        		<div class="jiansuoTl">
+		        			<img th:src="@{/images/1.png}" />
+		        			<a href="/">首页</a>><span>论文</span>
+		        		</div>
+		        		<div class="resultLfConNr">
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				出处： 
+		        			</div>
+		        			<p th:text="*{journal}"></p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				作者: 
+		        			</div>
+		        			<p class="colorBlue" th:text="*{author}">
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				出版年：  
+		        			</div>
+		        			<p th:text="*{year}">
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				卷期：   
+		        			</div>
+		        			<p th:text="*{volume}">
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				被引量： 
+		        			</div>
+		        			<p th:text="*{citenum}">
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				关键词 ：
+		        			</div>
+		        			<p th:text="*{keywords}">
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				全文链接 ：
+		        			</div>
+		        			<p>
+		        				<a href="#" class="colorBlue" th:text="*{link}"></a>
+		        			</p>
+		        		</div>
+		        		
+		        		</div>
+		        	    
+		        	    
+		        	   
+		        	   
+		        	    
+		        	</div>
+		            <div class="right jiansuoRt">
+		            	<div class="resultrTConTL" th:text="*{title}">
+		            	</div>
+		            	<span class="resultrtTlSmall">
+		            		论文摘要
+		            	</span>
+		            	<div class="zhuanliConOne" th:text="*{subject}">
+		            	</div>
+		            	<div class="zhuanliConTwo clearfix">
+		            		<a href="javascript:;" class="ahover">
+		            			相关论文
+		            		</a>
+		            		
+		            	</div>
+		            	<div class="zhuanliConThree">
+		            		<div class="zhuanliConThreeM active" id="parInfo">
+		            			<ul class="jiansuoUl" id="paperInfo">
+		            			</ul>
+		            			<div class="sqPage" id="papersqPage">
+					            	 
+					            </div>
+		            		</div>
+		            		
+		            	</div>
+		            </div>
+		        </div>
+		    </div>
+			</div>
+			</div>
+			<div th:replace="footer :: myfooter"></div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var query = [[${query}]];
+		var id = [[${id}]];
+		var keywords = [[${keywords}]];
+		var title = [[${title}]];
+		$(document).ready(function () {
+			showLoginInfoFrontend();
+			getPaper(0);
+		});
+		
+			function search(){
+		    	var uri = '';
+		    	/* var entrust = ''
+		    	$.each($('input:checkbox:checked'),function(){
+		    		if($(this).attr("name") == "entrust") {
+		    			if(entrust == '') 
+		    			{
+		    				entrust = $(this).val()
+		    			}
+		    			else
+		    			{
+		    				entrust = entrust + '-' + $(this).val()
+		    			}
+		    		}
+		        });
+		    	if(entrust != '') {
+		    		uri = uri + 'entrust=' + entrust + ''
+		    	} */
+				/* window.location.href="http://47.104.7.73/project/list?q=" + $("#keywords").val() + "&" + uri; */
+				if($("#keywords").val() != "") {
+			    	window.location.href="/paper/list?q=" + $("#keywords").val() + "&" + uri;
+				}
+			}
+			
+			function getPaper(index) {
+				 
+				var param = {
+						'query' : query,
+						'pageIndex' : index,
+						'id':id,
+						'keywords':keywords,
+						'title':title
+					};
+					 $.ajax({
+						url : "/paper/xiangguanpaperList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#paperInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/paper/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>出处：' + value.journal+ '</span>');
+								let span2 = $('<span>出版年：' + value.year+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.subject+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#paperInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条相关论文</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getPaper(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getPaper("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									//pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									//pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#papersqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+				</script>
+		
+	</body>
+</html>

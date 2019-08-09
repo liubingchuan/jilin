@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+				<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索"  onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		   
+			</div>
+			<div class="jianceConnr">
+				<div class="nycontainer">
+					<div class="jianceCon clearfix" th:object="${paper}">
+						<div class="left jiansuoLf">
+		        		<div class="jiansuoTl">
+		        			<img th:src="@{/images/1.png}" />
+		        			<a href="/">首页</a>&gt;<span>信息监测</span>
+		        		</div>
+		        		<div class="resultLfConNr">
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        			来源机构：  
+		        			</div>
+		        			<p th:text="*{institution}"> </p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        			栏目分类： 
+		        			</div>
+		        			<p th:text="*{lanmu}">
+		        			</p>
+		        		</div>
+		        		<!-- <div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        			主题分类：  
+		        			</div>
+		        			<p>
+		        			国家项目 
+		        			</p>
+		        		</div> -->
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        			发布时间：
+		        			</div>
+		        			<p th:text="*{pubtime}">
+		        			</p>
+		        		</div>
+		        		<!-- <a href="#" class="resultDown btnblue">
+		        			原文地址
+		        		</a> -->
+		        		
+		        		</div>
+		        	    
+		        	    
+		        	   
+		        	   
+		        	    
+		        	</div>
+					    <div class="right jiansuoRt">
+					    	<h1 class="jianceTl" th:text="*{title}">
+					    	</h1>
+					    	<div class="jiancenrText" th:utext="*{description}">
+					    	    <br /><br />
+					    	    <!-- <img th:src="@{/images/jiance.png}" /> -->
+					    	</div>
+					    </div>
+					</div>
+					
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		<!--弹窗-->
+		<div class="alertBg"></div>
+		<div class="alertCon alertxuq">
+	    	<img src="images/Icon.png" />
+	    	<div class="alertxuqTEXT">
+	    		您的需求已提交<br />
+	    		请到<a href="#">我的申请</a>中查看最新进展
+	    	</div>
+	    	<div class="alertxuqa clearfix">
+	    		<a href="index.html">
+	    			返回首页
+	    		</a>
+	    		<a href="javascript:;" class="alertxuqaNext">
+	    			继续申请
+	    		</a>
+	    	</div>
+	    </div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/huakuai.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		    
+			$(document).ready(function () {
+				showLoginInfoFrontend();
+			});					
+		
+			jeDate({
+				dateCell:"#dateinfo",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+			    isClear:true,
+			})
+			jeDate({
+				dateCell:"#dateinfo1",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+			    isClear:true,
+			})
+			
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+				</script>
+	</body>
+</html>

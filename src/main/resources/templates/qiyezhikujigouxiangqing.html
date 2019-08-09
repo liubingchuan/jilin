@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/swiper.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" />
+					<input type="text" class="headsuosInp" />
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="nycontainer rencaiM">
+			
+				<div class="rencaiNr clearfix" th:object="${org}">
+					<div class="rencaiLf left">
+						<div class="rencaiLFmess">
+							<!-- <img th:src="@{/file/fileDownload(filename=${org.frontend})}" /> -->
+							<img th:if=" ${org.frontend !=null && org.frontend != ''}" th:src="@{/file/fileDownload(filename=${org.frontend})}" />
+				        	<img th:if=" ${org.frontend ==null || org.frontend == ''}" th:src="@{/images/default.png}" />
+							<div class="rencaiLFmessText">
+								<p class="rencaiLFmessName">
+									机构名称： 
+								</p>
+								<p th:text="*{name}">
+								</p>
+								<p class="rencaiLFmessName">
+									研究方向： 
+								</p>
+								<p th:text="*{area}">
+								</p>
+								<p class="rencaiLFmessName">
+									机构类型： 
+								</p>
+								<p th:text="*{type}">
+								</p>
+								<p class="rencaiLFmessName">
+									 国家： 
+								</p>
+								<p th:text="*{country}">
+								</p>
+							</div>
+						</div>
+						
+					</div>
+				    <div class="rencaiRt right rencaiRtMess">
+				    	<span class="resultrtTlSmall">
+		            		基本介绍
+		            	</span>
+		            	<div class="zhuanliConOne" th:utext="*{description}">
+		            	</div>
+		            	<span class="resultrtTlSmall">
+		            		相关专家
+		            	</span>
+		            	<div class="jigouzhuanjia">
+		            		<div class="yslbM">
+			    			<div class="ysLb ysLb1">
+			    				<div class="swiper-container">
+                    				<div class="swiper-wrapper" id="expertinfo">
+	    			 
+                   	 				</div>
+	    						</div>
+	    						<div class="swiper-button-next" id="next" style="display:none"></div>
+                                <div class="swiper-button-prev" id="prev" style="display:none"></div>
+			    			     
+			    			</div>
+			    		    </div>
+		            	</div>
+		            	<div class="zhuanliConTwo clearfix">
+		            		<a href="javascript:getPatent(0)" id="patent" class="ahover">
+		            			相关专利
+		            		</a>
+		            		<a href="javascript:getPaper(0)" id="paper">
+		            			相关论文
+		            		</a>
+		            		<a href="javascript:getJiance(0)" id="jiance">
+		            			相关信息
+		            		</a>
+		            	</div>
+		            	<div class="zhuanliConThree">
+		            		<div class="zhuanliConThreeM active" id="paInfo">
+		            			<ul class="jiansuoUl" id="patentInfo">
+		            		   
+		            			</ul>
+		            			<div class="sqPage" id="patentsqPage">
+					            	 
+					            </div>
+		            	
+		            		</div>
+		            		<div class="zhuanliConThreeM" id="parInfo">
+		            			<ul class="jiansuoUl" id="paperInfo">
+		            			</ul>
+		            			<div class="sqPage" id="papersqPage">
+					            	 
+					            </div>
+		            		</div>
+		            	    <div class="zhuanliConThreeM" id="jianInfo">
+		            			<ul class="jiansuoUl" id="jianceInfo">
+		            			</ul>
+		            			<div class="sqPage" id="jiancesqPage">
+					            	 
+					            </div>
+		            	
+		            		</div>
+		            	</div>
+				    </div>
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var namebieming = [[${namebieming}]];
+		
+		 	$(document).ready(function () {
+				showLoginInfoFrontend();
+				getExpert();
+				getPatent(0);
+		 	});
+
+			function getExpert() { 
+				var param = {
+						'insname' : namebieming,
+						//'pageIndex' : pageIndex+1
+					};
+					 $.ajax({
+						url : "/expert/expertInsList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$.each(items,function(index,value){
+								let div1 = $('<div class=\"swiper-slide\"></div>');
+								let div2 = $('<div class=\"ysPer\"></div>');
+								let a2 = $('<a href=\"/expert/get?front=0&id=' + value.id + '\"></a>');
+								let img = $('<img src=\"/images/10.png\" />');
+								let p1 = $('<p class=\"ysName\">' + value.name+ '</p>');
+								let p2 = $('<p>' + value.duty+ '</p>');
+								a2.append(img);
+								a2.append(p1);
+								a2.append(p2);
+								div2.append(a2);
+								div1.append(div2);
+								$("#expertinfo").append(div1);
+								document.getElementById("next").style="display:block";
+								document.getElementById("prev").style="display:block";
+							});
+							var swiper = new Swiper('.ysLb1 .swiper-container', {
+								slidesPerView:5,
+								spaceBetween: 18,
+								navigation: {
+									nextEl: '.ysLb1 .swiper-button-next',
+									prevEl: '.ysLb1 .swiper-button-prev',
+								},
+							});
+							//pageIndex = pageIndex + 1;
+							
+						}
+					}); 
+					 
+			}
+			function getPatent(index) { 
+				var param = {
+						'insname' : namebieming,
+						'pageIndex' : index
+					};
+					 $.ajax({
+						url : "/patent/patentInsList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#patentInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/patent/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>专利权人：' + value.person+ '</span>');
+								let span2 = $('<span>公开（公告）日：' + value.publictime+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.subject+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#patentInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条专利信息</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getPatent(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getPatent("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									//pagecontent += "<a href=\"javascript:getPatent("+px+")\">下一页<em>></em></a>";
+									//pagecontent += "<a href=\"javascript:getPatent("+pt+")\">尾页<em>></em></a>";
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getPatent("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getPatent("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getPatent("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#patentsqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+			
+			function getPaper(index) {
+				 $("#patent").removeClass("ahover");
+				 $("#paper").addClass("ahover");
+				 $("#paInfo").removeClass("active");
+				 $("#parInfo").addClass("active");
+				 
+				var param = {
+						'insname' : namebieming,
+						'pageIndex' : index
+					};
+					 $.ajax({
+						url : "/paper/paperInsList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#paperInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/paper/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>出处：' + value.journal+ '</span>');
+								let span2 = $('<span>出版年：' + value.year+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.subject+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#paperInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条论文</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getPaper(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getPaper("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									//pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									//pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#papersqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+			function getJiance(index) {
+				 $("#patent").removeClass("ahover");
+				 $("#paper").removeClass("ahover");
+				 $("#paInfo").removeClass("active");
+				 $("#parInfo").removeClass("active");
+				 $("#jianInfo").addClass("active");
+				 $("#jiance").addClass("ahover");
+				 
+				 
+				var param = {
+						'insname' : namebieming,
+						'pageIndex' : index
+					};
+					 $.ajax({
+						url : "/jiance/jianceInsList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#jianceInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/jiance/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>发布日期：' + value.pubtime+ '</span>');
+								let span2 = $('<span>来源机构：' + value.institution+ '</span>');
+								let span4 = $('<span>栏目分类：' + value.lanmu+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								div2.append(span4);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.description+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#jianceInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条产业信息</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getJiance(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getJiance("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									//pagecontent += "<a href=\"javascript:getJiance("+px+")\">下一页<em>></em></a>";
+									//pagecontent += "<a href=\"javascript:getJiance("+pt+")\">尾页<em>></em></a>";
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getJiance("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getJiance("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getJiance("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#jiancesqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+			
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					订单详情 
+				</div>
+				<div class="M_messTwoTl clearfix">
+					<a href="javascript:displayorder()" class="ahover">
+						订单内容
+					</a>
+					<a href="javascript:displayuser()">
+						主联系人
+					</a>
+					<a href="javascript:displayfuuser()">
+						相关联系人
+					</a>
+				</div>
+			    <div class="M_messTwoB">
+			    	<div class="M_messTwoBm active">
+			    		<form>
+			    			<div class="manageordercon" id="ordercontent" th:object="${order}" >
+			    			<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									订单号：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{uuid}">
+									
+								</div>
+							</div>
+							<div th:if="${order.ordernumber == '科技查新'}">
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									项目名称：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{title}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									查新范围：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chaxinfanwei}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 查新目的：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{mudi}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									项目科学要点：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{kexueyaodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									参考检索词：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuoci}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									检索点：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									学科分类：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{xueke}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 产业分类：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chanye}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									备注：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{beizhu}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									附件： 
+								</span>
+								<div class="orderconTextGpRt" th:each="s : ${ids}" th:if=" ${not #lists.isEmpty(ids)}">
+									<p>
+										<span th:text="${#strings.substringAfter(s,'_')} "></span>
+										<a th:href="@{/file/fileDownload(filename=${s})}" class="colorBlue">下载</a>
+										
+									</p>
+								</div>
+							</div>
+							</div>
+							<div th:if="${order.ordernumber == '文献传递'}">
+								<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									文章标题：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{title}">
+									
+								</div>
+								</div>
+								<div class="orderconTextGp clearfix">
+									<span class="left orderconTextGpName">
+										书刊名称：
+									</span>
+									<div class="orderconTextGpRt" th:text="*{chaxinfanwei}">
+										
+									</div>
+								</div>
+								<div class="orderconTextGp clearfix">
+									<span class="left orderconTextGpName">
+										 文章作者：
+									</span>
+									<div class="orderconTextGpRt" th:text="*{mudi}">
+										
+									</div>
+								</div>
+								<div class="orderconTextGp clearfix">
+									<span class="left orderconTextGpName">
+										出版年：
+									</span>
+									<div class="orderconTextGpRt" th:text="*{kexueyaodian}">
+										
+									</div>
+								</div>
+								<div class="orderconTextGp clearfix">
+									<span class="left orderconTextGpName">
+										卷期：
+									</span>
+									<div class="orderconTextGpRt" th:text="*{jiansuodian}">
+										
+									</div>
+								</div>
+								<div class="orderconTextGp clearfix">
+									<span class="left orderconTextGpName">
+										起止页码：
+									</span>
+									<div class="orderconTextGpRt" th:text="*{jiansuoci}">
+										
+									</div>
+								</div>
+								
+							</div>
+			    		   <div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									订单状态：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chulizhuangtai}">
+								
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+								提交时间：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{shenqingshijian}">
+								
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+								处理时间：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chulishijian}">
+								
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName" >
+								处理人：
+								</span>
+								<div class="orderconTextGpRt" th:text="${chuliren}">
+								
+								</div>
+								
+							</div>
+							<div class="orderconTextGp clearfix" id="showfujian" style="display:none">
+								<span class="left orderconTextGpName" >
+								附件上传： 
+								</span>
+								<div class="orderconTextGpRt" id="fujianname">
+								
+								</div>
+								
+							</div>
+							<div class="orderconTextGp clearfix" id="shangchuanfujian">
+								<span class="left orderconTextGpName">
+								附件上传： 
+								</span>
+								
+								<div class="chaxinupBtn1">
+								<a href="javascript:;">
+									+ 点此上传附件
+								<input id="frontendFile" type="file" name="frontendFile"/>
+								<input type="hidden" id="chulirenfujianId" th:text="*{chulirenfujianId}"/>
+								</a>
+								</div>
+								
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+								处理意见：
+								</span>
+								<div class="orderconTextGpRt">
+								<textarea class="manageorderconTexta" name="chuliyijian" th:text="*{chuliyijian}" id="chuliyijian"></textarea>
+								</div>
+							</div>
+							<div class="manageorderconbtn">
+							
+								<a th:if="${order.chulizhuangtai == '待处理'}" href="javascript:uptext('0')" class="btnblue">接单</a>
+								<a th:if="${order.chulizhuangtai == '处理中'}" href="javascript:uptext('1')" class="btnblue">提交</a>
+								<a th:if="${order.chulizhuangtai == '处理中'}" href="javascript:uptext('2')" class="btnblue">撤销</a>
+							</div>
+			    			</div>
+			    		
+			    		</form>
+			    		<div class="manageordercon" id="lianxirencontent" th:object="${linkuser}" style="display:none">
+			    			<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									姓名：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{name}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									单位：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{institution}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									手机：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{telephone}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 邮箱：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{email}">
+									
+								</div>
+							</div>
+							</div>
+							<div th:if=" ${fulinkuser!= null}" class="manageordercon" id="fulianxirencontent" th:object="${fulinkuser}" style="display:none">
+			    			<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									姓名：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{name}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									单位：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{institution}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									手机：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{telephone}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 邮箱：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{email}">
+									
+								</div>
+							</div>
+							</div>
+			    	</div>
+			       
+			    </div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var tag = [[${tag}]];
+		var fujianneme = [[${fujianneme}]];
+		var chufujianId = [[${chufujianId}]];
+		$(document).ready(function() { 
+			
+			 showLoginInfo();
+			 
+			  if(tag == '1'){
+				  $("#shangchuanfujian").hide();
+				  $("#showfujian").show();
+				  if(fujianneme != null && fujianneme != '' && fujianneme != 'null'){
+					  var con = "<span>";
+					  con += fujianneme;
+					  con += "</span>&nbsp;&nbsp;&nbsp;";
+					  con += "<a href=\"/file/fileDownload?filename="+chufujianId+"\" class=\"colorBlue\">下载</a>";
+					  $("#fujianname").html(con);
+				  }
+			  }
+			  if(tag == '0'){
+				  $("#shangchuanfujian").show();
+				  $("#showfujian").hide();
+			  }
+			  if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
+					$("#backgroud").css('display','none'); 
+				}
+				$("#logoinName").html($.cookie("nickName"));
+			    $("#headImg").attr("src", $.cookie("headImg"));
+		});
+		var frontendId = null;
+		var chulirenfujianId = '';
+		
+		 $("#frontendFile").live('change',function() {
+				var formData = new FormData();
+				formData.append('file', $('#frontendFile')[0].files[0]);
+//				$('#inputFileID').replaceWith('<input id="file" type="file" name="file"  />');
+				$.ajax({
+					url : '/file/fileUpload/'+frontendId,
+					type : 'POST',
+					cache : false,
+					data : formData,
+					processData : false,
+					contentType : false
+				}).done(function(res) {
+					if(chulirenfujianId == ''){
+						chulirenfujianId = res.uuid + '_' + res.filename;
+					}else{
+						chulirenfujianId = chulirenfujianId +res.uuid + '_' + res.filename;
+					}
+					$("#chulirenfujianId").val(chulirenfujianId);
+					$("#shangchuanfujian").hide();
+					$("#showfujian").show();
+					
+					showupload(res.filename,res.uploadtime,res.uuid + '_' + res.filename);
+				}).fail(function(res) {
+					alert("文件上传失败，请重试")
+				});
+				
+			});
+		function showupload(filename,uploadtime,uuid){
+			 var con = '<div class=\"chaxinUplistgp clearfix\" id='+uuid+'>';
+			 con += '<a href=\"#\" class=\"left chaxinUplistName\" style=\"height: 30px;width:20%\">';
+			 con += filename;
+			 con += '</a>';
+			 con += '<span>';
+			 con += uploadtime;
+			 con += '</span>&nbsp;&nbsp;&nbsp;';
+			 con += "<a href=\"javascript:delupload('"+uuid+"')\">";
+			 con += '<font color=\"red\" size=\"3px\">删除</font>';
+			 con += '</a>';
+			 
+			 con += '</div>';
+			 $("#fujianname").html(con);
+		 }
+		function delupload(uuid){
+			
+			chulirenfujianId = chulirenfujianId.replace(uuid,'');
+			$("#chulirenfujianId").val(chulirenfujianId);
+			$("#showfujian").hide();
+			$("#shangchuanfujian").show();
+			
+		 }
+			function displayorder() {
+			
+				document.getElementById("lianxirencontent").style="display:none";
+				document.getElementById("ordercontent").style="display:block";
+				document.getElementById("fulianxirencontent").style="display:none";
+		
+			}
+			function displayuser() {
+				
+				document.getElementById("ordercontent").style="display:none";
+				document.getElementById("lianxirencontent").style="display:block";
+				document.getElementById("fulianxirencontent").style="display:none";
+		
+			}
+			function displayfuuser() {
+				
+				document.getElementById("ordercontent").style="display:none";
+				document.getElementById("lianxirencontent").style="display:none";
+				document.getElementById("fulianxirencontent").style="display:block";
+		
+			}
+			var pageIndex =  [[${pageIndex}]];
+			var pageSize =  [[${pageSize}]];
+			var uuid =  [[${uuid}]];
+			function uptext(type) {
+				if(type==0){
+					   //window.location.href="/zhishifuwu/jiedan?uuid="+uuid+"&front=0&pageIndex="+pageIndex+"&pageSize="+pageSize;
+					   window.location.href="/zhishifuwu/jiedan?uuid=" + uuid + "&pageIndex="+pageIndex+"&pageSize="+pageSize+"&chuliren="+$.cookie("openId");
+				}
+				if(type==1){
+				   window.location.href="/zhishifuwu/tijiao?uuid="+uuid+"&front=0&pageIndex="+pageIndex+"&pageSize="+pageSize+"&chulirenfujianId="+$("#chulirenfujianId").val()+"&chuliyijian="+ $("#chuliyijian").val();
+				}
+				if(type==2){
+					   window.location.href="/zhishifuwu/chexiao?uuid="+uuid+"&front=0&pageIndex="+pageIndex+"&pageSize="+pageSize+"&chulirenfujianId="+$("#chulirenfujianId").val()+"&chuliyijian="+ $("#chuliyijian").val();
+				}
+			
+		}
+		
+		</script>
+	</body>
+</html>

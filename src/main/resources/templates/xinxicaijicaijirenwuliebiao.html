@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		<div class="manageNr">
+			<div class="usermanageOne">
+				<form>
+					<div class="clearfix">
+						<span class="left usermanageOneTl" th:text="'采集任务' + '(' + ${totalCount} + ')'">
+						</span>
+						<a th:href="@{/task/get}" class="left manageproAddA">
+							新建任务
+						</a>
+						<div class="right usermanageOneSS">
+							<input type="text" />
+							<em></em>
+						</div>
+					</div>
+					<div class="clearfix usermanageOneJs">
+						<div class="right">
+							<span class="left yishan">
+								已删除文章（209）
+							</span>
+							<select class="left">
+								<option>查看来源机构</option>
+							</select>
+							<select class="left jiancezts">
+								<option>查看状态</option>
+							</select>
+							<input type="button" class="left" value="筛选" />
+						</div>
+					</div>
+				</form>
+			</div>
+		    <div class="usermanageTwo">
+		    	<table cellpadding="0" cellspacing="0" width="100%" class="usermanageTable jiancexjtable">
+		    		<tr>
+		    			<th>
+		    				&nbsp;
+		    			</th>
+		    			<th style="text-align: left;">
+		    				任务<span class="paixutext">按重要度排序</span><div class="paixuico">
+		    					<em class="paixuico1"></em>
+		    					<em class="paixuico2"></em>
+		    				</div>
+		    			</th>
+		    			<th>
+		    				来源机构
+		    			</th>
+		    			<th>
+		    				更新文章
+		    			</th>
+		    			<th>
+		    				更新状态<div class="paixuico">
+		    					<em class="paixuico1"></em>
+		    					<em class="paixuico2"></em>
+		    				</div>
+		    			</th>
+		    			<th>
+		    				最新更新文章
+		    			</th>
+		    			
+		    		</tr>
+		    		<tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					农业快报
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorRed">停用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="jinxingzhong">
+		    					运行中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">1小时前</span>, 预计下次检测 <span class="colorBlue">40分钟后</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	    <tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					微生物信息采集任务
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorBlue">启用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="tingyunzhong">
+		    					停用中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">3天前</span>, 预计下次检测 <span class="colorBlue">4小时后</span><br />
+		    					发生错误: <a href="#" class="colorRed">http://baidu.com/asdijoi/as…</a><span class="colorBlue">[忽略]</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    		<tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					农业快报
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorRed">停用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="jinxingzhong">
+		    					运行中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">1小时前</span>, 预计下次检测 <span class="colorBlue">40分钟后</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	    <tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					微生物信息采集任务
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorBlue">启用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="tingyunzhong">
+		    					停用中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">3天前</span>, 预计下次检测 <span class="colorBlue">4小时后</span><br />
+		    					发生错误: <a href="#" class="colorRed">http://baidu.com/asdijoi/as…</a><span class="colorBlue">[忽略]</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    		<tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					农业快报
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorRed">停用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="jinxingzhong">
+		    					运行中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">1小时前</span>, 预计下次检测 <span class="colorBlue">40分钟后</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	    <tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					微生物信息采集任务
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorBlue">启用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="tingyunzhong">
+		    					停用中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">3天前</span>, 预计下次检测 <span class="colorBlue">4小时后</span><br />
+		    					发生错误: <a href="#" class="colorRed">http://baidu.com/asdijoi/as…</a><span class="colorBlue">[忽略]</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    		<tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					农业快报
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorRed">停用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="jinxingzhong">
+		    					运行中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">1小时前</span>, 预计下次检测 <span class="colorBlue">40分钟后</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	    <tr>
+		    			<td>
+		    				<input type="checkbox" class="gouxuan" />
+		    			</td>
+		    			<td style="text-align: left;">
+		    				<p>
+		    					<a href="#" class="colorqh">
+		    					微生物信息采集任务
+		    					</a>
+		    				</p>
+		    				<p>
+		    					<a href="#" class="colorBlue">启用</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">设置</a>&nbsp;|&nbsp;<a href="#" class="colorBlue">删除</a>
+		    				</p>
+		    			</td>
+		    			<td>
+		    				<span class="colorqh">USDA</span>
+		    			</td>
+		    			<td>
+		    				<span class="colorBlue">8</span>
+		    			</td>
+		    			<td>
+		    				<span class="tingyunzhong">
+		    					停用中
+		    				</span>
+		    				<div class="jinxingText">
+		    					上次有更新<span class="colorBlue">3天前</span>, 预计下次检测 <span class="colorBlue">4小时后</span><br />
+		    					发生错误: <a href="#" class="colorRed">http://baidu.com/asdijoi/as…</a><span class="colorBlue">[忽略]</span>
+		    				</div>
+		    			</td>
+		    			<td style="text-align: left;width: 392px;">
+		    				<a href="#" class="colorBlue">
+		    					New Report Identifies Five Breakthroughs to Address Urgent Challenges and Advance Food and Agricultural Sciences by 2030 
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	</table>
+		        <div class="page">
+		        	<a href="#" class="ahover">1</a>
+		        	<a href="#">2</a>
+		        	<a href="#">3</a>
+		        	<a href="#">4</a>
+		        	<a href="#">5</a>
+		        	<a href="#">6</a>
+		        	<span>...</span>
+		        	<a href="#">下一页<em>></em></a>
+		        </div>
+		    </div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		 	$(document).ready(function () {
+				showLoginInfo();
+		 	});
+		</script>
+	</body>
+</html>

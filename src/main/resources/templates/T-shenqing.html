@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索"  onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="shenqingM">
+				<div class="nycontainer">
+				<div class="shenqingNr">
+					<form>
+					<div class="shenqingTop clearfix">
+						<span class="left shenqingTopName">
+							我的订单
+						</span>
+						<!-- <div class="right clearfix shenqingTopRt">
+							<select class="left">
+								<option>查看服务类型</option>
+							</select>
+							<input type="button" class="left" value="筛选" />
+						</div> -->
+					</div>
+					<div class="shenqingB">
+						
+						<div class="shenqingTable">
+							<table cellpadding="0" cellspacing="0" width="100%">
+							<tr class="shenqingBTop">
+		    			
+		    			<th>
+		    				<font color="white"  size="3">订单编号</font>
+		    			</th>
+		    			<th>
+		    				<font color="white"  size="3">名称</font>
+		    			</th>
+		    			<th>
+		    				<font color="white"  size="3">提交时间</font>
+		    			</th>
+		    			<th>
+		    				<font color="white"  size="3">服务类型</font>
+		    			</th>
+		    			<th>
+		    				<font color="white"  size="3">状态</font>
+		    			</th>
+		    			<th>
+		    				<font color="white"  size="3">操作</font>
+		    			</th>
+		    			
+		    		</tr>
+							<tr th:each="order : ${orderList}">
+								<td style="text-align: left">
+									<a th:href="@{/zhishifuwu/xiangqing(uuid=${order.uuid})}" th:text="${order.uuid}">
+										
+									</a>
+								</td>
+								<td style="text-align: left">
+									<a th:href="@{/zhishifuwu/xiangqing(uuid=${order.uuid})}" th:text="${order.title}">
+										
+									</a>
+								</td>
+								<td th:text="${order.shenqingshijian}">
+									
+								</td>
+								<td th:text="${order.ordernumber}">
+								
+								</td>
+								<td>
+									<span class="colorYellow" th:text="${order.chulizhuangtai}">
+									
+									</span>
+								</td>
+								<td>
+									<!-- <a th:href="@{/zhishifuwu/xiangqing(uuid=${order.uuid})}" class="shenqingDown" th:if="${order.chulizhuangtai == '已完成'}">
+										下载
+									</a> -->
+									<a class="shenqingDown" th:if="${order.chulizhuangtai == '已完成' && order.chulirenfujianId != null && order.chulirenfujianId !='' }" th:href="@{/file/fileDownload(filename=${order.chulirenfujianId})}">
+		    							下载
+		    						</a>
+									<a th:href="@{/zhishifuwu/xiangqing(uuid=${order.uuid})}">
+										查看
+									</a>
+								</td>
+							</tr>					
+							</table>
+						</div>
+					    <div class="sqPage">
+					    	<span th:text="'共 ' + ${totalCount}+' 条申请订单记录'"></span>
+					    	<!-- 刘冰川 -->
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/zhishifuwu/shenqinglist(userid=1,pageIndex=0,pageSize=10)}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/zhishifuwu/shenqinglist(userid=1,pageIndex=(${pageIndex}-1),pageSize=10)}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/zhishifuwu/shenqinglist(userid=1,pageIndex=(${pageIndex}+1),pageSize=10)}">下一页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/zhishifuwu/shenqinglist(userid=1,pageIndex=(${totalPages}-1),pageSize=10)}">尾页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/zhishifuwu/shenqinglist(userid=1,pageIndex=999,pageSize=10)}">尾页<em>></em></a>
+					    </div>
+					</div>
+					</form>
+				</div>
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		    
+			$(document).ready(function () {
+				showLoginInfoFrontend();
+			});
+		
+			jeDate({
+				dateCell:"#dateinfo",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+			    isClear:true,
+			})
+			jeDate({
+				dateCell:"#dateinfo1",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+			    isClear:true,
+			})
+			
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+				</script>
+
+	</body>
+</html>

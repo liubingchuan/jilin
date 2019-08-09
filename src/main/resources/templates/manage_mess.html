@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					张伟<span>操作员</span>
+				</div>
+				<div class="M_messTwoTl clearfix">
+					<a href="javascript:;" class="ahover">
+						基本信息
+					</a>
+				</div>
+			    <div class="M_messTwoB">
+			        <div class="M_messTwoBm active">
+			    		<form th:action="@{/user/update}" th:object="${user}" method="post" th:method="post">
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				用户名
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{account}"/>
+			    				<!-- <div class="erroText">
+	    				                输入错误
+	    			             </div> -->
+			    			</div>
+			    		</div>
+						<div class="M_messGp clearfix">
+							<span class="left M_messGpName">
+								用户身份：
+							</span>
+							<div class="M_messGpRt">
+								<select th:field="*{role}"  th:value="*{role}" name="classis">
+									<option value="">请选择用户身份</option>
+									<option th:each="item : ${yhsfitems}" th:value="${item}" th:text="${item}"></option>
+								</select>
+							</div>
+						</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				密码
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="password" class="M_messInp" th:field="*{password}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				真实姓名
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{name}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				身份证
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{identity}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				工作单位
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{unit}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				职位
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{job}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				职务
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{duty}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				研究方向
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{major}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				电子邮箱
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{email}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				手机号
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{phone}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				微信名
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<span class="M_messGpText" th:text="*{wechat}">
+			    				</span>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				注册时间
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<span class="M_messGpText" th:text="*{stamp}">
+			    					
+			    					<!-- 2018/12/05 12:00:21 -->
+			    				</span>
+			    			</div>
+			    		</div>
+			    		<input type="hidden" th:field="*{id}" />
+			    		<input type="hidden" class="M_messInp" th:field="*{stamp}"/>
+			    		<input type="hidden" class="M_messInp" th:field="*{wechat}"/>
+			    		<input type="submit" value="保存修改" class="M_messSub" />
+			    		</form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		 	$(document).ready(function () {
+				showLoginInfo();
+		 	});
+		</script>
+	</body>
+</html>

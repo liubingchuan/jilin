@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		 <script type="text/javascript" th:src="@{/js/jedate/jedate.js}" ></script>
+		 <script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		 <script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    <div class="jiansuoNR">
+		    	<div class="jiansuoOne clearfix">
+		    		<div class="left jiansuoOnelf" th:text="检索结果：+ ${totalCount}" >
+		    		</div>
+		    		<div class="jiansuoOneRt">
+		    			<a th:href="@{/patent/list(q=${query})}">
+		    				<font color="red">专利</font>
+		    			</a>
+		    			<a th:href="@{/paper/list(q=${query})}">
+		    				<font>论文</font>
+		    			</a>
+		    			<a th:href="@{/project/list(q=${query},front=0)}">
+		    				<font>项目</font>
+		    			</a>
+		    		</div>
+		    		<em class="jiansuoOneIco">
+		    			<a th:href="@{/patent/agmount}">专利分析</a>
+		    		</em>
+		    	</div>
+		    	
+		        <div class="jiansuoCon clearfix">
+		        	<div class="left jiansuoLf">
+		        		<div class="jiansuoTl">
+		        			<img th:src="@{/images/1.png}" />
+		        			<a href="/">首页</a>><span>专利</span>
+		        		</div>
+		        		
+		        		<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(ipc)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				IPC分类
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(ipc) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${ipc}">
+		        					<span th:if="${ipcs != null && ipcs != ''}">
+		        						<span th:if="${#strings.contains(ipcs,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(ipcs,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${ipcs == null || ipcs == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="l : ${ipc}" th:if=" ${#arrays.length(ipc) <= 5}">
+		        					<span th:if="${ipcs != null && ipcs != ''}">
+		        						<span th:if="${#strings.contains(ipcs,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(ipcs,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${ipcs == null || ipcs == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="ipc" th:value="${l.key}" onclick="checkfm('ipc','ipc')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(ipc) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        	    
+		        	    <div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(publicyear)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				公开（公告）年
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(publicyear) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${publicyear}">
+		        					<span th:if="${publicyears != null && publicyears != ''}">
+		        						<span th:if="${#strings.contains(publicyears,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(publicyears,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${publicyears == null || publicyears == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="l : ${publicyear}" th:if=" ${#arrays.length(publicyear) <= 5}">
+		        					<span th:if="${publicyears != null && publicyears != ''}">
+		        						<span th:if="${#strings.contains(publicyears,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(publicyears,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${publicyears == null || publicyears == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="publicyear" th:value="${l.key}" onclick="checkfm('publicyear','publicyear')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(publicyear) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        		
+		        		<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(country)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				国家
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(country) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${country}">
+		        					<span th:if="${countrys != null && countrys != ''}">
+		        						<span th:if="${#strings.contains(countrys,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(countrys,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${countrys == null || countrys == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        		    <div class="jiansuoLfGx" th:each="l : ${country}" th:if=" ${#arrays.length(country) <= 5}">
+		        					<span th:if="${countrys != null && countrys != ''}">
+		        						<span th:if="${#strings.contains(countrys,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(countrys,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${countrys == null || countrys == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="country" th:value="${l.key}" onclick="checkfm('country','country')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(country) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        		<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(person)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				专利权人
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(person) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${person}">
+		        					<span th:if="${persons != null && persons != ''}">
+		        						<span th:if="${#strings.contains(persons,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(persons,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${persons == null || persons == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        			<div class="jiansuoLfGx" th:each="l : ${person}" th:if=" ${#arrays.length(person) <= 5}">
+		        					<span th:if="${persons != null && persons != ''}">
+		        						<span th:if="${#strings.contains(persons,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(persons,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${persons == null || persons == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="person" th:value="${l.key}" onclick="checkfm('person','person')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(person) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        	   	<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(creator)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				发明人
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(creator) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${creator}">
+		        					<span th:if="${creators != null && creators != ''}">
+		        						<span th:if="${#strings.contains(creators,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(creators,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${creators == null || creators == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        			<div class="jiansuoLfGx" th:each="l : ${creator}" th:if=" ${#arrays.length(creator) <= 5}">
+		        					<span th:if="${creators != null && creators != ''}">
+		        						<span th:if="${#strings.contains(creators,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(creators,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${creators == null || creators == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="creator" th:value="${l.key}" onclick="checkfm('creator','creator')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(creator) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        			<div class="jiansuoLfGp" th:if=" ${not #arrays.isEmpty(lawstatus)}">
+		        			<h3 class="jiansuoLfGpTl">
+		        				法律状态
+		        			</h3>
+		        			<div class="jiancelfgpB">
+		        			<div class="jiansuoLfGpList" th:if=" ${#arrays.length(lawstatus) > 5}">
+		        				<div class="jiansuoLfGx" th:each="l : ${lawstatus}">
+		        					<span th:if="${lawstatuss != null && lawstatuss != ''}">
+		        						<span th:if="${#strings.contains(lawstatuss,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lawstatuss,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lawstatuss == null || lawstatuss == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			</div>
+		        			<div class="jiansuoLfGx" th:each="l : ${lawstatus}" th:if=" ${#arrays.length(lawstatus) <= 5}">
+		        					<span th:if="${lawstatuss != null && lawstatuss != ''}">
+		        						<span th:if="${#strings.contains(lawstatuss,l.key)}">
+		        							<input type="checkbox" checked="checked"  th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        						<span th:if="${!#strings.contains(lawstatuss,l.key)}">
+		        							<input type="checkbox" th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        							<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        						</span>
+		        					</span>
+		        					<span th:if="${lawstatuss == null || lawstatuss == ''}">
+		        						<input type="checkbox" th:id="'l'+${l.key}" th:name="lawstatus" th:value="${l.key}" onclick="checkfm('lawstatus','lawstatus')"/>
+		        						<label th:for="'l'+${l.key}" th:text="${l.key} + '(' + ${l.doc_count} + ')'"></label>
+		        					</span>
+		        				</div>
+		        			
+		        		    <a href="javascript:;" class="jiansuoLfMore" th:if=" ${#arrays.length(lawstatus) > 5}">
+		        		    	展开更多
+		        		    </a>
+		        		    </div>
+		        		</div>
+		        	</div>
+		            <div class="right jiansuoRt">
+		            	<ul class="jiansuoUl" id="content">
+		            		<li th:each="patent: ${list}">
+		            			<div class="jiansuoLiTL">
+		            				<a th:href="@{/patent/get(id=${patent.id})}" th:text="${patent.title}">
+		            				</a>
+		            			</div>
+		            			<div class="jiansuoLiTag">
+		            				<span th:text="'专利权人：' + ${patent.person}"></span>
+		            				<span th:text="'公开（公告）日：' + ${patent.publictime}"></span>
+		            			</div>
+		            			<div class="jiansuoLiText">
+		            				<span class="jiansuoLiTextSpan" th:text="${patent.subject}">
+		            				</span>
+		            				<a href="javascript:;" class="jiansuoLImore">
+		            					展开更多
+		            				</a>
+		            			</div>
+		            		</li>
+		            	</ul>
+		            	 <div class="sqPage">
+		            	 <span th:if=" ${totalCount > 0}">
+					    	<span th:text="'共 ' + ${totalCount}+' 条专利信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/patent/list(q=${query},pageIndex=0,pageSize=10,person=${persons},creator=${creators},publicyear=${publicyears},ipc=${ipcs},country=${countrys},lawstatus=${lawstatuss})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/patent/list(q=${query},pageIndex=(${pageIndex}-1),pageSize=10,person=${persons},creator=${creators},publicyear=${publicyears},ipc=${ipcs},country=${countrys},lawstatus=${lawstatuss})}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/patent/list(q=${query},pageIndex=(${pageIndex}+1),pageSize=10,person=${persons},creator=${creators},publicyear=${publicyears},ipc=${ipcs},country=${countrys},lawstatus=${lawstatuss})}">下一页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/patent/list(q=${query},pageIndex=(${totalPages}-1),pageSize=10,person=${persons},creator=${creators},publicyear=${publicyears},ipc=${ipcs},country=${countrys},lawstatus=${lawstatuss})}">尾页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/patent/list(q=${query},pageIndex=999,pageSize=10,person=${persons},creator=${creators},publicyear=${publicyears},ipc=${ipcs},country=${countrys},lawstatus=${lawstatuss})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</span>
+		            	</div>
+		            </div>
+		        </div>
+		    </div>
+			</div>
+			</div>
+			<div th:replace="footer :: myfooter"></div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+	
+		$(document).ready(function () {
+			showLoginInfoFrontend();
+		});
+		
+	function search(){
+    	var uri = '';
+    	if($("#keywords").val() != "") {
+	    	window.location.href="/patent/list?q=" + $("#keywords").val() + "&" + uri;
+		}
+	}
+	$("#keywords").keypress(function(e) {
+        var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+         if (eCode == 13){
+             search();
+         }
+ 	});
+	var person =  [[${persons}]];
+	var creator =  [[${creators}]];
+	var publicyear =  [[${publicyears}]];
+	var ipc =  [[${ipcs}]];
+	var country =  [[${countrys}]];
+	var lawstatus =  [[${lawstatuss}]];
+    var query =  [[${query}]];
+    
+	function checkfm(name,fmtype){
+        obj = document.getElementsByName(name);
+        check_val = [];
+        for(var i=0;i<obj.length;i++){ 
+        	if(obj[i].checked){ 
+        		 check_val.push(obj[i].value);
+        	} 
+        }
+        ss =  check_val.toString();
+        
+        if(fmtype == 'person'){
+        	var url = "/patent/list?q="+query + "&person=" + encodeURI(encodeURIComponent(ss));
+        	
+        	if (creator != "" && creator != null) {
+        		url+="&creator="+encodeURI(encodeURIComponent(creator));
+        	} 
+        	if (publicyear != "" && publicyear != null) {
+        		url+="&publicyear="+publicyear;
+        	}
+        	if (ipc != "" && ipc != null) {
+        		url+="&ipc="+encodeURI(encodeURIComponent(ipc));
+        	}
+        	if (country != "" && country != null) {
+        		url+="&country="+encodeURI(encodeURIComponent(country));
+        	}
+        	if (lawstatus != "" && lawstatus != null) {
+        		url+="&lawstatus="+encodeURI(encodeURIComponent(lawstatus));
+        	}
+        	window.location.href=url;
+        }
+        if(fmtype == 'creator'){
+        	var url = "/patent/list?q="+query + "&creator=" + encodeURI(encodeURIComponent(ss));
+        	
+        	if (person != "" && person != null) {
+        		url+="&person="+encodeURI(encodeURIComponent(person));
+        	} 
+        	if (publicyear != "" && publicyear != null) {
+        		url+="&publicyear="+publicyear;
+        	}
+        	if (ipc != "" && ipc != null) {
+        		url+="&ipc="+encodeURI(encodeURIComponent(ipc));
+        	}
+        	if (country != "" && country != null) {
+        		url+="&country="+encodeURI(encodeURIComponent(country));
+        	}
+        	if (lawstatus != "" && lawstatus != null) {
+        		url+="&lawstatus="+encodeURI(encodeURIComponent(lawstatus));
+        	}
+        	window.location.href=url;
+        }
+        if(fmtype == 'publicyear'){
+        	var url = "/patent/list?q="+query + "&publicyear=" + ss;
+        	
+        	if (person != "" && person != null) {
+        		url+="&person="+encodeURI(encodeURIComponent(person));
+        	} 
+        	if (creator != "" && creator != null) {
+        		url+="&creator="+encodeURI(encodeURIComponent(creator));
+        	}
+        	if (ipc != "" && ipc != null) {
+        		url+="&ipc="+encodeURI(encodeURIComponent(ipc));
+        	}
+        	if (country != "" && country != null) {
+        		url+="&country="+encodeURI(encodeURIComponent(country));
+        	}
+        	if (lawstatus != "" && lawstatus != null) {
+        		url+="&lawstatus="+encodeURI(encodeURIComponent(lawstatus));
+        	}
+        	window.location.href=url;
+        }
+        if(fmtype == 'ipc'){
+        	var url = "/patent/list?q="+query + "&ipc=" + encodeURI(encodeURIComponent(ss));
+        	
+        	if (person != "" && person != null) {
+        		url+="&person="+encodeURI(encodeURIComponent(person));
+        	} 
+        	if (creator != "" && creator != null) {
+        		url+="&creator="+encodeURI(encodeURIComponent(creator));
+        	}
+        	if (publicyear != "" && publicyear != null) {
+        		url+="&publicyear="+publicyear;
+        	}
+        	if (country != "" && country != null) {
+        		url+="&country="+encodeURI(encodeURIComponent(country));
+        	}
+        	if (lawstatus != "" && lawstatus != null) {
+        		url+="&lawstatus="+encodeURI(encodeURIComponent(lawstatus));
+        	}
+        	window.location.href=url;
+        }
+        if(fmtype == 'country'){
+        	var url = "/patent/list?q="+query + "&country=" + encodeURI(encodeURIComponent(ss));
+        	
+        	if (person != "" && person != null) {
+        		url+="&person="+encodeURI(encodeURIComponent(person));
+        	} 
+        	if (creator != "" && creator != null) {
+        		url+="&creator="+encodeURI(encodeURIComponent(creator));
+        	}
+        	if (publicyear != "" && publicyear != null) {
+        		url+="&publicyear="+publicyear;
+        	}
+        	if (ipc != "" && ipc != null) {
+        		url+="&ipc="+encodeURI(encodeURIComponent(ipc));
+        	}
+        	if (lawstatus != "" && lawstatus != null) {
+        		url+="&lawstatus="+encodeURI(encodeURIComponent(lawstatus));
+        	}
+        	window.location.href=url;
+        }
+        if(fmtype == 'lawstatus'){
+        	var url = "/patent/list?q="+query + "&lawstatus=" + encodeURI(encodeURIComponent(ss));
+        	
+        	if (person != "" && person != null) {
+        		url+="&person="+encodeURI(encodeURIComponent(person));
+        	} 
+        	if (creator != "" && creator != null) {
+        		url+="&creator="+encodeURI(encodeURIComponent(creator));
+        	}
+        	if (publicyear != "" && publicyear != null) {
+        		url+="&publicyear="+publicyear;
+        	}
+        	if (ipc != "" && ipc != null) {
+        		url+="&ipc="+encodeURI(encodeURIComponent(ipc));
+        	}
+        	if (country != "" && country != null) {
+        		url+="&country="+encodeURI(encodeURIComponent(country));
+        	}
+        	window.location.href=url;
+        }
+    }
+</script>
+	</body>
+</html>

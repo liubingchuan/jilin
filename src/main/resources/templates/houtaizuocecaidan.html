@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<!-- th:fragment 定义需要引入的代码块，该div包含的内容即为引用的公共内容 -->
+     <div th:fragment="myzuocecaidan">
+	 	<div class="manageLf">
+			<div class="manageLfM">
+				<div class="manageLfLogo">
+					<img th:src="@{/images/logo.png}" />
+				</div>
+				<a id="dingdanguanli" th:href="@{/zhishifuwu/shenqinglist(front=0)}" class="manageMenuF">			
+						订单管理
+				</a>
+				<a id="xiangmuxinxi" th:href="@{/project/list(pageSize=10,pageIndex=0)}" class="manageMenuF">		
+						项目信息
+				</a>
+				<a id="xinxicaiji" href="javascript:;" class="manageMenuF">		
+						信息采集<em></em>
+				</a>
+				<div class="manageMenuS">
+					<!-- <a href="#">
+						采集任务
+					</a> -->
+					<a id="jieguoliebiao" th:href="@{/task/getTaskList}" >
+						结果列表
+					</a>
+					<!-- <a href="#">
+						采集日志
+					</a> -->
+				</div>
+				<a href="javascript:;" class="manageMenuF">		
+						企业智库<em></em>
+				</a>
+				<div class="manageMenuS">
+					<a id="fenxibaogao" th:href="@{/report/list(pageSize=10,pageIndex=0)}">
+						分析报告
+					</a>
+					<a id="zhogndianjigou" th:href="@{/org/list}">
+						重点机构
+					</a>
+					<a id="hangyerencai" th:href="@{/expert/list(pageSize=10,pageIndex=0)}">
+						行业人才
+					</a>
+				</div>
+				<a id="yonghuguanli" th:href="@{/user/list(pageIndex=0,pageSize=10)}" class="manageMenuF">		
+						用户管理
+				</a>
+				<a id="fenleishezhi" th:href="@{/item/config}" class="manageMenuF">		
+						分类设置
+				</a>
+			</div>
+		</div>
+    </div>
+</html>

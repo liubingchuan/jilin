@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					<b>项目详情</b>
+				</div>
+				
+			    <div class="M_messTwoB">
+			    	
+			        <div class="M_messTwoBm active">
+			    		<form name="saveForm" th:action="@{/project/save}" th:object="${project}" th:method="post">
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目名称：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{name}"/>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目分类：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<select th:field="*{classis}"  th:value="*{classis}" name="classis">
+                            		<option value="">请选择项目分类</option>
+                            		<option th:each="item : ${items}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目介绍：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="shuru">
+						          <script id="editor" type="text/plain" style="height:228px;width: 705px;" th:field="*{description}" th:utext="*{description}"></script>
+	        	                </div>
+	        	                 <script>
+	        	                 	$(function() {
+
+	//本来是这样的:UE.getEditor('editor');  传入参数后就是下面那样子了，toolbars里的就是工具的图标
+
+	UE.getEditor('editor', {
+
+		toolbars: [
+
+			['undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'removeformat', 'formatmatch', 'simpleupload', 'insertimage', 'forecolor', 'backcolor', 'cleardoc', 'link', 'unlink', 'emotion']
+
+		]
+
+	});
+
+})</script>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目预算：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{budget}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				开始日期：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" id="dateinfo1" th:field="*{start}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				截止日期：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" id="dateinfo2" th:field="*{end}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目委托方：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{entrust}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目联系人：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{contacts}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				电话：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{phone}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				委托方地址：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{address}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				项目代理机构：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{agent}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				原文地址：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{url}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				提交时间：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" id="dateinfo" th:field="*{ctime}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				上传人：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{uploader}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				修改人：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{modifier}" />
+			    			</div>
+			    		</div>
+			    		<div class="clearfix bianjinrbtn" >
+				    		<input type="hidden" th:field="*{id}" />
+				    		<input name="info" type="hidden" id="info">
+				    		<input style="display:inline;" th:if="${disable.equals('0')}" type="button" value="保存修改" class="M_messSub" onClick="uptext();"/>
+				    		<input style="display:inline;" type="button" value="返回" class="M_messSub" onClick="javascript:history.back(-1);"/>
+				    		
+			    		</div>
+			    		</form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/jedate/jedate.js}" ></script>
+		<!--百度编辑器-->
+		<script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/ueditor.config.js}"></script>
+        <script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/ueditor.all.min.js}"></script>
+        <script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/lang/zh-cn/zh-cn.js}"></script>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript">
+		 $(document).ready(function () {
+				showLoginInfo();
+		 });
+			   jeDate({
+				dateCell:"#dateinfo",
+				format:"YYYY年MM月DD日 hh:mm:ss",
+				isinitVal:true,
+				isTime:true, //isClear:false,
+				minDate:"2014-09-19 00:00:00"
+			})
+			    jeDate({
+				dateCell:"#dateinfo1",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+				minDate:"2014-09-19"
+			})
+			    jeDate({
+				dateCell:"#dateinfo2",
+				format:"YYYY年MM月DD日",
+				isinitVal:true,
+				isTime:false, //isClear:false,
+				minDate:"2014-09-19"
+			})
+	
+			//这段要放在文本编辑器的实例化之后
+			function uptext() {
+				if (!UE.getEditor('editor').hasContents()) {
+					alert('请先填写内容!');
+				} else {
+					$("#info").val(UE.getEditor('editor').getContent());
+					$("form[name='saveForm']").submit();
+				}
+			}
+		</script>
+	</body>
+</html>

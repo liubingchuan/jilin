@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" />
+					<input type="text" class="headsuosInp" />
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="nycontainer rencaiM">
+			
+				<div class="rencaiNr clearfix" th:object="${expert}">
+					<div class="rencaiLf left">
+						<div class="rencaiLFmess">
+							<!-- <img th:src="@{/file/fileDownload(filename=${expert.frontend})}" /> -->
+							<img th:if=" ${expert.frontend !=null && expert.frontend != ''}" th:src="@{/file/fileDownload(filename=${expert.frontend})}" />
+				        	<img th:if=" ${expert.frontend ==null || expert.frontend == ''}" th:src="@{/images/slider.png}" />
+							<div class="rencaiLFmessText">
+								<p class="rencaiLFmessName">
+									姓名： 
+								</p>
+								<p th:text="*{name}">
+								</p>
+								<p class="rencaiLFmessName">
+									所在单位： 
+								</p>
+								<p th:text="*{unit}">
+								</p>
+								<p class="rencaiLFmessName">
+									研究方向： 
+								</p>
+								<p th:text="*{area}">
+								</p>
+								<p class="rencaiLFmessName">
+									担任职务：
+								</p>
+								<p th:text="*{duty}">
+								</p>
+							</div>
+						</div>
+						
+					</div>
+				    <div class="rencaiRt right rencaiRtMess">
+				    	<span class="resultrtTlSmall">
+		            		基本介绍
+		            	</span>
+		            	<div class="zhuanliConOne" th:utext="*{resume}">
+		            	</div>
+		            	<div class="zhuanliConTwo clearfix">
+		            		<a href="javascript:getPatent(0)" id="patent" class="ahover">
+		            			相关专利
+		            		</a>
+		            		<a href="javascript:getPaper(0)" id="paper">
+		            			相关论文
+		            		</a>
+		            	</div>
+		            	<div class="zhuanliConThree">
+		            		<div class="zhuanliConThreeM active" id="paInfo">
+		            			<ul class="jiansuoUl" id="patentInfo">
+		            		   
+		            			</ul>
+		            			<div class="sqPage" id="patentsqPage">
+					            	 
+					            </div>
+		            	
+		            		</div>
+		            		
+		            		<div class="zhuanliConThreeM" id="parInfo">
+		            			<ul class="jiansuoUl" id="paperInfo">
+		            			</ul>
+		            			<div class="sqPage" id="papersqPage">
+					            	 
+					            </div>
+		            		</div>
+		            	</div>
+				    </div>
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var namebieming = [[${namebieming}]];
+		 	$(document).ready(function () {
+				showLoginInfoFrontend();
+				getPatent(0);
+		 	});
+		 	function getPatent(index) { 
+				var param = {
+						'insname' : namebieming,
+						'pageIndex' : index
+					};
+					 $.ajax({
+						url : "/patent/patentExpList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#patentInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/patent/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>专利权人：' + value.person+ '</span>');
+								let span2 = $('<span>公开（公告）日：' + value.publictime+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.subject+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#patentInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条专利信息</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getPatent(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getPatent("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getPatent("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getPatent("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getPatent("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#patentsqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+			
+			function getPaper(index) {
+				 $("#patent").removeClass("ahover");
+				 $("#paper").addClass("ahover");
+				 $("#paInfo").removeClass("active");
+				 $("#parInfo").addClass("active");
+				 
+				var param = {
+						'insname' : namebieming,
+						'pageIndex' : index
+					};
+					 $.ajax({
+						url : "/paper/paperExpList",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#paperInfo").html('');
+							$.each(items,function(index,value){
+								let li = $('<li></li>');
+								let div1 = $('<div class=\"jiansuoLiTL\"></div>');
+								let a1 = $('<a href=\"/paper/get?id=' + value.id + '\">'+ value.title + '</a>');
+								div1.append(a1);
+								let div2 = $('<div class=\"jiansuoLiTag\"></div>');
+								let span1 = $('<span>出处：' + value.journal+ '</span>');
+								let span2 = $('<span>出版年：' + value.year+ '</span>');
+								div2.append(span1);
+								div2.append(span2);
+								let div3 = $('<div class=\"jiansuoLiText\"></div>');
+								let span3 = $('<span class=\"jiansuoLiTextSpan\">' + value.subject+ '</span>');
+								let a2 = $('<a href=\"javascript:;\" class=\"jiansuoLImore\">展开更多</a>');
+								div3.append(span3);
+								div3.append(a2);
+//	 							input.attr("id",index);
+//	 							input.attr("value",value);
+//	 							let label = $('<label></label>');
+//	 							label.attr("for",index);
+//	 							label.text(" " + value)
+								li.append(div1);
+								li.append(div2);
+								li.append(div3);
+								$("#paperInfo").append(li);
+							});
+							var totalPages = data.totalPages;
+							var totalCount = data.totalCount;
+							var pageIndex = data.pageIndex;
+							if(totalCount > 0){
+								var pagecontent = "<span>";
+								pagecontent += "<span>共 "+totalCount+" 条论文</span>";
+								
+								if(pageIndex+1 != 1){
+									var px = pageIndex-1;
+									pagecontent += "<a href=\"javascript:getPaper(0)\"><首页</a>";
+									pagecontent += "<a href=\"javascript:getPaper("+px+")\"><上一页</a>";
+								}
+								if(pageIndex+1 != totalPages){
+									var px = pageIndex+1;
+									var pt = totalPages-1;
+									//pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									//pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									if(pageIndex < 999){
+										pagecontent += "<a href=\"javascript:getPaper("+px+")\">下一页<em>></em></a>";
+									}
+									if(totalPages < 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+pt+")\">尾页<em>></em></a>";
+									}
+									if(totalPages >= 1000){
+										pagecontent += "<a href=\"javascript:getPaper("+999+")\">尾页<em>></em></a>";
+									}
+								}
+								pagecontent+="</span>";
+								$("#papersqPage").html(pagecontent);
+							}
+							
+						}
+					}); 
+			}
+		</script>
+
+	</body>
+</html>

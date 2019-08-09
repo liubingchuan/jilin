@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/swiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/swiper.min.js}" ></script>
+	</head>
+	<body>
+		<div class="indexbanner">
+		<div class="index-container">
+		<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<div class="left menu clearfix">
+					<a href="/">平台首页</a>
+					<a id="chanyejiance" th:href="@{/jiance/jiancelist}">产业监测</a>
+					<a id="xituzhiku" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>
+					<a id="zhishifuwu" th:href="@{/zhishifuwu/zhishifuwu}">知识服务</a>
+					<a th:href="@{/patent/agmount}">专利分析</a>
+					<a href="#">园区介绍</a>
+					<a href="#">关于我们</a>
+					
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>
+		<div class="logoText">
+			沈阳高新区生物医药知识服务云平台
+		</div>
+		<div class="indexTopSmall">
+			整合稀生物医药领域信息资源，为沈阳高新区提供定制化知识服务
+		</div>
+		<div class="headSS clearfix">
+			<input type="text" class="left headSSLf" placeholder="请输入生物医药相关的关键词" id="keywords"/>
+			<input type="button" class="left headSSRt" value="搜索" id="search" onClick="search();"/>
+		</div>
+		<div class="headCompanyTl">
+			<span>
+				重点企业导航
+			</span>
+		</div>
+		<div class="headCompanyNr">
+			 <div class="headCompanyNrM">
+			 	<div class="swiper-container">
+                    <div class="swiper-wrapper">
+	    			 <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo1.png}" />
+	    			 	</a>
+	    			  </div>
+	    			  <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_2.png}" />
+	    			 	</a>
+	    			  </div>
+	    			   <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_3.png}" />
+	    			 	</a>
+	    			  </div>
+	    			  <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_4.png}" />
+	    			 	</a>
+	    			  </div>
+	    			  <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo1.png}" />
+	    			 	</a>
+	    			  </div>
+	    			  <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_2.png}" />
+	    			 	</a>
+	    			  </div>
+	    			   <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_3.png}" />
+	    			 	</a>
+	    			  </div>
+	    			  <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/qiyelogo_4.png}" />
+	    			 	</a>
+	    			  </div>
+	    			 </div>
+	    	      </div>
+			    <div class="swiper-button-next"></div>
+                 <div class="swiper-button-prev"></div>
+			    <script>
+    var swiper = new Swiper('.headCompanyNrM .swiper-container', {
+      slidesPerView: 7,
+      spaceBetween: 20,
+      loop:true,
+     navigation: {
+								nextEl: '.headCompanyNrM .swiper-button-next',
+								prevEl: '.headCompanyNrM .swiper-button-prev',
+							},
+    });
+    
+  </script>
+			 </div>
+		</div>
+		</div>
+		</div>
+	    <div class="main">
+	    	<div class="indexNr">
+	    	<div class="index-container clearfix">
+	    		<div class="left indexLF">
+	    			<div class="indexLFTL clearfix">
+	    				<a href="javascript:;" class="ahover">
+	    					专利分析
+	    				</a>
+	    				<a href="javascript:;">
+	    					知识服务
+	    				</a>
+	    				<a href="javascript:;">
+	    					企业智库
+	    				</a>
+	    			</div>
+	    		    <div class="indexLFB">
+	    		    	<div class="indexLFBM active clearfix">
+	    		    		<img th:src="@{/images/zhuanlifenxi.png}" class="left indexLFBImg" />
+	    		    		<div class="right indexLFBRt">
+	    		    			<p>
+	    		    				提供动态更新的生物医药科技最新数据
+	    		    			</p>
+	    		    			<ul class="indexLFBUl">
+	    		    				<li>
+	    		    					产业核心专利数据
+	    		    				</li>
+	    		    				<li>
+	    		    					细分专利领域分类
+	    		    				</li>
+	    		    				<li>
+	    		    					专利核心指标分析
+	    		    				</li>
+	    		    				<li>
+	    		    					可视化数据展示
+	    		    				</li>
+	    		    			</ul>
+	    		    			<a href="#" class="btnYellow indexLFA">
+	    		    				进入数据库>>
+	    		    			</a>
+	    		    		</div>
+	    		    	</div>
+	    		        <div class="indexLFBM clearfix">
+	    		    		<img th:src="@{/images/zhishifuwu.png}" class="left indexLFBImg indexLFBImgZ" />
+	    		    		<div class="right indexLFBRt indexLFBRtz">
+	    		    			<p>
+	    		    				提供专业的情报知识服务
+	    		    			</p>
+	    		    			<ul class="indexLFBUl">
+	    		    				<li>
+	    		    					快速准确的文献传递
+	    		    				</li>
+	    		    				<li>
+	    		    					国家级科技查新服务
+	    		    				</li>
+	    		    				
+	    		    			</ul>
+	    		    			<a id="zhishifuwu2" th:href="@{/zhishifuwu/zhishifuwu}" class="btnYellow indexLFA">
+	    		    				开始委托>>
+	    		    			</a>
+	    		    		</div>
+	    		    	</div>
+	    		         <div class="indexLFBM clearfix">
+	    		    		<img th:src="@{/images/qiyezhiku.png}" class="left indexLFBImg" />
+	    		    		<div class="right indexLFBRt">
+	    		    			<p>
+	    		    				提供丰富的行业智库信息
+	    		    			</p>
+	    		    			<ul class="indexLFBUl">
+	    		    				<li>
+	    		    					领域专家数据
+	    		    				</li>
+	    		    				<li>
+	    		    					重点机构数据
+	    		    				</li>
+	    		    				<li>
+	    		    					行业分析报告数据
+	    		    				</li>
+	    		    			</ul>
+	    		    			<a th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}" class="btnYellow indexLFA">
+	    		    				进入智库>>
+	    		    			</a>
+	    		    		</div>
+	    		    	</div>
+	    		    </div>
+	    		</div>
+	    	    <div class="right indexRt">
+	    	    	<div class="indexRtTL clearfix">
+	    	    		<a href="javascript:;" class="ahover">行业新闻</a>
+	    	    		<a href="javascript:;">国家政策</a>
+	    	    		<a href="javascript:;">产业动态</a>
+	    	    		<a href="javascript:;">科研进展</a>
+	    	    	</div>
+	    	    	<div class="indexRtB">
+	    	    		<div class="indexRtBM active">
+	    	    			<ul class="indexRtUl">
+	    	    				<li class="clearfix">    
+	    	    					<a href="#" class="left">
+	    	    						• 未盈利生物医药将有望在A股上市? 业内人士认为任重道远
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						• 2018第五届诺贝尔奖获得者医学峰会暨全球生物医药创…
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						• 厦门海沧签约项目总额超27亿元 生物医药产业再添新军…
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						• 研究丨有关未盈利生物医药企业在香港及内地上市要求…
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						• 对接生物医药 聚焦行业前沿 
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						• 创投企业奖励最高超过2000万 生物医药企业上市门槛降低 
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    				<li class="clearfix">
+	    	    					<a href="#" class="left">
+	    	    						 • 成都生物医药产业发展势头迅猛 生命力旺盛 
+	    	    					</a>
+	    	    					<span class="right">
+	    	    						2018-4-5
+	    	    					</span>
+	    	    				</li>
+	    	    			</ul>
+	    	    			<a href="#" class="indexRtMore">
+	    	    				更多内容>>
+	    	    			</a>
+	    	    		</div>
+	    	    	</div>
+	    	    </div>
+	    	</div>
+	    	</div>
+	    </div>
+	    <div th:replace="footer :: myfooter"></div>
+	   <!--弹窗-->
+	    <div class="alertBg"></div>
+	    <!--登录二维码弹窗-->
+	    <div class="alertCon alertErw">
+	    	<img th:src="@{/images/erw.png}" />
+	    	<p class="alertErwText">
+	    		<span>微信</span>扫描直接注册登陆
+	    	</p>
+	    	<p class="alertErwA">
+	    		<a href="javascript:;" class="alertZHbtn">
+	    			用户名密码登录
+	    		</a>
+	    	</p>
+	    </div>
+	 <!--   账号登录-->
+	    <div class="alertCon alertZh">
+	    	<div class="alertTl">
+	    		账户登录
+	    	</div>
+	    	<div class="alertForm">
+	    		<form name="loginForm" action="/user/login" method="POST" enctype="multipart/form-data">
+	    			<div class="alertFormGp erro">
+	    			<label for="" class="alertFormName">
+	    				用户名<span>*</span>
+	    			</label>
+	    			<input type="text" class="alertInp" placeholder="请输入用户名" name="account" id="lnaccount"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			<div class="erroText" id="noaccount">
+	    				用户名不存在
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入密码" name="password" id="lnpassword"/>
+	    			<div class="erroText" id="passworderror">
+	    				密码错误
+	    			</div>
+	    			</div>
+	    			<!-- <div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				验证码<span>*</span>
+	    			</label>
+	    			<div class="clearfix alertYzm">
+	    			<input type="text" class="alertInp left" placeholder="请输入验证码" id="yzm"/>
+	    			<input type="hidden" class="alertInp left" placeholder="请输入验证码" id="hiddentoken" name="token"/>
+	    			<a href="#" class="right alertYzmImg">
+	    				<img th:src="@{/images/yzm.jpg}" />
+	    			</a>
+	    			</div>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div> -->
+	    		    <input type="submit" value="登录" class="alertSubmit" id="loginButtion"/>
+	    		    <div class="alertReg">
+	    		    	<a href="javascript:;">第一次使用？点击注册>></a>
+	    		    </div>
+	    		</form>
+	    	</div>
+	    </div>
+	    <!--绑定账号-->
+	    <div class="alertCon alertbd" id="alertbd">
+	    	<div class="alertTl">
+	    		信息绑定
+	    	</div>
+	    	<div class="alertForm">
+	    		<form id="bindForm">
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				用户名<span>*</span>
+	    			</label>
+	    			<input type="text" class="alertInp" placeholder="请输入用户名" id="bdaccount" name="account"/>
+	    			<div class="erroText" id="exist">
+	    				用户名已被绑定
+	    			</div>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入密码" id="bdpassword" name="password"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				确认密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请确认密码" id="bdpassword2" name="password2"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				邮箱<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入邮箱地址" id="bdemail" name="email"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    		    <div class="clearfix">
+	    		    	<input type="button" class="right alertbdSub" value="确认" id="bindButtion"/>
+	    		    </div>
+	    		</form>
+	    	</div>
+	    </div>
+	    <script type="text/javascript" th:src="@{/js/main.js}" ></script>
+	    <script type="text/javascript">
+	    var time;
+    	// 获取登录二维码
+        function getQcode() {
+            var url = "/wechat/getLoginQcode";
+            $.ajax({
+                url: url,
+                type: "get",
+                async: true,
+                success: function (res) {
+                    $("#showqrcode").attr("src", res.img);
+                    time = window.setInterval(isLogin, 3000);
+                }
+            });
+    	}
+
+      //轮询判断是否登录
+        function isLogin() {
+                var url = "/wechat/islogin";
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    async: true,
+                    success: function (resObj) {
+//	                        var resObj = JSON.parse(res);
+                        if (resObj.code == 200) {
+                            window.clearInterval(time);
+	        				$.cookie("openId",resObj.openId);
+	        				$.cookie("nickName",resObj.nickName);
+	        				$.cookie("headImg",resObj.headUrl);
+	        				$.cookie("role",resObj.role);
+	        				console.log("openId inserted into cookie " + resObj.openId)
+
+                            if(resObj.bind==="false") {
+								$("#showcode").css('display','none');
+								// $("#showqrcode").css('display','none');
+                            	$("#alertbd").css('display','block');
+                            }else {
+								window.location.href = "/";
+							}
+                        } else if (resObj.code == 1) {
+                            window.clearInterval(time);
+                            console.log("获取微信用户信息失败")
+                        }
+                    }
+                });
+            }
+    	
+		 $(document).ready(function () {
+//				console.log($.cookie("openId"))
+//				$.cookie("openId","2");
+//				$.cookie("role","管理员");
+			//$.cookie("role","普通用户");
+			
+			$("#alertbd").css('display','none');
+			if($.cookie("openId")!=null) {
+				$("#loginBefore").css('display','none'); 
+				$("#headImg").attr("src", $.cookie("headImg"));
+				$("#loginAfter").css('display','block');
+				if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
+					$(".vip").html("普通用户"); 
+					$("#backgroud").css('display','none'); 
+					document.getElementById("xituzhiku").removeAttribute("href");
+					document.getElementById("chanyejiance").removeAttribute("href");
+					document.getElementById("zhishifuwu").removeAttribute("href");
+					document.getElementById("zhishifuwu2").removeAttribute("href");
+					
+				}
+				if($.cookie("role")!=null && $.cookie("role")==="管理员"){
+					$(".vip").html("管理员"); 
+					$("#backgroud").css('display','block'); 
+				}
+				$("#logoinName").html($.cookie("nickName"));
+			}else {
+				$("#loginBefore").css('display','block'); 
+				$("#loginAfter").css('display','none'); 
+			}
+			
+
+			
+			$("#loginBefore").click(function(){
+				getQcode();
+			});
+//				if($.cookie("account")!=account){
+//					$.cookie('account', account);
+//				}
+//				if($.cookie("role")!=role){
+//					$.cookie('role', role);
+//				}
+//				if(token == "1"){
+//					$('.alertZh').css('display','block');
+//					alert("密码输入错误")
+//					$('#noaccount').css('display','none');
+//					$('#passworderror').css('display','block');
+//				}
+			
+//				if(token == "2"){
+//					$('.alertZh').css('display','block');
+//					alert("未找到该用户名")
+//					$('#passworderror').css('display','none');
+//					$('#noaccount').css('display','block'); 
+//				}
+			
+			
+			
+			 $("#bindButtion").click(function(){
+				if($("#bdaccount").val() == ""){
+					alert('请输入用户名','提示')
+					return;
+				}
+				if($("#bdpassword").val() == ""){
+					alert('请输入密码','提示')
+					return;
+				}
+				if($("#bdpassword2").val() == ""){
+					alert('请确认密码','提示')
+					return;
+				}
+				if($("#bdpassword").val() !== $("#bdpassword2").val()){
+					alert('两次输入密码不一致','提示')
+					return;
+				}
+				
+				if($("#bdemail").val() == ""){
+					alert('请输入电子邮箱','提示')
+					return;
+				}
+				if(!$("#bdemail").val().match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+					alert('请输入有效邮箱','提示')
+					return;
+				}
+				
+				
+				var formObject = {};
+		        var formArray =$("#bindForm").serializeArray();
+		        $.each(formArray,function(i,item){
+		            formObject[item.name] = item.value;
+		        });
+		        formObject["nickName"] = $.cookie("nickName")
+		        formObject["openId"] = $.cookie("openId")
+		        $.ajax({
+		            url:"user/bind",
+		            type:"post",
+		            contentType: "application/json; charset=utf-8",
+		            data: JSON.stringify(formObject),
+		            dataType: "json",
+		            success:function(data){
+		            	$("#alertbd").css('display','none'); 
+		                if(data.code == "200")
+		                {
+		                	console.log($.cookie("nickName"))
+		                	$("#logoinName").html($.cookie("nickName"));
+		    			    $("#headImg").attr("src", $.cookie("headImg"));
+							$("#loginBefore").css('display','none');
+		    			    $("#loginAfter").css('display','block');
+							window.location.href = "/";
+		                }
+		                else
+		                {
+		                	console.log("binding error" + data);
+		                	if(data.code=="401") {
+		                		alert(data.msg);
+		                	}else {
+		                	 $("#quit").click();
+		                	}
+		                	
+		                }
+		            },
+		            error:function(e){
+		                alert("错误！！");
+		                $("#quit").click();
+		            }
+		        });
+
+			});			
+		 });
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+    </script>
+	</body>
+</html>

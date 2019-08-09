@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					<b>机构详情</b>
+				</div>
+				
+			    <div class="M_messTwoB">
+			    	     
+			        <div class="M_messTwoBm active">
+			    		<form name="saveForm" th:action="@{/org/save}" th:object="${org}" th:method="post">
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				机构名称：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{name}" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				其他名称：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp" th:field="*{alias}" placeholder="多个别名之间用分号分隔"/>
+			    			</div>
+			    		</div>
+			    		<input type="hidden" id="lingyu" name="area" th:field="*{area}"/>
+			    		<div class="M_messGp clearfix" >
+			    			<span class="left M_messGpName" id="showchoose" style="display:none">
+			    				已选择：
+			    			</span>
+			    			<div class="M_messGpRt" id="choose">
+			    				
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				研究领域：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<select id="areaselect" th:value="请选择研究领域" onchange="func()">
+                            		<option value="">请选择研究领域</option>
+                            		<option th:each="item : ${yjlyitems}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				机构介绍：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="shuru">
+						          <script id="editor" type="text/plain" style="height:228px;width: 705px;" th:field="*{description}" th:utext="*{description}"></script>
+	        	                </div>
+	        	                 <script>
+	        	                 	$(function() {
+
+	//本来是这样的:UE.getEditor('editor');  传入参数后就是下面那样子了，toolbars里的就是工具的图标
+
+	UE.getEditor('editor', {
+
+		toolbars: [
+
+			['undo', 'redo', 'bold', 'italic', 'underline', 'fontborder', 'backcolor', 'fontsize', 'fontfamily', 'removeformat', 'formatmatch', 'simpleupload', 'insertimage', 'forecolor', 'backcolor', 'cleardoc', 'link', 'unlink', 'emotion']
+
+		]
+
+	});
+
+})</script>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				机构类型：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<select th:field="*{type}"  th:value="*{type}" name="type">
+                            		<option value="">请选择机构类型</option>
+                            		<option th:each="item : ${jglxitems}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				国家：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<select th:field="*{country}"  th:value="*{country}" name="country">
+                            		<option value="">请选择国家</option>
+                            		<option th:each="item : ${gjitems}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				产业链：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<select th:field="*{link}"  th:value="*{link}" name="link">
+                            		<option value="">请选择产业链</option>
+                            		<option th:each="item : ${cylitems}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    			</div>
+			    		</div>
+			    		<input type="hidden" id="leixing" name="classic" th:field="*{classic}"/>
+			    		<div class="M_messGp clearfix" >
+			    			<span class="left M_messGpName" id="showchooseclassic" style="display:none">
+			    				已选择：
+			    			</span>
+			    			<div class="M_messGpRt" id="chooseclassic">
+			    				
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				产品类型：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix" >
+			    				<select id="classicselect" th:value="请选择产品类型" onchange="funcclassic()">
+                            		<option value="">请选择产品类型</option>
+                            		<option th:each="item : ${cplxitems}" th:value="${item}" th:text="${item}"></option>
+                        		</select>
+			    				<!-- <a href="#" class="left colorBlue zengjialx">+增加产品类型</a> -->
+			    				</div>
+			    			</div>
+			    		</div>
+			    		
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				机构LOGO：
+			    			</span>
+			    			<div id="frontendShow" class="M_messGpRt">
+			    				<div class="clearfix M_messGpImg">
+			    					<div class="left M_messGpImgGp">
+			    						<img id="frontendImg" th:src="@{/images/default.png}" />
+			    						<p id="frontendPid">
+			    							LOGO.jpg&nbsp;1000kb&nbsp;<a id="frontendDel" href="javascript:delFrontend()" class="colorRed">删除</a>
+			    						</p>
+			    					</div>
+			    				</div>
+			    			</div>
+			    			<div id="frontendUpload" class="M_messGpRt">
+			    				<a href="javascript:;" class="colorBlue shangchuanjb">
+			    					点击上传LOGO
+			    					<input id="frontendFile" type="file" name="frontendFile"/>
+			    					<input id="frontendFileHidden" type="hidden" th:field="*{frontend}"/>
+			    					<input id="frontendFileNameHidden" type="hidden" th:field="*{frontendFileName}"/>
+			    					<input id="frontendSizeHidden" type="hidden" th:field="*{frontendSize}"/>
+			    				</a>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				提交时间：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<span class="M_messGpRtText" th:text="${new java.util.Date()}">></span>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				上传人：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<span class="M_messGpRtText">王伟</span>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				修改人：
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<span class="M_messGpRtText">王伟</span>
+			    			</div>
+			    		</div>
+			    		<div class="clearfix bianjinrbtn">
+			    		<input type="hidden" th:field="*{id}" />
+			    		<input name="info" type="hidden" id="info">
+			    		<input type="hidden" th:field="*{ctime}" th:value="${new java.util.Date()}">
+			    		<input style="display:inline;" th:if="${disable.equals('0')}" type="button" value="保存修改" class="M_messSub" onClick="uptext();"/>
+			    		<input style="display:inline;" type="button" value="返回" class="M_messSub" onClick="javascript:history.back(-1);"/>
+			    		</div>
+			    		</form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<!--百度编辑器-->
+		<script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/ueditor.config.js}"></script>
+        <script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/ueditor.all.min.js}"></script>
+        <script type="text/javascript" charset="utf-8" th:src="@{/js/ueditor/lang/zh-cn/zh-cn.js}"></script>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+    
+			//这段要放在文本编辑器的实例化之后
+			function uptext() {
+				if (!UE.getEditor('editor').hasContents()) {
+					alert('请先填写内容!');
+				} else {
+					$("#info").val(UE.getEditor('editor').getContent());
+					$("form[name='saveForm']").submit();
+				}
+			}
+			
+			function delFrontend() {
+				$("#frontendShow").hide();
+				$("#frontendUpload").show();
+			}
+			
+			var frontendId =  [[${frontendId}]];
+			var frontendFileName =  [[${frontendFileName}]];
+			var frontendSize =  [[${frontendSize}]];
+			var area =  [[${area}]];
+			var classic =  [[${classic}]];
+			var lingyu='';
+			var leixing='';
+			$(document).ready(function () {
+				
+				showLoginInfo();
+				
+				if(frontendId == null){
+					$("#frontendShow").hide();
+					$("#frontendUpload").show();
+				}else {
+					$("#frontendImg").attr('src','/file/fileDownload?filename='+frontendId);
+					$('#frontendPid').replaceWith('<p id="frontendPid">' + frontendFileName + '&nbsp;' + frontendSize + 'kb&nbsp;<a href="javascript:delFrontend()" class="colorRed">删除</a></p>');
+					$("#frontendShow").show();
+					$("#frontendUpload").hide();
+				}
+				
+				if(area != null && area != ''){
+					var docu = document.getElementById("choose").innerHTML;
+					 for(var i = 0;i<area.length;i++){
+						lingyu += area[i]+',';
+						
+						docu += "<div class=\"console-tag-label inline-block\" id='"+"area_"+area[i]+"'>";
+						docu += "<span class=\"M_messGpName\" style=\"display:inline;\">";
+						docu += area[i];								
+						docu += "</span>";
+						docu += "<span style=\"padding-left:5px;\"><a href=\"javascript:removetag('"+"area_"+area[i]+"');\"><img src=\"/images/timg.jpg\"/></a></span>";
+						docu += "</div>";
+						
+						
+					}
+					$("#lingyu").val(lingyu);
+					document.getElementById("choose").innerHTML =docu;
+					document.getElementById("showchoose").style.display='block';
+				}
+				
+				if(classic != null && classic != ''){
+					var docu = document.getElementById("chooseclassic").innerHTML;
+					 for(var i = 0;i<classic.length;i++){
+						leixing += classic[i]+',';
+						
+						docu += "<div class=\"console-tag-label inline-block\" id='"+"classic_"+classic[i]+"'>";
+						docu += "<span class=\"M_messGpName\" style=\"display:inline;\">";
+						docu += classic[i];								
+						docu += "</span>";
+						docu += "<span style=\"padding-left:5px;\"><a href=\"javascript:removetagclassic('"+"classic_"+classic[i]+"');\"><img src=\"/images/timg.jpg\"/></a></span>";
+						docu += "</div>";
+						
+						
+					}
+					$("#leixing").val(leixing);
+					document.getElementById("chooseclassic").innerHTML =docu;
+					document.getElementById("showchooseclassic").style.display='block';
+				}
+				
+				
+			});
+			
+			$("#frontendFile").live('change',function() {
+				var formData = new FormData();
+				formData.append('file', $('#frontendFile')[0].files[0]);
+// 				$('#inputFileID').replaceWith('<input id="file" type="file" name="file"  />');
+				$.ajax({
+					url : '/file/fileUpload/'+frontendId,
+					type : 'POST',
+					cache : false,
+					data : formData,
+					processData : false,
+					contentType : false
+				}).done(function(res) {
+					$("#frontendImg").attr('src',res.img);
+					$('#frontendPid').replaceWith('<p id="frontendPid">' + res.filename + '&nbsp;' + res.size + 'kb&nbsp;<a id="frontendDel" href="javascript:delFrontend()" class="colorRed">删除</a></p>');
+					$("#frontendShow").show();
+					$("#frontendUpload").hide();
+					$("#frontendFileHidden").val(res.uuid + '_' + res.filename)
+					$("#frontendFileNameHidden").val(res.filename)
+					$("#frontendSizeHidden").val(res.size)
+					frontendId = res.uuid + '_' + res.filename;
+				}).fail(function(res) {
+					alert("文件上传失败，请重试")
+				});
+				
+			});
+			function func(){
+				var vs = $('#areaselect  option:selected').val();
+				if(lingyu != ''){
+					var array = lingyu.split(",");
+					for (i=0;i<array.length ;i++ ) 
+					{
+						if(vs == array[i]){
+							alert('该领域已添加');
+							return;
+						}
+					}
+				}
+				var docu = document.getElementById("choose").innerHTML;
+				docu += "<div class=\"console-tag-label inline-block\" id='"+"area_"+vs+"'>";
+				docu += "<span class=\"M_messGpName\" style=\"display:inline;\">";
+				docu += vs;								
+				docu += "</span>";
+				docu += "<span style=\"padding-left:5px;\"><a href=\"javascript:removetag('"+"area_"+vs+"');\"><img src=\"/images/timg.jpg\"/></a></span>";
+				docu += "</div>";
+				document.getElementById("choose").innerHTML =docu;
+				//$("#choose").append(docu);
+				document.getElementById("showchoose").style.display='block';
+				lingyu += vs+',';
+				$("#lingyu").val(lingyu);
+			}
+			
+			function removetag(content){
+				lingyu = lingyu.replace(content.split('_')[1]+',','');
+				$("#lingyu").val(lingyu);
+				document.getElementById(content).style.display='none';
+				$("#"+ content).removeClass("inline-block");
+				if(lingyu == ''){
+					document.getElementById("showchoose").style.display='none';
+				}
+			}
+			
+			function funcclassic(){
+				var vs = $('#classicselect option:selected').val();
+				if(leixing != ''){
+					var array = leixing.split(",");
+					for (i=0;i<array.length ;i++ ) 
+					{
+						if(vs == array[i]){
+							alert('该类型已添加');
+							return;
+						}
+					}
+				}
+				var docu = document.getElementById("chooseclassic").innerHTML;
+				docu += "<div class=\"console-tag-label inline-block\" id='"+"classic_"+vs+"'>";
+				docu += "<span class=\"M_messGpName\" style=\"display:inline;\">";
+				docu += vs;								
+				docu += "</span>";
+				docu += "<span style=\"padding-left:5px;\"><a href=\"javascript:removetagclassic('"+"classic_"+vs+"');\"><img src=\"/images/timg.jpg\"/></a></span>";
+				docu += "</div>";
+				document.getElementById("chooseclassic").innerHTML =docu;
+				//$("#choose").append(docu);
+				document.getElementById("showchooseclassic").style.display='block';
+				leixing += vs+',';
+				$("#leixing").val(leixing);
+			}
+			
+			function removetagclassic(content){
+				leixing = leixing.replace(content.split('_')[1]+',','');
+				$("#leixnig").val(leixing);
+				document.getElementById(content).style.display='none';
+				$("#"+ content).removeClass("inline-block");
+				if(leixing == ''){
+					document.getElementById("showchooseclassic").style.display='none';
+				}
+			}
+		</script>
+	</body>
+</html>

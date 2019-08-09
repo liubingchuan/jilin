@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		<div class="manageNr">
+			<div class="usermanageOne">
+				<form>
+					<div class="clearfix">
+						<span class="left usermanageOneTl" th:text="结果列表（+${totalCount}+）">
+							
+						</span>
+						<a th:href="@{/task/get(disable='0')}" class="left manageproAddA">
+							新增文章
+						</a>
+						<div class="right usermanageOneSS">
+							<input type="text" id="keywords" />
+							<em onClick="search();"></em>
+						</div>
+					</div>
+					<div class="clearfix usermanageOneJs">
+						<div class="right">
+							<!-- <span class="left yishan">
+								已删除文章（209）
+							</span>
+							<select class="left">
+								<option>查看所有来源</option>
+							</select>
+							<select class="left jiancezts">
+								<option>查看状态</option>
+							</select>
+							<input type="button" class="left" value="筛选" /> -->
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="usermanageTwo">
+		    	<table cellpadding="0" cellspacing="0" width="100%" class="usermanageTable">
+		    		<tr>
+		    			<th>
+		    				标题
+		    			</th>
+		    			<th>
+		    				来源
+		    			</th>
+		    			<!-- <th>
+		    				分类
+		    			</th> -->
+		    			<th>
+		    				栏目
+		    			</th>
+		    			<th>
+		    				日期
+		    			</th>
+		    			<!-- <th>
+		    				状态
+		    			</th> -->
+		    			<th>
+		    				操作
+		    			</th>
+		    			
+		    		</tr>
+		    		<tr th:each="paper : ${paperList}">
+		    			<td >
+		    				<a th:href="@{/task/get(id=${paper.id},disable='0')}" class="manageProTl" th:text="${paper.title}">
+		    				</a>
+		    			</td>
+		    			<td th:text="${paper.institution}">
+		    			</td>
+		    			<!-- <td>
+		    				<span class="colorGreen" th:text="${paper.fenlei}"></span>
+		    			</td> -->
+		    			<td th:text="${paper.lanmu}">
+		    			</td>
+		    			<td th:text="${paper.pubtime}">
+		    			</td>
+		    			<td>
+		    				<a th:href="@{/task/get(id=${paper.id},disable='0')}" class="manageProBj">
+		    					编辑
+		    				</a>
+		    				<a th:href="@{/task/delete(id=${paper.id})}" onclick="if(confirm('确定删除?')==false)return false;" class="manageProsc">
+		    					删除
+		    				</a>
+		    			</td>
+		    			
+		    		</tr>
+		    	</table>
+		        <div class="sqPage">
+					    	<span th:text="'共 ' + ${totalCount}+' 条监测信息'">
+					    	</span>
+					    	<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''"  th:href="@{/task/getTaskList(q=${query},pageIndex=0,pageSize=10,lanmu=${lanmu},institution=${institution})}"><首页</a>
+ 							<a th:style="'display:' + @{((${pageIndex}+1) == 1 ? 'none' : 'inline-block')} + ''" th:href="@{/task/getTaskListt(q=${query},pageIndex=(${pageIndex}-1),pageSize=10,lanmu=${lanmu},institution=${institution})}"><上一页</a>
+ 							<!-- <a th:href="@{/jiance/jiancelist(pageIndex=(${pageIndex}),pageSize=10)}" th:text="(${pageIndex}+1) + '/' + ${totalPages}" ></a> -->
+							<a th:if="${pageIndex < 999 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/task/getTaskList(q=${query},pageIndex=(${pageIndex}+1),pageSize=10,lanmu=${lanmu},institution=${institution})}">下一页<em>></em></a>
+							<a th:if="${totalPages <= 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/task/getTaskList(q=${query},pageIndex=(${totalPages}-1),pageSize=10,lanmu=${lanmu},institution=${institution})}">尾页<em>></em></a>
+							<a th:if="${totalPages > 1000 }" th:style="'display:' + @{((${pageIndex}+1) == ${totalPages} ? 'none' : 'inline-block')} + ''" th:href="@{/task/getTaskList(q=${query},pageIndex=999,pageSize=10,lanmu=${lanmu},institution=${institution})}">尾页<em>></em></a>
+		            		<span th:text="'页次：' + (${pageIndex}+1) + '/' + ${totalPages}"></span>
+		            	</div>
+		    </div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		 	$(document).ready(function () {
+				showLoginInfo();
+		 	});
+	
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/task/getTaskList?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			
+			$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+			</script>
+	</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/xinit.css}" />
+		<link rel="stylesheet" th:href="@{/css/datePicker.css}" />
+		<link rel="stylesheet" th:href="@{/css/xmain.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索" onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    <div class="jiansuoNR">
+		    	<!-- <div class="jiansuoOne clearfix">
+		    		<div class="left jiansuoOnelf">
+		    			检索结果：43,345
+		    		</div>
+		    		<div class="jiansuoOneRt">
+		    			<a href="#">
+		    				<font color="red">专利</font>
+		    			</a>
+		    			<a href="#">
+		    				论文
+		    			</a>
+		    			<a href="#">
+		    				项目
+		    			</a>
+		    		</div>
+		    		<em class="jiansuoOneIco">
+		    			<a th:href="@{/patent/agmount}">进入稀土智库</a>
+		    		</em>
+		    	</div> -->
+		        <div class="jiansuoCon clearfix" th:object="${patent}">
+		        	<div class="left jiansuoLf">
+		        		<div class="jiansuoTl">
+		        			<img th:src="@{/images/1.png}" />
+		        			<a href="/">首页</a>><span>专利</span>
+		        		</div>
+		        		<div class="resultLfConNr">
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				公开号： 
+		        			</div>
+		        			<p th:text="*{publicnumber}"></p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				公开年： 
+		        			</div>
+		        			<p th:text="*{publicyear}"></p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				发明人:  
+		        			</div>
+		        			<p>
+		        				<span class="colorBlue" th:text="*{creator}">
+		        				</span>
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				专利权人：  
+		        			</div>
+		        			<p>
+		        				<span class="colorBlue" th:text="*{person}">
+		        				</span>
+		        			</p>
+		        		</div>
+		        		<div class="resultLfCon">
+		        			<div class="resultLfConTl">
+		        				IPC分类 
+		        			</div>
+		        			<p th:text="*{ipc}">
+		        			</p>
+		        		</div>
+		        		<a href="#" class="resultDown">
+		        			全文下载
+		        		</a>
+		        		</div>
+		        	    
+		        	    
+		        	   
+		        	   
+		        	    
+		        	</div>
+		            <div class="right jiansuoRt">
+		            	<div class="resultrTConTL" th:text="*{title}">
+		            		<a></a>
+		            	</div>
+		            	<span class="resultrtTlSmall">
+		            		专利摘要
+		            	</span>
+		            	<div class="zhuanliConOne" th:text="*{subject}">
+		            	</div>
+		            	<div class="zhuanliConTwo clearfix">
+		            		<a href="javascript:;" class="ahover">
+		            			权利要求
+		            		</a>
+		            		<a href="javascript:;">
+		            			专利描述
+		            		</a>
+		            	</div>
+		            	<div class="zhuanliConThree">
+		            		<div class="zhuanliConThreeM active">
+		            			<div class="zhuanliText" th:text="*{claim}">
+		            			</div>
+		            		</div>
+		            		<div class="zhuanliConThreeM">
+		            			<div class="zhuanliText" th:text="*{description}">
+		            			</div>
+		            		</div>
+		            	</div>
+		            </div>
+		        </div>
+		    </div>
+			</div>
+			</div>
+			<div th:replace="footer :: myfooter"></div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		$(document).ready(function () {
+			showLoginInfoFrontend();
+		});
+			function search(){
+		    	var uri = '';
+		    	/* var entrust = ''
+		    	$.each($('input:checkbox:checked'),function(){
+		    		if($(this).attr("name") == "entrust") {
+		    			if(entrust == '') 
+		    			{
+		    				entrust = $(this).val()
+		    			}
+		    			else
+		    			{
+		    				entrust = entrust + '-' + $(this).val()
+		    			}
+		    		}
+		        });
+		    	if(entrust != '') {
+		    		uri = uri + 'entrust=' + entrust + ''
+		    	} */
+				/* window.location.href="http://47.104.7.73/project/list?q=" + $("#keywords").val() + "&" + uri; */
+				if($("#keywords").val() != "") {
+			    	window.location.href="/patent/list?q=" + $("#keywords").val() + "&" + uri;
+				}
+			}
+				</script>
+	</body>
+</html>

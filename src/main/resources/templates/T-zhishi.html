@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<link rel="stylesheet" th:href="@{/css/verify.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/verify.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body class="whitebg">
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+				<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索"  onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    <div class="chaxinOne">
+		    	<h1>
+		    		科技查新
+		    	</h1>
+		    	<div class="chaxinOneText">
+		    	调研国内外领域/研究方向的科技政策，综合分析国家/机构中长期发展计划、科技前沿动态、行业报告与咨询报告，追踪研判国际年度重点农业政策，并进行解读解析，为我国机构、科研团队、科技政策制定部门、资金资助部门和贸易合作决策部门等提供支撑服务
+		    	</div>
+		    	<a id="shenqinglist">
+		    		查看我的申请>>
+		    	</a>
+		    </div>
+			</div>
+			<div class="chaxinBottom">
+				<div class="nycontainer clearfix">
+					<div class="left chaxinLF">
+						<form name="saveForm" th:action="@{/order/save}" th:object="${saveOrderRequest}" th:method="post">
+							<input id="userId" type="hidden" th:field="*{userId}" />
+							<input type="hidden" id="ordernumber" th:field="*{ordernumber}" />
+							<div class="chaxinTwo">
+								<div class="chaxinK chaxinTwoGp">
+									<em class="chaxintwoDel">×</em>
+									<div class="chaxinTwoTl">
+										主要联系人
+									</div>
+									<div class="chaxinTwoB">
+										<div class="clearfix">
+											<div class="left chaxingpLf">
+												<p class="chaxinName">
+													姓名<span class="colorRed">*</span>
+												</p>
+												<input type="text" class="chaxingpInp" id="name" th:field="*{name}" />
+												<div class="erroText" id="nameer">
+	    				                              姓名不能为空
+	    			                            </div>
+											</div>
+											<div class="right chaxingpRt">
+												<p class="chaxinName">
+													邮箱<span class="colorRed">*</span>
+												</p>
+												<input type="text" class="chaxingpInp" id="email" th:field="*{email}" />
+												<div class="erroText" id="emailer">
+	    				                                                 邮箱不能为空
+	    			                            </div>
+											</div>
+										</div>
+									    <div class="clearfix">
+											<div class="left chaxingpLf">
+												<p class="chaxinName">
+												单位 <span class="colorRed">*</span>
+												</p>
+												<input type="text" class="chaxingpInp" id="institution" th:field="*{institution}" />
+												<div class="erroText" id="institutioner">
+	    				                                                单位不能为空
+	    			                            </div>
+											</div>
+											<div class="right chaxingpRt">
+												<p class="chaxinName">
+												手机<span class="colorRed">*</span>
+												</p>
+												<input type="text" class="chaxingpInp" id="telephone" th:field="*{telephone}" />
+												<div class="erroText" id="telephoneer">
+	    				                                                手机不能为空
+	    			                            </div>
+											</div>
+										</div>
+									</div>
+									<div class="chaxinTwoB1" style="display:none">
+										<div class="clearfix">
+											<div class="left chaxingpLf">
+												<p class="chaxinName">
+													姓名
+												</p>
+												<input type="text" class="chaxingpInp" id="funame" th:field="*{funa}" />
+												<div class="erroText" id="funameer">
+	    				                                                姓名不能为空
+	    			                            </div>
+											</div>
+											<div class="right chaxingpRt">
+												<p class="chaxinName">
+													邮箱
+												</p>
+												<input type="text" class="chaxingpInp" id="fuemail" th:field="*{fuema}" />
+												<div class="erroText" id="fuemailer">
+	    				                                                邮箱不能为空
+	    			                            </div>
+											</div>
+										</div>
+									    <div class="clearfix">
+											<div class="left chaxingpLf">
+												<p class="chaxinName">
+												单位 
+												</p>
+												<input type="text" class="chaxingpInp" id="fuinstitution" th:field="*{fuins}" />
+												<div class="erroText" id="fuinstitutioner">
+	    				                                               单位不能为空
+	    			                            </div>
+											</div>
+											<div class="right chaxingpRt">
+												<p class="chaxinName">
+												手机
+												</p>
+												<input type="text" class="chaxingpInp" id="futelephone" th:field="*{futele}" />
+												<div class="erroText" id="futelephoneer">
+	    				                                             手机不能为空
+	    			                            </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a href="javascript:;" class="chaxinThree" id="add">
+								+添加其他联系人
+							</a> 
+							<div class="chaxinK">
+								<div class="chaxinTwoTl">
+								项目信息
+								</div>
+								<div class="chaxinTwoB">
+									<div class="chaxinMB chaxinw-one">
+										       <p class="chaxinName">
+												项目名称<span class="colorRed">*</span>
+												</p>
+												<input type="text" class="chaxingpInp" id="title" th:field="*{title}"/>
+												<div class="erroText" id="titleer">
+	    				                                               项目名称不能为空
+	    			                            </div>
+									</div>
+								    <div class="clearfix">
+								    	<div class="left chaxinMB chaxinw-two">
+								    		<p class="chaxinName">
+												查新范围
+												</p>
+												<select class="chaxinselect"  th:field="*{chaxinfanwei}">
+													<option value ="请选择查新范围">请选择查新范围</option>
+													<option value ="国内">国内</option>
+													<option value ="国外">国外</option>
+												</select>
+												<!-- <div class="erroText">
+	    				                                                输入错误
+	    			                            </div> -->
+								    	</div>
+								    	<div class="left chaxinMB chaxinw-three ml21">
+								    		<p class="chaxinName">
+												项目目的
+												</p>
+												<select class="chaxinselect" th:field="*{mudi}">
+													<option value="请选择项目目的">请选择项目目的</option>
+													<option value="项目评审">项目评审</option>
+												</select>
+												<!-- <div class="erroText">
+	    				                                                输入错误
+	    			                            </div> -->
+								    	</div>
+								    </div>
+								    <div class="chaxinMB">
+										       <p class="chaxinName">
+												项目科学要点<span class="colorRed">*</span>
+												</p>
+												<textarea class="chaxintextarea" id="kexueyaodian" th:field="*{kexueyaodian}" placeholder="充分反映出查新项目的概貌，简述项目的背景、技术问题、解决技术问题所采用的方案、主要技术特征、技术参数或指标、应用范围等相关技术内容。"></textarea>
+												<div class="erroText" id="kexueyaodianer">
+	    				                                            项目科学要点不能为空
+	    			                            </div>
+									</div>
+								    <div class="chaxinzj">
+								    	<div class="clearfix chaxinzjGp">
+								    	<div class="chaxinMB chaxinw-four left">
+										       <p class="chaxinName">
+												检索点<span class="colorRed">*</span>
+												</p>
+												<input type="text" id="jiansuodian" placeholder="多个检索点之间请用分号分隔" class="chaxingpInp" th:field="*{jiansuodian}"/>
+												<div class="erroText" id="jiansuodianer">
+	    				                                             检索点不能为空
+	    			                            </div>
+									    </div>
+									    <!-- <a href="javascript:;" class="left chaxinbtn chaxinzjADD">
+									    	<img th:src="@{/images/Sketchchaxin_13.png}"/>
+									    </a>
+									    <a href="javascript:;" class="left chaxinbtn chaxinzjdel">
+									    	<img th:src="@{/images/Sketchchaxin_15.png}" />
+									    </a> -->
+								        </div>
+								    </div>
+								    <div class="chaxinzj">
+								    	<div class="clearfix chaxinzjGp">
+								    	<div class="chaxinMB chaxinw-four left">
+										       <p class="chaxinName">
+												参考检索词<span class="colorRed">*</span>
+												</p>
+												<input type="text" id="jiansuoci" placeholder="多个参考检索词之间请用分号分隔" class="chaxingpInp" th:field="*{jiansuoci}"/>
+												<div class="erroText" id="jiansuocier">
+	    				                                               参考检索词不能为空
+	    			                            </div>
+									    </div>
+									  <!--   <a href="javascript:;" class="left chaxinbtn chaxinzjADD">
+									    	<img th:src="@{/images/Sketchchaxin_13.png}"/>
+									    </a>
+									    <a href="javascript:;" class="left chaxinbtn chaxinzjdel">
+									    	<img th:src="@{/images/Sketchchaxin_15.png}" />
+									    </a> -->
+								        </div>
+								    </div>
+								    <div class="clearfix">
+								    	<div class="left chaxinMB chaxinw-two">
+								    		<p class="chaxinName">
+												学科分类
+												</p>
+												<select class="chaxinselect" th:field="*{xueke}">
+													<option value="请选择学科分类">请选择学科分类</option>
+													<option value="遗传学">遗传学</option>
+												</select>
+												<!-- <div class="erroText">
+	    				                                                输入错误
+	    			                            </div> -->
+								    	</div>
+								    	<div class="left chaxinMB  chaxinw-two ml21">
+								    		<p class="chaxinName">
+												产业分类
+												</p>
+												<select class="chaxinselect" th:field="*{chanye}">
+													<option value="请选择产业分类">请选择产业分类</option>
+													<option value="生物医药">生物医药</option>
+												</select>
+												<!-- <div class="erroText">
+	    				                                                输入错误
+	    			                            </div> -->
+								    	</div>
+								    </div>
+								    <div class="chaxinMB">
+										       <p class="chaxinName">
+												说明
+												</p>
+												<div class="chaxinUp">
+													<textarea class="chaxintextarea1" th:field="*{beizhu}">
+														
+													</textarea>
+													<div class="chaxinUpNrLIST">
+														<div id="fujian">
+															
+														</div>
+														
+														
+													    <div class="chaxinupBtn">
+													    	<a href="javascript:;">
+													    		+ 点此上传附件
+													    		<input id="frontendFile" type="file" name="frontendFile"/>
+			    												<input id="frontendFileHidden" type="hidden" />
+			    												<input id="frontendFileNameHidden" type="hidden" />
+			    												<input id="frontendSizeHidden" type="hidden" />
+			    												<input type="hidden" class="chaxingpInp" id="shenqingfujianId" th:field="*{shenqingfujianId}"/>
+													    	</a>
+													    </div>
+													    
+													    
+													</div>
+												</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="huakuai">
+								<div class="outer" id="outer">
+            <input type="hidden" id="CaptchaID" value="0" />
+            <div class="filter-box"></div>
+            <span class="txtRoll">
+                按住滑块，拖拽到最右边
+            </span>
+            <div class="inner">&gt;&gt;</div>
+        </div>
+							</div> -->
+							<div class="huakuai" id="mpanel1">
+							</div>
+							<div class="erroText" id="yanzheng">
+	    				                                               按住滑块，向右滑动，通过验证
+	    			        </div>
+						    <input type="button" value="提交" class="chaxinSubmit"  onclick="uptext()"/>
+						</form>
+					</div>
+				    <div class="right chaxinRt">
+				    	<div class="chaxinRtTl">
+				    		<a th:href="@{/zhishifuwu/wenxianchuandi}" class="chaxinRtTl">申请文献传递</a>
+				    	</div>
+				    	<div class="chaxinfwTl">
+				    		服务说明
+				    	</div>
+				    	<div class="chaxinfwgp">
+				    		<div class="chaxinfwgpTl">
+				    			国内查新服务 
+				    		</div>
+				    		<P>费用：1000元/项</P>
+				    		<P> 时间：7个工作日 </P>
+				    		 <P>每项委托包含1个查新点。国内查新每增加1个查新点，查新费用增加300元，工作时间增加1个工作日； </P>
+				    	</div>
+				    	<div class="chaxinfwgp">
+				    		<div class="chaxinfwgpTl">
+				    			国内查新服务 
+				    		</div>
+				    		<P>费用：2000元/项</P>
+				    		<P>时间：10个工作日</P>
+				    		 <P>国内外查新每增加1个查新点，查新费用增加600元，工作时间增加3个工作日。</P>
+				    	</div>
+				    	<div class="chaxinfwgp">
+				    		<div class="chaxinfwgpTl">
+				    			说明 
+				    		</div>
+				    		<P>如需加急，按查新实际时间计算； </P>
+				    		<P>每项查新提交用户一式2份查新报告原件，每增加1份报告30元；</P>
+				    		 <P> 邮寄查新报告另收邮费及长话费50元。 </P>
+				    	</div>
+				    	
+				    </div>
+				</div>
+			</div>
+			</div>
+		 <div th:replace="footer :: myfooter"></div>
+		<!--弹窗-->
+		<div class="alertBg"></div>
+		<div class="alertCon alertxuq" th:if="${display != null && display == '1'}">
+	    	<img th:src="@{/images/Icon.png}"/>
+	    	<div class="alertxuqTEXT">
+	    		您的需求已提交<br />
+	    		请到<a id="shenqinglist2">我的申请</a>中查看最新进展
+	    	</div>
+	    	<div class="alertxuqa clearfix">
+	    		<a href="/">
+	    			返回首页
+	    		</a>
+	    		<a th:href="@{/zhishifuwu/zhishifuwu}" class="alertxuqaNext">
+	    			继续申请
+	    		</a>
+	    	</div>
+	    </div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/huakuai.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		var frontendId = null;
+		var shenqingfujianId = '';
+		var display =  [[${display}]];
+		$(document).ready(function () {
+			showLoginInfoFrontend();
+			//alert($.cookie("openId"));
+		    document.getElementById("shenqinglist").href="/zhishifuwu/shenqinglist?userid="+$.cookie("openId");
+		    if(display != null && display == 1){
+		    	 document.getElementById("shenqinglist2").href="/zhishifuwu/shenqinglist?userid="+$.cookie("openId");
+		    }
+		    $("#userId").attr("value",$.cookie("openId"));
+
+		    //document.getElementById("userid").value=$.cookie("openId");
+		});
+		 $("#frontendFile").live('change',function() {
+				var formData = new FormData();
+				formData.append('file', $('#frontendFile')[0].files[0]);
+//				$('#inputFileID').replaceWith('<input id="file" type="file" name="file"  />');
+				$.ajax({
+					url : '/file/fileUpload/'+frontendId,
+					type : 'POST',
+					cache : false,
+					data : formData,
+					processData : false,
+					contentType : false
+				}).done(function(res) {
+					if(shenqingfujianId == ''){
+						shenqingfujianId = res.uuid + '_' + res.filename+';';
+					}else{
+						shenqingfujianId = shenqingfujianId +res.uuid + '_' + res.filename+';';
+					}
+					$("#shenqingfujianId").val(shenqingfujianId);
+					showupload(res.filename,res.uploadtime,res.uuid + '_' + res.filename);
+					
+				}).fail(function(res) {
+					alert("文件上传失败，请重试")
+				});
+				
+			});
+		function showupload(filename,uploadtime,uuid){
+			 var con = '<div class=\"chaxinUplistgp clearfix\" id='+uuid+'>';
+			 con += '<a href=\"#\" class=\"left chaxinUplistName\">';
+			 con += filename;
+			 con += '</a>';
+			 con += "<a href=\"javascript:delupload('"+uuid+"')\" class=\"right chaxinUpDel\">";
+			 con += '删除';
+			 con += '</a>';
+			 con += '<span class=\"right\">';
+			 con += uploadtime;
+			 con += '</span>';
+			 con += '</div>';
+			 $("#fujian").append(con);
+		 }
+		function delupload(uuid){
+			document.getElementById(uuid).style.display='none';
+			shenqingfujianId = shenqingfujianId.replace(uuid+';','');
+			$("#shenqingfujianId").val(shenqingfujianId);
+		 }
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			function uptext() {
+				if($("#name").val() == ''){
+					document.getElementById('nameer').style.display='block';
+					return null;
+				}else{
+					document.getElementById('nameer').style.display='none';
+				} 
+				if($("#email").val() == ''){
+					document.getElementById('emailer').style.display='block';
+					return null;
+				}else{
+					var myReg=/^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+					 
+					if(myReg.test($("#email").val())){
+					　　　　document.getElementById('emailer').style.display='none';
+					}else{
+						 
+					　　　 //document.getElementById('emailer').value="邮箱格式不对!";
+					     $("#emailer").html("请输入有效的邮箱");
+					     document.getElementById('emailer').style.display='block';
+						 return false;
+					}
+				}
+				if($("#institution").val() == ''){
+					document.getElementById('institutioner').style.display='block';
+					return null;
+				}else{
+					document.getElementById('institutioner').style.display='none';
+				}
+				if($("#telephone").val() == ''){
+					document.getElementById('telephoneer').style.display='block';
+					return null;
+				}else{
+					 var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+			         if (!myreg.test($("#telephone").val())) {
+			        	 $("#telephoneer").html("请输入有效的手机号码");
+					     document.getElementById('telephoneer').style.display='block';
+			         	 return false;
+			         }
+					document.getElementById('telephoneer').style.display='none';
+				}
+				if($("#title").val() == ''){
+					document.getElementById('titleer').style.display='block';
+					return null;
+				}else{
+					document.getElementById('titleer').style.display='none';
+				}
+				if($("#kexueyaodian").val() == ''){
+					document.getElementById('kexueyaodianer').style.display='block';
+					return null;
+				}else{
+					document.getElementById('kexueyaodianer').style.display='none';
+				}
+				if($("#jiansuodian").val() == ''){
+					document.getElementById('jiansuodianer').style.display='block';
+					return null;
+				}else{
+					document.getElementById('jiansuodianer').style.display='none';
+				}
+				if($("#jiansuoci").val() == ''){
+					document.getElementById('jiansuocier').style.display='block';
+					return null;
+				}else{
+					document.getElementById('jiansuocier').style.display='none';
+				}
+				if(yanzheng != 1){
+					document.getElementById('yanzheng').style.display='block';
+					return null;
+				}else{
+					document.getElementById('yanzheng').style.display='none';
+				}
+				$("#ordernumber").val("科技查新");
+				$("form[name='saveForm']").submit();
+			}
+			
+			 $(document).ready(function() { 
+				  if(display != null && display == '1'){
+					  $(".alertBg").fadeIn();
+						$(".alertxuq").fadeIn();
+				  }
+			});
+			 var yanzheng = '';
+			 $('#mpanel1').slideVerify({
+	        		type : 1,		//类型
+	        		vOffset : 5,	//误差量，根据需求自行调整
+			        barSize : {
+			        	width : '60%',
+			        	height : '50px'
+			           
+			        },
+			        ready : function() {
+			    	},
+			        success : function() {
+			        	//alert('验证成功，添加你自己的代码！');
+			        	//......后续操作
+			        	yanzheng = 1;
+			        },
+			        error : function() {
+//			        	alert('验证失败！');
+			        }
+			        
+			    });
+			 
+				</script>
+		
+	</body>
+</html>

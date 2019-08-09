@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{head :: common-head}">
+	</head>
+	<body class="manageBody">
+		
+		<div th:replace="houtaizuocecaidan :: myzuocecaidan"></div>
+		<div th:replace="houtaidenglu :: myhoutaidenglu"></div>
+		<div class="manageNr">
+			<div class="M_mess">
+				<div class="M_messOne">
+					<p class="jbszOne">
+						中国科学院化学所
+					</p>
+					<div class="jbszTwo">
+						<a href="#" class="btnYellow">
+							启动
+						</a>
+						<a href="#" class="btnblue">
+							返回列表
+						</a>
+					</div>
+				</div>
+				<div class="jbszThree">
+					<p>将按如下顺序发表文章</p>
+					<p>文章列表网址:<a href="#" class="colorYellow">http://www.ibp.cas.cn/kyjz/</a>, 所有文章如下 </p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+					<p>
+						<a href="#" class="colorBlue">http://www.ibp.cas.cn/kyjz/zxdt/201810/t20181008_5137642.html</a>
+					</p>
+				</div>
+				<div class="M_messTwoTl clearfix">
+					<a href="javascript:;" class="ahover">
+						基本设置
+					</a>
+					<a href="javascript:;">
+						文章来源
+					</a>
+					<a href="javascript:;">
+						正文抓取
+					</a>
+				</div>
+			    <div class="M_messTwoB">
+			    	<div class="M_messTwoBm active">
+			    		<form>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				任务名称
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<input type="text" class="M_messInp caijiinp" value="中国科学院化学所" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				机构
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<select class="left">
+			    					<option>
+			    						文献情报中心
+			    					</option>
+			    				</select>
+			    				<a href="#" class="left colorBlue caijiadd">
+			    					+增加来源机构
+			    				</a>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				分类
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<select class="left">
+			    					<option>
+			    						生物医药
+			    					</option>
+			    				</select>
+			    				<a href="#" class="left colorBlue caijiadd">
+			    					+增加分类
+			    				</a>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				重要度
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="1" />
+			    					<label for="1">普通</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="2" />
+			    					<label for="2">重要</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="3" />
+			    					<label for="3">非常重要</label>
+			    				</div>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				更新时间
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<input type="text" class="left M_messInp jbsztime" value="360" />
+			    				<select class="left jbszdw">
+			    					<option>
+			    						分钟
+			    					</option>
+			    				</select>
+			    			</div>
+			    		</div>
+                        <div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				自动翻译
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="4" />
+			    					<label for="4">不翻译</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="5" />
+			    					<label for="5">翻译标题</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="6" />
+			    					<label for="6">翻译标题+全文</label>
+			    				</div>
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				字符集
+			    			</span>
+			    			<div class="M_messGpRt clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="7" />
+			    					<label for="7">自动检测</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="8" />
+			    					<label for="8">其他</label>
+			    				</div>
+			    				<input type="text" class="left M_messInp jbszqita" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				自动标签
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="gouxuan">
+			    					<input type="radio" id="9" />
+			    					<label for="9">自定义标签</label>
+			    				</div>
+			    				<div class="zidingyitext">
+			    					多关键词使用英文逗号隔开，不添加可留空。如：农业;饲料;微生物
+			    				</div>
+			    				<textarea class="zidingytea"></textarea>
+			    				<div class="gouxuan zidinggoux">
+			    					<input type="checkbox" id="10" />
+			    					<label for="10">包含全局标签内容</label>
+			    				</div>
+			    			</div>
+			    		</div>
+			    		<input type="button" value="保存修改" class="M_messSub" />
+			    		</form>
+			    	</div>
+			        <div class="M_messTwoBm">
+			    		<form>
+			    		<div class="M_messGp clearfix">
+			    			<span class="left M_messGpName">
+			    				文章来源
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="zidingyitext zidingyitext1">
+			    					可以添加多个网址，每个网址以新行开始
+			    				</div>
+			    				<textarea class="zidingytea" style="width: 1066px;"></textarea>
+			    			</div>
+			    		</div>
+			    		
+			    		
+                        <div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				匹配规则
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="4" />
+			    					<label for="4">使用URL通配符匹配&nbsp;&nbsp;<a href="#" class="colorBlue">自动匹配规则</a></label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="5" />
+			    					<label for="5">使用CSS选择器匹配</label>
+			    				</div>
+			    				</div>
+			    				<div class="zidingyitext zidingyitext1">
+			    					列表内文章地址，(*)为通配符, 例如: http://www.domain.com/article/(*)/
+			    				</div>
+			    				<input type="text" class="left M_messInp" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				采集规则
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="7" />
+			    					<label for="7">不使用规则</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="8" />
+			    					<label for="8">根据关键词采集</label>
+			    				</div>
+			    				</div>
+			    				<div class="clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="9" />
+			    					<label for="9">只匹配标题</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="10" />
+			    					<label for="10">只匹配正文</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="11" />
+			    					<label for="11">匹配标题与正文</label>
+			    				</div>
+			    				</div>
+			    				<div class="zidingyitext">
+			    					多关键词使用英文逗号隔开，不添加可留空。如：农业;饲料;微生物
+			    				</div>
+			    				<textarea class="zidingytea"></textarea>
+			    				<div class="jbszfour">
+			    					关键词出现次数：<input type="text" class="M_messInp jbsztime" value="360">[关键词出现次数]只在检测文章正文时有效 
+			    				</div>
+			    			</div>
+			    		</div>
+			    		<div class="clearfix">
+			    		<input type="button" value="保存修改" class="M_messSub left" />
+			    		<input type="button" value="测试" class="M_messSub left btngray ml10" />
+			    		</div>
+			    		</form>
+			    	</div>
+			        <div class="M_messTwoBm">
+			    		<form>
+			    		
+                        <div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				标题抓取
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="14" />
+			    					<label for="14">使用通配符匹配</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="15" />
+			    					<label for="15">使用CSS选择器匹配</label>
+			    				</div>
+			    				</div>
+			    				<div class="zidingyitext zidingyitext1">
+			    					"起始无重复HTML(*)结束无重复HTML" 例如: <title>(*)</title>
+			    				</div>
+			    				<input type="text" class="left M_messInp" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				正文抓取
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="16" />
+			    					<label for="16">使用通配符匹配</label>
+			    				</div>
+			    				<div class="left gouxuan">
+			    					<input type="radio" id="17" />
+			    					<label for="17">使用CSS选择器匹配</label>
+			    				</div>
+			    				</div>
+			    				<div class="zidingyitext zidingyitext1">
+			    					"起始无重复HTML(*)结束无重复HTML" 例如: <title>(*)</title>
+			    				</div>
+			    				<input type="text" class="left M_messInp" />
+			    			</div>
+			    		</div>
+			    		<div class="M_messGp clearfix jbszgp">
+			    			<span class="left M_messGpName">
+			    				输入地址
+			    			</span>
+			    			<div class="M_messGpRt">
+			    				<div class="clearfix">
+			    				<input type="text" class="left M_messInp" />
+			    				<input type="button" class="left btnblue jbsztjbtn" value="提交" />
+			    				</div>
+			    				
+			    			</div>
+			    		</div>
+			    		<div class="clearfix">
+			    		<input type="button" value="保存修改" class="M_messSub left" />
+			    		<input type="button" value="测试" class="M_messSub left btngray ml10" />
+			    		</div>
+			    		</form>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		 <script type="text/javascript" th:inline="javascript">
+ 			$(document).ready(function () {
+				showLoginInfo();
+		 	});
+		</script>
+	</body>
+</html>

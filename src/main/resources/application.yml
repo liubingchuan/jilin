@@ -1,0 +1,39 @@
+spring:
+  application:
+     name: shengwu
+  datasource:
+     #url: 'jdbc:mysql://45.76.75.11:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
+     #url: 'jdbc:mysql://47.104.7.73:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
+     url: 'jdbc:mysql://127.0.0.1:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
+     username: root
+     password: 123456
+     driver-class: 'com.mysql.jdbc.Driver'
+     #database-name: xitu
+     database-name: yiyao
+     init-sql: mysql/init.sql
+  thymeleaf:
+     cache: false
+     prefix: classpath:/templates/
+     suffix: .html
+     encoding: UTF-8
+     content-type: text/html
+     mode: HTML5
+  data:
+     elasticsearch:
+       cluster-name: docker-cluster
+       #cluster-nodes: 47.104.7.73:9300
+       cluster-nodes: 172.17.161.12:9300
+       #cluster-nodes: 47.104.7.73:9300
+
+server:
+  port: 8080
+    
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    
+files:
+  path: /root/files
+
+es:
+  endpoint: 172.17.161.12:9200

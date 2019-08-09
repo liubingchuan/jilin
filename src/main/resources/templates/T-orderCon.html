@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/init.css}" />
+		<link rel="stylesheet" th:href="@{/css/main.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+	</head>
+	<body>
+		<div class="nyMain">
+			<div class="nycontainer">
+			<div class="head">
+			<div class="clearfix">
+				<a href="/" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<a href="/" class="left headBack">
+					<<返回首页
+				</a>
+				<div class="left headsuos">
+					<em></em>
+					<input type="button" class="headsuosBtn" value="搜索"  onClick="search();"/>
+					<input type="text" class="headsuosInp" th:text="${query}" id="keywords"/>
+				</div>
+				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
+			</div>
+		</div>              
+		    
+			</div>
+			<div class="shenqingM">
+				<div class="nycontainer">
+				
+				    <div class="dingdanxq">
+					<div class="shenqingTop clearfix">
+						<span class="left shenqingTopName">
+							订单详情
+						</span>
+						
+					</div>
+					<div class="dingdanxqB" th:object="${order}">
+					
+		    		<a th:if="${order.chulizhuangtai == '已完成' && order.ordernumber == '科技查新' && order.chulirenfujianId != null && order.chulirenfujianId !='' }" th:href="@{/file/fileDownload(filename=${chufujianId})}" class="btnblue orderconDown">
+		    					下载报告 
+		    		</a>
+		    		<a th:if="${order.chulizhuangtai == '已完成' && order.ordernumber == '文献传递' && order.chulirenfujianId != null && order.chulirenfujianId !='' }" th:href="@{/file/fileDownload(filename=${chufujianId})}" class="btnblue orderconDown">
+		    					下载文章
+		    		</a>
+		    		
+						<!-- <a href="#" class="btnblue orderconDown">
+							下载报告
+						</a> -->
+						<div class="orderconTl">
+							订单状态
+						</div>
+						<div class="orderconText">
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									提交时间：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{shenqingshijian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									处理时间：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chulishijian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									处理状态：
+								</span>
+								<div class="orderconTextGpRt">
+									<span class="colorGreen" th:text="*{chulizhuangtai}"></span>
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 处理人：
+								</span>
+								<div class="orderconTextGpRt" th:text="${chuliren}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName" >
+									处理意见：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chuliyijian}">
+									 
+								</div>
+							</div>
+						</div>
+					    <div class="orderconTl">
+							订单信息
+						</div>
+						<div class="orderconText" th:if="${order.ordernumber == '科技查新'}">
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									订单号：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{uuid}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									项目名称：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{title}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									查新范围：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chaxinfanwei}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 查新目的：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{mudi}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									项目科学要点：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{kexueyaodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									参考检索词：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuoci}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									检索点：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									学科分类：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{xueke}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 产业分类：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chanye}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									备注：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{beizhu}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									附件： 
+								</span>
+								<div class="orderconTextGpRt" th:each="s : ${ids}" th:if=" ${not #lists.isEmpty(ids)}">
+									<p>
+										<span th:text="${#strings.substringAfter(s,'_')} "></span>
+										<a th:href="@{/file/fileDownload(filename=${s})}" class="colorBlue">下载</a>
+										
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="orderconText" th:if="${order.ordernumber == '文献传递'}">
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									订单号：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{uuid}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									文章标题：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{title}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									书刊名称：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{chaxinfanwei}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 文章作者：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{mudi}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									出版年：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{kexueyaodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									卷期：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuodian}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									起止页码：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{jiansuoci}">
+									
+								</div>
+							</div>
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									备注：
+								</span>
+								<div class="orderconTextGpRt" th:text="*{beizhu}">
+									
+								</div>
+							</div>
+							
+						</div>
+					    <div class="orderconTl">
+							主要联系人
+						</div>
+						<div class="orderconText" th:object="${linkuser}">
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									姓名:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{name}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									单位:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{institution}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									手机:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{telephone}">
+								
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 邮箱:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{email}">
+									
+								</div>
+							</div>
+							
+						</div>
+					    <div class="orderconTl" th:if="${fulinkuser != null && fulinkuser!=''}">
+							其他联系人
+						</div>
+						<div class="orderconText" th:object="${fulinkuser}" th:if="${fulinkuser != null}">
+							
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									姓名:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{name}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									单位:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{institution}">
+									
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									手机:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{telephone}">
+								
+								</div>
+							</div>
+							<div class="orderconTextGp clearfix">
+								<span class="left orderconTextGpName">
+									 邮箱:
+								</span>
+								<div class="orderconTextGpRt" th:text="*{email}">
+									
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					</div>
+
+				</div>
+			</div>
+			</div>
+		<div th:replace="footer :: myfooter"></div>
+		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:inline="javascript">
+		
+		$(document).ready(function () {
+			showLoginInfoFrontend();
+		});
+		
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			var fulinkuser =  [[${fulinkuser}]];
+				</script>
+	</body>
+</html>
