@@ -1385,14 +1385,14 @@ public class PatentController {
 		List<String> missedList = new ArrayList<String>();
 		Random random = new Random();
 		Map<String, String> map = new HashMap<String, String>();
-		int month = 12;
-		while(month<=450) {
+		int month = 14;
+		while(month<=120) {
 //			if(month==10) {
 //				System.out.println();
 //			}
 			System.out.println("已经到了"+month);
 			String date = getLastMonth(month);
-			map.put("SearchWord", "(ZY:( 工业大数据 ) OR MC:( 工业大数据 ) OR SMS:(工业大数据) OR QLYQ (工业大数据)) AND GKRQ:(" + date + ")");
+			map.put("SearchWord", "(ZY:( 电网 and 数据 ) OR MC:( 电网 and 数据 ) OR SMS:(电网 and 数据) OR QLYQ (电网 and 数据)) AND GKRQ:(" + date + ")");
 //		map.put("SearchWord", "稀土");
 			map.put("FMZL", "Y");
 			map.put("SYXX", "Y");
