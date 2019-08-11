@@ -35,4 +35,4 @@ files:
   path: /root/files
 
 es:
-  endpoint: 172.17.161.12:9200
+  endpoint: 39.96.82.217:9200

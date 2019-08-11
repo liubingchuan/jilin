@@ -1,8 +1,8 @@
 /*澶撮儴*/
-.indexbanner{padding: 0px 0px 89px 0px;color: #fff;background: url(../ximages/banner.png) no-repeat center;background-size: cover;margin-bottom: -80px;}
+.indexbanner{padding: 0px 0px 89px 0px;color: #fff;background: url(../ximages/zilingyu-bg.png) no-repeat center;background-size: cover;margin-bottom: -80px;}
 .index-container{width: 1040px;margin: 0px auto;}
 .logo{display: block;width: 29px;height: 34px;margin-top:11px;}
-.logo img{width: 46px;height: 46px;vertical-align:5px;}
+.logo img{width: 40px;height: 36px;vertical-align:5px;}
 .head{line-height: 68px;height: 68px;}
 .menu{width: 800px;}
 .menu a{display: inline-block;margin-left: 35px;font-size: 14px;color: #fff;float: left;}
@@ -12,6 +12,7 @@
 .loginbefore a:hover{color: #F5A623;}
 .logoText{margin-top: 60px;font-size: 30px;line-height: 30px;margin-bottom: 24px;}
 .indexTopSmall{font-size: 14px;margin-bottom: 30px;}
+.lingyu{padding-left:26px;font-size: 14px;letter-spacing:1px;margin-bottom: 30px;line-height:25px}
 .headSS{width: 782px;}
 .headSSLf{width: 606px;height: 40px;line-height: 40px;padding: 0px 30px;border-top-left-radius: 5px;border-bottom-left-radius: 5px;border: none;font-size: 14px;line-height: 40px;}
 input:focus{outline: none;}
@@ -36,7 +37,7 @@ body{background-color: rgba(249,249,249,1);}
 .loginAfterNoMSj{display: inline-block;background: url(../ximages/Triangle2.png) no-repeat;width: 12px;height: 9px;position: absolute;top: 11px;right: 10px;}
 /*灏鹃儴*/
 .xitufooterIMg{max-width: 100%;}
-.footerTop{background: url(../ximages/footer.png) no-repeat top center;background-size: cover;padding: 92px 0px 40px 0px;color: #fff;}
+.footerTop{background: url(../ximages/footer2.png) no-repeat top center;background-size: cover;padding: 92px 0px 40px 0px;color: #fff;}
 .footerTopLf{width: 216px;}
 .footerTopTl img{display: inline-block;vertical-align: -5px;margin-right: 10px;}
 .footerTopTl{font-size: 18px;margin-bottom: 15px;}
@@ -46,12 +47,12 @@ body{background-color: rgba(249,249,249,1);}
 .footerTopText a:hover{text-decoration: underline;}
 .footerTopMiddleTop{margin-bottom: 16px;}
 .footerTopLX{width: 214px;}
-.footerTopText span{display: block;height: 75px;overflow: hidden;}
+.footerTopText span{display: block;height: 275px;overflow: hidden;}
 .footerTopLXB li a{height: 25px;display: block;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 .footerTopLXB{margin-top: 66px;}
 .footerTopErw{text-align: center;font-size: 14px;}
 .footerTopErw img{width: 166px;display: inline-block;vertical-align: middle;margin-bottom: 10px;}
-.footerB{background: #6160EA;padding: 7px 0px;font-size: 12px;color: #fff;}
+.footerB{background: #191970;padding: 7px 0px;font-size: 12px;color: #fff;}
 /*棣栭〉涓棿鍐呭*/
 .headCompanyNr{position: relative;padding: 0px 44px;}
 .headCompanyA{display: block;text-align: center;}
@@ -312,10 +313,10 @@ body{background-color: rgba(249,249,249,1);}
 .yuansNrLbB .yuansNrThreeBM{display: block;position: absolute;left: 0px;top: 0px;opacity: 0;width: 1220px;}
 .yuansNrLbB{height: 294px;position: relative;}
 /*绗簩鎵瑰紑濮�*/
-.footerTopErw em{display: inline-block;background: url(../ximages/Sketchchaxin_24.png) no-repeat;width: 25px;height: 20px;vertical-align: middle;margin-right: 5px;}
+.footerTopErw em{display: inline-block;background: url(../images/Sketchchaxin_24.png) no-repeat;width: 25px;height: 20px;vertical-align: middle;margin-right: 5px;}
 .chaxinOne{color: #fff;padding: 50px 0px 48px 0px;}
 .chaxinOne h1{font-size: 44px;}
-body{font-family:"寰蒋闆呴粦","Microsoft YaHei"!important;}
+body{font-family:"微软雅黑","Microsoft YaHei"!important;}
 .chaxinOneText{font-size: 14px;line-height: 25px;width: 740px;margin-top: 10px;height: 75px;overflow: hidden;}
 .chaxinOne a{font-size: 14px;margin-top: 17px;line-height: 20px;display: inline-block;color: #fff;}
 .chaxinOne a:hover{text-decoration: underline;}

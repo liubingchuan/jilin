@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" th:href="@{/css/xinit.css}" />
+		<link rel="stylesheet" th:href="@{/css/xswiper.min.css}" />
+		<link rel="stylesheet" th:href="@{/css/xmain.css}" />
+		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/swiper.min.js}" ></script>
+	</head>
+	<body class="indexBody">
+		<div class="indexbanner">
+		<div class="index-container">
+		<div class="head">
+			<div class="clearfix">
+				<a href="index.html" class="left logo">
+					<img th:src="@{/images/logo.png}" />
+				</a>
+				<div class="left menu clearfix">
+					<a href="/">平台首页</a>
+					<a id="chanyejiance" th:href="@{/jiance/jiancelist}">产业监测</a>
+					<a id="xituzhiku" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>
+					<a id="zhishifuwu" th:href="@{/zhishifuwu/zhishifuwu}">知识服务</a>
+					<a th:href="@{/patent/agmount}">专利分析</a>
+					<!-- <a href="#">园区介绍</a>
+					<a href="#">关于我们</a> -->
+					
+				</div>
+				<div class="right">
+					<!--登录前-->
+					<!-- <th:block th:if="${user}==null"> -->
+					<div class="loginbefore" id="loginBefore">
+						<a href="javascript:;" class="loginBtn">登录</a><span>/</span>
+						<a href="javascript:;" class="loginBtn">注册</a>
+					</div>
+					<!-- </th:block> -->
+					<!--登陆后-->
+					<!-- <th:block th:unless="${user}==null"> -->
+					<th:block >
+					<div class="loginAfter" id="loginAfter">
+						<div class="loginAfterM">
+							<a href="#" class="loginAfterTx">
+								<img id="headImg" th:src="@{/ximages/jiazai.png}" />
+							</a>
+							<div class="loginAfterNo">
+
+								<div class="loginAfterNoM">
+									<em class="loginAfterNoMSj"></em>
+									<p>
+										<!-- <span class="loginName" th:text="${user.account}"></span> -->
+										<span class="loginName" id="logoinName"></span>
+										<span class="vip">
+										</span>
+									</p>
+									<p id="backgroud">
+										<!-- <a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}"  th:href="@{/user/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}"> -->
+										<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
+											<img th:src="@{/ximages/houtai.png}" />
+											进入管理后台
+										</a>
+									</p>
+									<p>
+										<a href="#">
+											<img th:src="@{/ximages/dingdan.png}" />
+											我的申请
+										</a>
+									</p>
+									<p>
+										<a id="quit" href="/">
+											<img th:src="@{/ximages/tuichu.png}" />
+											退出
+										</a>
+									</p>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					</th:block>
+				</div>
+			</div>
+		</div>
+		<div class="logoText">
+			泛在电力物联网
+		</div>
+		<div class="indexTopSmall">
+			以泛在电力物联网为支点在电力行业与其他行业的连接和跨界融合上面进行创新
+		</div>
+		<div class="headSS clearfix">
+			<input type="text" class="left headSSLf" id="keywords"/>
+			<input type="button" class="left headSSRt" value="搜索" id="search" onClick="search();"/>
+		</div>
+		<div class="headCompanyTl">
+			<span>
+				领域介绍
+			</span>
+		</div>
+		<div class="clearfix yuansu">
+		    <span class="lingyu">2019年国家电网公司“两会”做出全面推进“三型两网”建设，加快打造具有全球竞争力的世界一流能源互联网企业的战略部署，
+		是网络强国战略在公司的具体实践，是落实中央部署、发挥央企带头作用的重要举措，是适应内外部形势和挑战的必然要求。
+		建设泛在电力物联网为电网运行更安全、管理更精益、投资更精准、服务更优质开辟了一条新路，同时也可以充分发挥电网独特优势，
+		开拓数据经济这一巨大蓝海市场。建设泛在电力物联网是落实“三型两网、世界一流”战略目标的核心任务。</span>
+		</div>
+		<div class="headCompanyTl">
+			<span>
+				子领域服务
+			</span>
+		</div>
+		</div>
+		<div class="gongneng">
+			<div class="index-container clearfix">
+				<a id="xituzhiku11" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}" class="left">
+					<img th:src="@{/ximages/gongneg4.png}" />
+					企业智库
+				</a>
+				<a id="zhishifuwu11" th:href="@{/zhishifuwu/zhishifuwu}" class="left">
+					<img th:src="@{/ximages/gongneng3.png}" />
+					知识服务
+				</a>
+				<a id="cailiaojisuan11" th:href="@{/patent/agmount}" class="left">
+					<img th:src="@{/ximages/gongneng1.png}" />
+					专利分析
+				</a>
+				<a id="chanyejiance11" th:href="@{/jiance/jiancelist}" class="left">
+					<img th:src="@{/ximages/gongneng2.png}" />
+					产业监测
+				</a>
+			</div>
+		</div>
+		</div>
+	    
+		<div th:replace="footer :: myfooter"></div>
+	   <!--弹窗-->
+	    <div class="alertBg"></div>
+	    <!--登录二维码弹窗-->
+	    <div class="alertCon alertErw" id="showcode">
+	    	<img id="showqrcode" th:src="@{/ximages/jiazai.png}" />
+	    	<p class="alertErwText">
+	    		<span>微信</span>扫描直接注册登陆
+	    	</p>
+	    	<p class="alertErwA">
+	    		<a href="javascript:;" class="alertZHbtn">
+	    			用户名密码登录
+	    		</a>
+	    	</p>
+	    </div>
+	 <!--   账号登录-->
+	    <div class="alertCon alertZh">
+	    	<div class="alertTl">
+	    		账户登录
+	    	</div>
+	    	<div class="alertForm">
+	    		<form name="loginForm" action="/user/login" method="POST" enctype="multipart/form-data">
+	    			<div class="alertFormGp erro">
+	    			<label for="" class="alertFormName">
+	    				用户名<span>*</span>
+	    			</label>
+	    			<input type="text" class="alertInp" placeholder="请输入用户名" name="account" id="lnaccount"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			<div class="erroText" id="noaccount">
+	    				用户名不存在
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入密码" name="password" id="lnpassword"/>
+	    			<div class="erroText" id="passworderror">
+	    				密码错误
+	    			</div>
+	    			</div>
+	    			<!-- <div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				验证码<span>*</span>
+	    			</label>
+	    			<div class="clearfix alertYzm">
+	    			<input type="text" class="alertInp left" placeholder="请输入验证码" id="yzm"/>
+	    			<input type="hidden" class="alertInp left" placeholder="请输入验证码" id="hiddentoken" name="token"/>
+	    			<a href="#" class="right alertYzmImg">
+	    				<img th:src="@{/images/yzm.jpg}" />
+	    			</a>
+	    			</div>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div> -->
+	    		    <input type="submit" value="登录" class="alertSubmit" id="loginButtion"/>
+	    		    <div class="alertReg">
+	    		    	<a href="javascript:;">第一次使用？点击注册>></a>
+	    		    </div>
+	    		</form>
+	    	</div>
+	    </div>
+	    <!--绑定账号-->
+	    <div class="alertCon alertbd" id="alertbd">
+	    	<div class="alertTl">
+	    		信息绑定
+	    	</div>
+	    	<div class="alertForm">
+	    		<form id="bindForm">
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				用户名<span>*</span>
+	    			</label>
+	    			<input type="text" class="alertInp" placeholder="请输入用户名" id="bdaccount" name="account"/>
+	    			<div class="erroText" id="exist">
+	    				用户名已被绑定
+	    			</div>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入密码" id="bdpassword" name="password"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				确认密码<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请确认密码" id="bdpassword2" name="password2"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    			<div class="alertFormGp">
+	    			<label for="" class="alertFormName">
+	    				邮箱<span>*</span>
+	    			</label>
+	    			<input type="password" class="alertInp" placeholder="请输入邮箱地址" id="bdemail" name="email"/>
+	    			<div class="erroText">
+	    				输入错误
+	    			</div>
+	    			</div>
+	    		    <div class="clearfix">
+	    		    	<input type="button" class="right alertbdSub" value="确认" id="bindButtion"/>
+	    		    </div>
+	    		</form>
+	    	</div>
+	    </div>
+	    <script type="text/javascript" th:src="@{/js/main.js}" ></script>
+	    <script type="text/javascript">
+	    	/* var token =  [[${token}]];
+	    	var account =  [[${account}]];
+	    	var role =  [[${role}]]; */
+	    	
+	    	var time;
+	    	// 获取登录二维码
+	        function getQcode() {
+	            var url = "/wechat/getLoginQcode";
+	            $.ajax({
+	                url: url,
+	                type: "get",
+	                async: true,
+	                success: function (res) {
+	                    $("#showqrcode").attr("src", res.img);
+	                    time = window.setInterval(isLogin, 3000);
+	                }
+	            });
+	    	}
+
+	      //轮询判断是否登录
+	        function isLogin() {
+	                var url = "/wechat/islogin";
+	                $.ajax({
+	                    url: url,
+	                    type: "get",
+	                    async: true,
+	                    success: function (resObj) {
+// 	                        var resObj = JSON.parse(res);
+	                        if (resObj.code == 200) {
+	                            window.clearInterval(time);
+		        				$.cookie("openId",resObj.openId);
+		        				$.cookie("nickName",resObj.nickName);
+		        				$.cookie("headImg",resObj.headUrl);
+		        				$.cookie("role",resObj.role);
+		        				console.log("openId inserted into cookie " + resObj.openId)
+
+	                            if(resObj.bind==="false") {
+									$("#showcode").css('display','none');
+									// $("#showqrcode").css('display','none');
+	                            	$("#alertbd").css('display','block');
+	                            }else {
+									window.location.href = "/";
+								}
+	                        } else if (resObj.code == 1) {
+	                            window.clearInterval(time);
+	                            console.log("获取微信用户信息失败")
+	                        }
+	                    }
+	                });
+	            }
+	    	
+			 $(document).ready(function () {
+// 				console.log($.cookie("openId"))
+				$.cookie("openId","2");
+ 				$.cookie("role","管理员");
+				//$.cookie("role","普通用户");
+				
+				$("#alertbd").css('display','none');
+				if($.cookie("openId")!=null) {
+					$("#loginBefore").css('display','none'); 
+					$("#headImg").attr("src", $.cookie("headImg"));
+					$("#loginAfter").css('display','block');
+					if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
+						$(".vip").html("普通用户"); 
+						$("#backgroud").css('display','none'); 
+						document.getElementById("xituzhiku").removeAttribute("href");
+						document.getElementById("xituzhiku1").removeAttribute("href");
+						document.getElementById("xituzhiku2").removeAttribute("href");
+						document.getElementById("xituzhiku3").removeAttribute("href");
+						document.getElementById("xituzhiku4").removeAttribute("href");
+						document.getElementById("xituzhiku5").removeAttribute("href");
+						document.getElementById("xituzhiku6").removeAttribute("href");
+						document.getElementById("xituzhiku11").removeAttribute("href");
+						
+						document.getElementById("cailiaojisuan").removeAttribute("href");
+						document.getElementById("cailiaojisuan1").removeAttribute("href");
+						document.getElementById("cailiaojisuan2").removeAttribute("href");
+						document.getElementById("cailiaojisuan11").removeAttribute("href");
+						
+						document.getElementById("chanyejiance").removeAttribute("href");
+						document.getElementById("chanyejiance1").removeAttribute("href");
+						document.getElementById("chanyejiance2").removeAttribute("href");
+						document.getElementById("chanyejiance3").removeAttribute("href");
+						document.getElementById("chanyejiance11").removeAttribute("href");
+						
+						document.getElementById("zhishifuwu").removeAttribute("href");
+						document.getElementById("zhishifuwu1").removeAttribute("href");
+						document.getElementById("zhishifuwu2").removeAttribute("href");
+						document.getElementById("zhishifuwu3").removeAttribute("href");
+						document.getElementById("zhishifuwu4").removeAttribute("href");
+						document.getElementById("zhishifuwu11").removeAttribute("href");
+						
+					}
+					if($.cookie("role")!=null && $.cookie("role")==="管理员"){
+						$(".vip").html("管理员"); 
+						$("#backgroud").css('display','block'); 
+					}
+					$("#logoinName").html($.cookie("nickName"));
+				}else {
+					$("#loginBefore").css('display','block'); 
+					$("#loginAfter").css('display','none'); 
+				}
+				
+
+				
+				$("#loginBefore").click(function(){
+					getQcode();
+				});
+// 				if($.cookie("account")!=account){
+// 					$.cookie('account', account);
+// 				}
+// 				if($.cookie("role")!=role){
+// 					$.cookie('role', role);
+// 				}
+// 				if(token == "1"){
+// 					$('.alertZh').css('display','block');
+// 					alert("密码输入错误")
+// 					$('#noaccount').css('display','none');
+// 					$('#passworderror').css('display','block');
+// 				}
+				
+// 				if(token == "2"){
+// 					$('.alertZh').css('display','block');
+// 					alert("未找到该用户名")
+// 					$('#passworderror').css('display','none');
+// 					$('#noaccount').css('display','block'); 
+// 				}
+				
+				
+				$("#quit").click(function(){
+					$.cookie("openId", "", {expires: -1});
+					$.cookie("nickName", "", {expires: -1});
+					$.cookie("headImg", "", {expires: -1});
+					$.cookie("role", "", {expires: -1});
+					window.location.href = "/";
+				});
+				
+				 $("#bindButtion").click(function(){
+					if($("#bdaccount").val() == ""){
+						alert('请输入用户名','提示')
+						return;
+					}
+					if($("#bdpassword").val() == ""){
+						alert('请输入密码','提示')
+						return;
+					}
+					if($("#bdpassword2").val() == ""){
+						alert('请确认密码','提示')
+						return;
+					}
+					if($("#bdpassword").val() !== $("#bdpassword2").val()){
+						alert('两次输入密码不一致','提示')
+						return;
+					}
+					
+					if($("#bdemail").val() == ""){
+						alert('请输入电子邮箱','提示')
+						return;
+					}
+					if(!$("#bdemail").val().match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+						alert('请输入有效邮箱','提示')
+						return;
+					}
+					
+					
+					var formObject = {};
+			        var formArray =$("#bindForm").serializeArray();
+			        $.each(formArray,function(i,item){
+			            formObject[item.name] = item.value;
+			        });
+			        formObject["nickName"] = $.cookie("nickName")
+			        formObject["openId"] = $.cookie("openId")
+			        $.ajax({
+			            url:"user/bind",
+			            type:"post",
+			            contentType: "application/json; charset=utf-8",
+			            data: JSON.stringify(formObject),
+			            dataType: "json",
+			            success:function(data){
+			            	$("#alertbd").css('display','none'); 
+			                if(data.code == "200")
+			                {
+			                	console.log($.cookie("nickName"))
+			                	$("#logoinName").html($.cookie("nickName"));
+			    			    $("#headImg").attr("src", $.cookie("headImg"));
+								$("#loginBefore").css('display','none');
+			    			    $("#loginAfter").css('display','block');
+								window.location.href = "/";
+			                }
+			                else
+			                {
+			                	console.log("binding error" + data);
+			                	if(data.code=="401") {
+			                		alert(data.msg);
+			                	}else {
+			                	 $("#quit").click();
+			                	}
+			                	
+			                }
+			            },
+			            error:function(e){
+			                alert("错误！！");
+			                $("#quit").click();
+			            }
+			        });
+	
+				});
+				
+				
+				
+// 				$(".alertInp").bind('input propertychange',function(){ 
+// 					$('.erroText').css('display','none');
+// 				});
+			});
+			$("#keywords").keypress(function(e) {
+	            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+	             if (eCode == 13){
+	                 search();
+	             }
+	     	});
+			
+			function search(){
+			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+			    window.location.href="/patent/list?q=" + $("#keywords").val();
+				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+    </script>
+	</body>
+</html>

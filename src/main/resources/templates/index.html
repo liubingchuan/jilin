@@ -24,18 +24,18 @@
 					<a id="xituzhiku" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>
 					<a id="zhishifuwu" th:href="@{/zhishifuwu/zhishifuwu}">知识服务</a>
 					<a th:href="@{/patent/agmount}">专利分析</a>
-					<a href="#">园区介绍</a>
-					<a href="#">关于我们</a>
+					<!-- <a href="#">园区介绍</a>
+					<a href="#">关于我们</a> -->
 					
 				</div>
 				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
 			</div>
 		</div>
 		<div class="logoText">
-			沈阳高新区生物医药知识服务云平台
+			吉林工业大数据情报服务平台
 		</div>
 		<div class="indexTopSmall">
-			整合稀生物医药领域信息资源，为沈阳高新区提供定制化知识服务
+			整合生物医药领域信息资源，为沈阳高新区提供定制化知识服务
 		</div>
 		<div class="headSS clearfix">
 			<input type="text" class="left headSSLf" placeholder="请输入生物医药相关的关键词" id="keywords"/>
@@ -43,7 +43,7 @@
 		</div>
 		<div class="headCompanyTl">
 			<span>
-				重点企业导航
+				重点子领域
 			</span>
 		</div>
 		<div class="headCompanyNr">
@@ -51,49 +51,44 @@
 			 	<div class="swiper-container">
                     <div class="swiper-wrapper">
 	    			 <div class="swiper-slide">
-	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo1.png}" />
+	    			 	<a th:href="@{/zilingyu/zilingyu}" class="headCompanyA">
+	    			 		<img th:src="@{/images/lingyuyi.png}" />
 	    			 	</a>
 	    			  </div>
 	    			  <div class="swiper-slide">
 	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_2.png}" />
+	    			 		<img th:src="@{/images/lingyuer.png}" />
 	    			 	</a>
 	    			  </div>
 	    			   <div class="swiper-slide">
 	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_3.png}" />
+	    			 		<img th:src="@{/images/lingyuer.png}" />
 	    			 	</a>
 	    			  </div>
 	    			  <div class="swiper-slide">
 	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_4.png}" />
-	    			 	</a>
-	    			  </div>
-	    			  <div class="swiper-slide">
-	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo1.png}" />
-	    			 	</a>
-	    			  </div>
-	    			  <div class="swiper-slide">
-	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_2.png}" />
+	    			 		<img th:src="@{/images/lingyuer.png}" />
 	    			 	</a>
 	    			  </div>
 	    			   <div class="swiper-slide">
 	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_3.png}" />
+	    			 		<img th:src="@{/images/lingyuer.png}" />
+	    			 	</a>
+	    			  </div>
+	    			   <div class="swiper-slide">
+	    			 	<a href="#" class="headCompanyA">
+	    			 		<img th:src="@{/images/lingyuer.png}" />
 	    			 	</a>
 	    			  </div>
 	    			  <div class="swiper-slide">
 	    			 	<a href="#" class="headCompanyA">
-	    			 		<img th:src="@{/images/qiyelogo_4.png}" />
+	    			 		<img th:src="@{/images/lingyuer.png}" />
 	    			 	</a>
 	    			  </div>
+	    			 
 	    			 </div>
 	    	      </div>
-			    <div class="swiper-button-next"></div>
-                 <div class="swiper-button-prev"></div>
+			 
 			    <script>
     var swiper = new Swiper('.headCompanyNrM .swiper-container', {
       slidesPerView: 7,

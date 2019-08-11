@@ -56,12 +56,23 @@ public class ZhishifuwuController {
     private ZhishifuwuMapper zhishifuwuMapper;
 	
 	@GetMapping(value = "zhishifuwu/zhishifuwu")
-	public String WenxianChuandi(Model model) {
+	public String Kejichaxin(Model model) {
 		SaveOrderRequest saveOrderRequest = new SaveOrderRequest();
 		model.addAttribute("saveOrderRequest", saveOrderRequest);
 		return "T-zhishi";
 	}
-	
+	@GetMapping(value = "zhishifuwu/wenxianchuandi")
+	public String WenxianChuandi(Model model) {
+		SaveOrderRequest saveOrderRequest = new SaveOrderRequest();
+		model.addAttribute("saveOrderRequest", saveOrderRequest);
+		return "T_wenxian";
+	}
+	@GetMapping(value = "zhishifuwu/qingbaofuwu")
+	public String Qingbaofuwu(Model model) {
+		SaveOrderRequest saveOrderRequest = new SaveOrderRequest();
+		model.addAttribute("saveOrderRequest", saveOrderRequest);
+		return "T_qingbao";
+	}
 	@PostMapping(value = "order/save")
 	public String saveOrder(SaveOrderRequest request,Model model, RedirectAttributes redirectAttributes) throws Exception {
 		Order order = new Order();
