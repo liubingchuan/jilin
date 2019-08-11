@@ -1393,6 +1393,7 @@ public class PatentController {
 			System.out.println("已经到了"+month);
 			String date = getLastMonth(month);
 			map.put("SearchWord", "(ZY:( 电网 and 数据 ) OR MC:( 电网 and 数据 ) OR SMS:(电网 and 数据) OR QLYQ (电网 and 数据)) AND GKRQ:(" + date + ")");
+//			map.put("SearchWord", "(ZY:( 电 and 物联网 ) OR MC:( 电 and 物联网 ) OR SMS:(电 and 物联网) OR QLYQ (电 and 物联网)) AND GKRQ:(" + date + ")");
 //		map.put("SearchWord", "稀土");
 			map.put("FMZL", "Y");
 			map.put("SYXX", "Y");
