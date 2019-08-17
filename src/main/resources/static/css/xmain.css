@@ -52,7 +52,7 @@ body{background-color: rgba(249,249,249,1);}
 .footerTopLXB{margin-top: 66px;}
 .footerTopErw{text-align: center;font-size: 14px;}
 .footerTopErw img{width: 166px;display: inline-block;vertical-align: middle;margin-bottom: 10px;}
-.footerB{background: #191970;padding: 7px 0px;font-size: 12px;color: #fff;}
+.footerB{background: #0F2560;padding: 7px 0px;font-size: 12px;color: #fff;}
 /*棣栭〉涓棿鍐呭*/
 .headCompanyNr{position: relative;padding: 0px 44px;}
 .headCompanyA{display: block;text-align: center;}
@@ -95,7 +95,7 @@ body{background-color: rgba(249,249,249,1);}
 .yuansu a:hover{opacity: 0.8;}
 .yuansuB{color: #EB4F62;font-size: 16px;text-align: center;}
 .yuansu{width: 884px;}
-.gongneng{background: linear-gradient(91deg,rgba(148,148,242,0.4) 0%,rgba(91,91,225,0.4) 24%,rgba(91,91,225,0.4) 80%,rgba(148,148,242,0.4) 100%);padding: 23px 0px;}
+.gongneng{background:linear-gradient(91deg,rgba(9,25,73,1) 0%,rgba(22,48,124,1) 24%,rgba(91,91,225,1) 80%,rgba(148,148,242,1) 100%);opacity:0.38409999999999994;}
 .gongneng a{display: inline-block;border-right: 1px solid #fff;padding: 0px 30px;font-size: 20px;color: #fff;line-height: 42px;}
 .gongneng img{display: inline-block;vertical-align: middle;margin-right: 20px;}
 .gongneng a:hover{opacity: 0.8;}

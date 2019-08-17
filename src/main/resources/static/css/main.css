@@ -50,15 +50,15 @@ body{background-color: rgba(249,249,249,1);}
 .footerTopLXB{margin-top: 66px;}
 .footerTopErw{text-align: center;font-size: 14px;}
 .footerTopErw img{width: 166px;display: inline-block;vertical-align: middle;margin-bottom: 10px;}
-.footerB{background: #191970;padding: 7px 0px;font-size: 12px;color: #fff;}
+.footerB{background: #0F2560;padding: 7px 0px;font-size: 12px;color: #fff;}
 /*首页中间内容*/
 .headCompanyNr{position: relative;}
 .headCompanyA{display: block;text-align: center;}
 .headCompanyA img{max-width: 100%;height: 48px;}
 .indexNr{padding: 56px 0px;}
 .indexLF{width: 480px;background: url(../images/shouyefuwu.png) no-repeat center;background-size: cover;padding:0px 3px;min-height: 289px;}
-.indexLFTL a{display: block;width: 33.3%;text-align: center;background: rgba(55,208,235,0.3);font-size: 18px;color: #fff;padding: 13px 0px;float: left;}
-.indexLFTL .ahover{background: rgba(43,142,190,1);}
+.indexLFTL a{display: block;width: 33.3%;text-align: center;background: #0E2887;font-size: 18px;color: #fff;padding: 13px 0px;float: left;}
+.indexLFTL .ahover{background: #163485;border-bottom: 2px solid #F5A623;}
 .indexLFBM{display: none;padding: 20px 20px;color: #fff;}
 .indexRtBM{display: none;}
 .active{display: block;}
@@ -119,7 +119,7 @@ body{background-color: rgba(249,249,249,1);}
 .alertbdSub{font-size: 14px;height: 36px;border: none;width: 80px;border: none;background: #1D85A8;border-radius: 3px;font-size: 14px;color: #fff;text-align: center;cursor: pointer;line-height: 36px;margin-top: 14px;display: block;}
 .alertbdSub:hover{opacity: 0.8;}
 /*检索页*/
-.nyMain{background: url(../images/header-bg.png) no-repeat center top;margin-bottom: 50px;}
+.nyMain{background: url(../images/header-bg.png) no-repeat center top;margin-bottom: 50px;width:100%}
 .nycontainer{width: 1220px;margin: 0px auto;}
 .jiansuoOne{line-height: 42px;background-color: #F7F7F7;position: relative;}
 .jiansuoOnelf{width: 296px;text-align: center;border-right: 1px solid #D2CFCF;color: #595968;font-size: 14px;height: 42px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
@@ -171,7 +171,7 @@ body{background-color: rgba(249,249,249,1);}
 .manageLfLogo img{width: 40px;height: 36px;vertical-align: middle;}
 .manageLfLogo{padding: 40px 0px;margin: 0px 14px;border-bottom: 1px solid #fff;text-align: center;margin-bottom: 10px;}
 .manageMenuF{font-size: 14px;color: #fff;display: block;padding: 15px 0px;text-align: center;position: relative;}
-.manageMenuS a{display: block;font-size: 14px;color: #fff;background: #1D85A8;padding: 10px 0px;text-align: center;}
+.manageMenuS a{display: block;font-size: 14px;color: #fff;background: #0E2887;padding: 10px 0px;text-align: center;}
 .manageMenuF:hover{color: #fff;opacity: 0.8;}
 .manageMenuS a:hover{background: #166e8b;}
 .manageMenuS{display: none;}
