@@ -326,99 +326,107 @@ public class PaperController {
     }
     
     
-//    /**
-//     * 文件解析
-//     * */
-//    @GetMapping(value="paper/import")
-//    @ResponseBody 
-//    public R importJson(){
-//    	try {
-//    		
-//    		StringBuffer buffer = new StringBuffer();
-//    		/** CSV文件列分隔符 */
-//    	    String CSV_COLUMN_SEPARATOR = ",";
-//
-//    	    /** CSV文件列分隔符 */
-//    	    String CSV_RN = "\r\n";
-//    	    buffer.append("author").append(CSV_COLUMN_SEPARATOR).append("org").append(CSV_RN);
-//			String filePath = String.format("/Users/liubingchuan/git/bdm/meta/xitu.json");
-//			File file = new File(filePath);
-//			JSONReader reader=new JSONReader(new FileReader(file));
-//			reader.startArray();
-//			List<Paper> papers = new LinkedList<Paper>();
-//			int i=1;
-//			String[] titles = new String[]{"author","org"};
-//			List<String> orgs= new ArrayList<String>();
-//			while (reader.hasNext()) {
-//				
-//	            PaperVO vo = reader.readObject(PaperVO.class);
-////	            Paper paper = new Paper();
-////	            paper.setId(vo.get_id());
-////	            paper.setNow(System.currentTimeMillis());
-////	            List<String> links = new ArrayList<String>();
-////	            links.add(vo.getUrl());
-////	            paper.setLink(links);
-////	            paper.setTitle(vo.getTitle());
-////	            paper.setIssue(vo.getOnlineDate());
-//	            
-////	            String year = "".equals(vo.getOnlineDate())?"预发布":vo.getOnlineDate().substring(0, 4);
-////	            paper.setYear(year);
-////	            List<String> authors = vo.getAuthor();
-////	            List<String> paperAuthors = new ArrayList<String>();
-////	            boolean isAuthor = false;
-////	            for(String author: authors) {
-////	            	if(isAuthor) {
-////	            		paperAuthors.add(author);
-////	            	}
-////	            	if("|".equals(author)){
-////	            		isAuthor = true;
-////	            	}
-////	            }
-////	            paper.setAuthor(paperAuthors);
-////	            paper.setSubject(vo.getAbc());
-////	            List<String> keywords = new ArrayList<String>();
-////	            for(String keyword: vo.getKeyWord()) {
-////	            	keywords.add(keyword);
-////	            }
-////	            paper.setKeywords(keywords);
-////	            List<String> orgs= new ArrayList<String>();
-//	            
-//	            for(String org : vo.getOrganization()) {
-//	            	if(org.contains(",")) {
-//	            		String[] orgArray = org.split(",");
-//	            		for(String newOrg : orgArray) {
-//	            			if(newOrg.contains("!")) {
-//	            				if(!orgs.contains(newOrg.split("!")[0])){
-//	            					orgs.add(newOrg.split("!")[0]);
-//	            				}
-//	            			}else {
-//	            				if(!orgs.contains(newOrg)){
-//	            					orgs.add(newOrg);
-//	            				}
-//	            			}
-//	            		}
-//	            	}else {
-//	            		if(!orgs.contains(org)) {
-//	            			orgs.add(org);
-//	            		}
-//	            	}
-//	            }
-//	            
-////	            for(String auth: paperAuthors) {
-////	            	buffer.append(auth).append(CSV_COLUMN_SEPARATOR);
-////	            	for(String org :orgs) {
-////	            		buffer.append(org).append(";");
-////	            	}
-////	            	buffer.deleteCharAt(buffer.length()-1);
-////	            	buffer.append(CSV_RN);
-////	            }
-////	            paper.setInstitution(orgs);
-////	            paper.setJournal(vo.getJournal());
-////	            papers.add(paper);
-//	            System.out.println("当前id----》" + i);
-//	            i++;
-//	        }
-//			
+    /**
+     * 文件解析
+     * */
+    @GetMapping(value="paper/import")
+    @ResponseBody 
+    public R importJson(){
+    	try {
+    		
+    		StringBuffer buffer = new StringBuffer();
+    		/** CSV文件列分隔符 */
+    	    String CSV_COLUMN_SEPARATOR = ",";
+
+    	    /** CSV文件列分隔符 */
+    	    String CSV_RN = "\r\n";
+    	    buffer.append("author").append(CSV_COLUMN_SEPARATOR).append("org").append(CSV_RN);
+			String filePath = String.format("/Users/liubingchuan/Desktop/import/10.json");
+			File file = new File(filePath);
+			JSONReader reader=new JSONReader(new FileReader(file));
+			reader.startArray();
+			List<Paper> papers = new LinkedList<Paper>();
+			int i=1;
+			String[] titles = new String[]{"author","org"};
+			List<String> orgs= new ArrayList<String>();
+			while (reader.hasNext()) {
+				
+	            PaperVO vo = reader.readObject(PaperVO.class);
+	            Paper paper = new Paper();
+	            paper.setId(vo.get_id());
+	            paper.setNow(System.currentTimeMillis());
+	            List<String> links = new ArrayList<String>();
+	            links.add(vo.getUrl());
+	            paper.setLink(links);
+	            paper.setTitle(vo.getTitle());
+	            paper.setIssue(vo.getOnlineDate());
+	            
+	            String year = "".equals(vo.getOnlineDate())?"预发布":vo.getOnlineDate().substring(0, 4);
+	            paper.setYear(year);
+	            List<String> authors = vo.getAuthor();
+	            List<String> paperAuthors = new ArrayList<String>();
+	            boolean isAuthor = false;
+	            for(String author: authors) {
+	            	if(isAuthor) {
+	            		paperAuthors.add(author);
+	            	}
+	            	if("|".equals(author)){
+	            		isAuthor = true;
+	            	}
+	            }
+	            paper.setAuthor(paperAuthors);
+	            paper.setSubject(vo.getAbc());
+	            List<String> keywords = new ArrayList<String>();
+	            for(String keyword: vo.getKeyWord()) {
+	            	keywords.add(keyword);
+	            }
+	            paper.setKeywords(keywords);
+//	            List<String> orgs= new ArrayList<String>();
+	            
+	            for(String org : vo.getOrganization()) {
+	            	if(org.contains(",")) {
+	            		String[] orgArray = org.split(",");
+	            		for(String newOrg : orgArray) {
+	            			if(newOrg.contains("!")) {
+	            				if(!orgs.contains(newOrg.split("!")[0])){
+	            					orgs.add(newOrg.split("!")[0]);
+	            				}
+	            			}else {
+	            				if(!orgs.contains(newOrg)){
+	            					orgs.add(newOrg);
+	            				}
+	            			}
+	            		}
+	            	}else {
+	            		if(!orgs.contains(org)) {
+	            			orgs.add(org);
+	            		}
+	            	}
+	            }
+	            
+	            for(String auth: paperAuthors) {
+	            	buffer.append(auth).append(CSV_COLUMN_SEPARATOR);
+	            	for(String org :orgs) {
+	            		buffer.append(org).append(";");
+	            	}
+	            	buffer.deleteCharAt(buffer.length()-1);
+	            	buffer.append(CSV_RN);
+	            }
+	            paper.setInstitution(orgs);
+	            paper.setJournal(vo.getJournal());
+	            papers.add(paper);
+	            if(papers.size()==100) {
+	            	paperRepository.saveAll(papers);
+	            	papers.clear();
+	            }
+	            System.out.println("当前id----》" + i);
+	            i++;
+	        }
+			
+			if(papers != null && papers.size()>0) {
+				paperRepository.saveAll(papers);
+			}
+			
 //			try{
 //				for(String s : orgs) {
 //					buffer.append(s).append(CSV_RN);
@@ -442,198 +450,198 @@ public class PaperController {
 //			     }catch(IOException e){
 //			      e.printStackTrace();
 //			 }
-//			reader.endArray();
-//	        reader.close();
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//    	return R.ok();
-//    }
-    /**
-     * 文件解析
-     * */
-    @GetMapping(value="paper/import")
-    @ResponseBody 
-    public R importJson(){
-    	try {
-    		
-    		StringBuffer buffer = new StringBuffer();
-    		/** CSV文件列分隔符 */
-    		String CSV_COLUMN_SEPARATOR = ",";
-    		
-    		/** CSV文件列分隔符 */
-    		String CSV_RN = "\r\n";
-    		buffer.append("author").append(CSV_COLUMN_SEPARATOR).append("org").append(CSV_RN);
-    		String filePath = String.format("/Users/liubingchuan/git/bdm/meta/xitu.json");
-    		File file = new File(filePath);
-    		JSONReader reader=new JSONReader(new FileReader(file));
-    		reader.startArray();
-    		List<Paper> papers = new LinkedList<Paper>();
-    		int i=1;
-//    		String[] titles = new String[]{"author","org"};
-//    		List<String> orgs= new ArrayList<String>();
-    		List<String> totalOrgs = new LinkedList<String>();
-    		while (reader.hasNext()) {
-    			
-    			PaperVO vo = reader.readObject(PaperVO.class);
-//	            Paper paper = new Paper();
-//	            paper.setId(vo.get_id());
-//	            paper.setNow(System.currentTimeMillis());
-//	            List<String> links = new ArrayList<String>();
-//	            links.add(vo.getUrl());
-//	            paper.setLink(links);
-//	            paper.setTitle(vo.getTitle());
-//	            paper.setIssue(vo.getOnlineDate());
-    			
-//	            String year = "".equals(vo.getOnlineDate())?"预发布":vo.getOnlineDate().substring(0, 4);
-//	            paper.setYear(year);
-	            List<String> authors = vo.getAuthor();
-	            List<String> paperAuthors = new ArrayList<String>();
-	            boolean isAuthor = false;
-	            if(i==42){
-	            	System.out.println();
-	            }
-	            for(String author: authors) {
-	            	if(author.contains("谭培功")){
-	            		System.out.println();
-	            	}
-	            	if(isAuthor) {
-	            		paperAuthors.add(author);
-	            	}
-	            	if("|".equals(author)){
-	            		isAuthor = true;
-	            	}
-	            }
-//	            paper.setAuthor(paperAuthors);
-//	            paper.setSubject(vo.getAbc());
-//	            List<String> keywords = new ArrayList<String>();
-//	            for(String keyword: vo.getKeyWord()) {
-//	            	keywords.add(keyword);
-//	            }
-//	            paper.setKeywords(keywords);
-	            List<String> orgs= new ArrayList<String>();
-    			
-    			for(String org : vo.getOrganization()) {
-    				org = org.trim();
-    				if(org.contains(",")) {
-    					String[] orgArray = org.split(",");
-    					//trim一下
-    					String[] newArray = new String[orgArray.length];
-    					for(int n=0;n<orgArray.length;n++) {
-    						newArray[n] = orgArray[n].trim();
-    					}
-    					// 只保留子串
-    					newArray = subString(newArray);
-    					
-    					for(String newOrg : newArray) {
-    						String s = filter(newOrg);
-    						if(s.length()==0){
-    							continue;
-    						}
-    						if(s.contains("!")) {
-    							String orgName = s.split("!")[0];
-    							orgName = orgName.replaceAll(";", "");
-    							if(!orgs.contains(orgName)){
-    								orgs.add(orgName);
-    							}
-    						}else {
-    							s = s.replaceAll(";", "");
-    							if(!orgs.contains(s)){
-    								orgs.add(s);
-    							}
-    						}
-    						if(s.split(" ").length>1) {
-    							s = s.split(" ")[0];
-    						}
-    						if(s.contains("教授")){
-    							s = "";
-    						}
-    					}
-    				}else {
-    					org = org.replaceAll(";", "");
-    					if(org.split(" ").length>1) {
-    						org = org.split(" ")[0];
-    					}
-    					if(org.contains("教授")){
-    						org = "";
-    						continue;
-    					}
-    					if(!orgs.contains(org)) {
-    						orgs.add(org);
-    					}
-    				}
-    			}
-    			
-	            for(String auth: paperAuthors) {
-	            	buffer.append(auth).append(CSV_COLUMN_SEPARATOR);
-	            	for(String org :orgs) {
-	            		buffer.append(org).append(";");
-	            	}
-	            	buffer.deleteCharAt(buffer.length()-1);
-	            	buffer.append(CSV_RN);
-	            }
-//	            paper.setInstitution(orgs);
-//	            paper.setJournal(vo.getJournal());
-//	            papers.add(paper);
-    			System.out.println("当前id----》" + i);
-    			i++;
-    			for(String org: orgs) {
-    				if(!totalOrgs.contains(org)) {
-    					totalOrgs.add(org);
-    				}
-    			}
-    		}
-    		
-    		try{
-//    			for(String s : orgs) {
-//    				buffer.append(s).append(CSV_RN);
-//    			}
-    			String data = buffer.toString();
-    			
-    			File aoFile =new File("/Users/liubingchuan/git/xitu/ao.csv");
-    			
-    			//if file doesnt exists, then create it
-    			if(!aoFile.exists()){
-    				aoFile.createNewFile();
-    			}
-    			
-    			//true = append file
-    			FileWriter fileWritter = new FileWriter(aoFile.getName(),true);
-    			fileWritter.write(data);
-    			fileWritter.close();
-    			
-    			StringBuffer sb = new StringBuffer();
-    			for(String s: totalOrgs) {
-    				sb.append(s).append(CSV_RN);
-    			}
-    			String orgData = sb.toString();
-    			
-    			File orgFile =new File("/Users/liubingchuan/git/xitu/organization.csv");
-    			
-    			//if file doesnt exists, then create it
-    			if(!orgFile.exists()){
-    				orgFile.createNewFile();
-    			}
-    			
-    			//true = append file
-    			FileWriter orgFileWritter = new FileWriter(orgFile.getName(),true);
-    			orgFileWritter.write(orgData);
-    			orgFileWritter.close();
-    			
-    			System.out.println("Done");
-    			
-    		}catch(IOException e){
-    			e.printStackTrace();
-    		}
-    		reader.endArray();
-    		reader.close();
-    		
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+			reader.endArray();
+	        reader.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     	return R.ok();
     }
+//    /**
+//     * 文件解析
+//     * */
+//    @GetMapping(value="paper/import")
+//    @ResponseBody 
+//    public R importJson(){
+//    	try {
+//    		
+//    		StringBuffer buffer = new StringBuffer();
+//    		/** CSV文件列分隔符 */
+//    		String CSV_COLUMN_SEPARATOR = ",";
+//    		
+//    		/** CSV文件列分隔符 */
+//    		String CSV_RN = "\r\n";
+//    		buffer.append("author").append(CSV_COLUMN_SEPARATOR).append("org").append(CSV_RN);
+//    		String filePath = String.format("/Users/liubingchuan/git/bdm/meta/xitu.json");
+//    		File file = new File(filePath);
+//    		JSONReader reader=new JSONReader(new FileReader(file));
+//    		reader.startArray();
+//    		List<Paper> papers = new LinkedList<Paper>();
+//    		int i=1;
+////    		String[] titles = new String[]{"author","org"};
+////    		List<String> orgs= new ArrayList<String>();
+//    		List<String> totalOrgs = new LinkedList<String>();
+//    		while (reader.hasNext()) {
+//    			
+//    			PaperVO vo = reader.readObject(PaperVO.class);
+////	            Paper paper = new Paper();
+////	            paper.setId(vo.get_id());
+////	            paper.setNow(System.currentTimeMillis());
+////	            List<String> links = new ArrayList<String>();
+////	            links.add(vo.getUrl());
+////	            paper.setLink(links);
+////	            paper.setTitle(vo.getTitle());
+////	            paper.setIssue(vo.getOnlineDate());
+//    			
+////	            String year = "".equals(vo.getOnlineDate())?"预发布":vo.getOnlineDate().substring(0, 4);
+////	            paper.setYear(year);
+//	            List<String> authors = vo.getAuthor();
+//	            List<String> paperAuthors = new ArrayList<String>();
+//	            boolean isAuthor = false;
+//	            if(i==42){
+//	            	System.out.println();
+//	            }
+//	            for(String author: authors) {
+//	            	if(author.contains("谭培功")){
+//	            		System.out.println();
+//	            	}
+//	            	if(isAuthor) {
+//	            		paperAuthors.add(author);
+//	            	}
+//	            	if("|".equals(author)){
+//	            		isAuthor = true;
+//	            	}
+//	            }
+////	            paper.setAuthor(paperAuthors);
+////	            paper.setSubject(vo.getAbc());
+////	            List<String> keywords = new ArrayList<String>();
+////	            for(String keyword: vo.getKeyWord()) {
+////	            	keywords.add(keyword);
+////	            }
+////	            paper.setKeywords(keywords);
+//	            List<String> orgs= new ArrayList<String>();
+//    			
+//    			for(String org : vo.getOrganization()) {
+//    				org = org.trim();
+//    				if(org.contains(",")) {
+//    					String[] orgArray = org.split(",");
+//    					//trim一下
+//    					String[] newArray = new String[orgArray.length];
+//    					for(int n=0;n<orgArray.length;n++) {
+//    						newArray[n] = orgArray[n].trim();
+//    					}
+//    					// 只保留子串
+//    					newArray = subString(newArray);
+//    					
+//    					for(String newOrg : newArray) {
+//    						String s = filter(newOrg);
+//    						if(s.length()==0){
+//    							continue;
+//    						}
+//    						if(s.contains("!")) {
+//    							String orgName = s.split("!")[0];
+//    							orgName = orgName.replaceAll(";", "");
+//    							if(!orgs.contains(orgName)){
+//    								orgs.add(orgName);
+//    							}
+//    						}else {
+//    							s = s.replaceAll(";", "");
+//    							if(!orgs.contains(s)){
+//    								orgs.add(s);
+//    							}
+//    						}
+//    						if(s.split(" ").length>1) {
+//    							s = s.split(" ")[0];
+//    						}
+//    						if(s.contains("教授")){
+//    							s = "";
+//    						}
+//    					}
+//    				}else {
+//    					org = org.replaceAll(";", "");
+//    					if(org.split(" ").length>1) {
+//    						org = org.split(" ")[0];
+//    					}
+//    					if(org.contains("教授")){
+//    						org = "";
+//    						continue;
+//    					}
+//    					if(!orgs.contains(org)) {
+//    						orgs.add(org);
+//    					}
+//    				}
+//    			}
+//    			
+//	            for(String auth: paperAuthors) {
+//	            	buffer.append(auth).append(CSV_COLUMN_SEPARATOR);
+//	            	for(String org :orgs) {
+//	            		buffer.append(org).append(";");
+//	            	}
+//	            	buffer.deleteCharAt(buffer.length()-1);
+//	            	buffer.append(CSV_RN);
+//	            }
+////	            paper.setInstitution(orgs);
+////	            paper.setJournal(vo.getJournal());
+////	            papers.add(paper);
+//    			System.out.println("当前id----》" + i);
+//    			i++;
+//    			for(String org: orgs) {
+//    				if(!totalOrgs.contains(org)) {
+//    					totalOrgs.add(org);
+//    				}
+//    			}
+//    		}
+//    		
+//    		try{
+////    			for(String s : orgs) {
+////    				buffer.append(s).append(CSV_RN);
+////    			}
+//    			String data = buffer.toString();
+//    			
+//    			File aoFile =new File("/Users/liubingchuan/git/xitu/ao.csv");
+//    			
+//    			//if file doesnt exists, then create it
+//    			if(!aoFile.exists()){
+//    				aoFile.createNewFile();
+//    			}
+//    			
+//    			//true = append file
+//    			FileWriter fileWritter = new FileWriter(aoFile.getName(),true);
+//    			fileWritter.write(data);
+//    			fileWritter.close();
+//    			
+//    			StringBuffer sb = new StringBuffer();
+//    			for(String s: totalOrgs) {
+//    				sb.append(s).append(CSV_RN);
+//    			}
+//    			String orgData = sb.toString();
+//    			
+//    			File orgFile =new File("/Users/liubingchuan/git/xitu/organization.csv");
+//    			
+//    			//if file doesnt exists, then create it
+//    			if(!orgFile.exists()){
+//    				orgFile.createNewFile();
+//    			}
+//    			
+//    			//true = append file
+//    			FileWriter orgFileWritter = new FileWriter(orgFile.getName(),true);
+//    			orgFileWritter.write(orgData);
+//    			orgFileWritter.close();
+//    			
+//    			System.out.println("Done");
+//    			
+//    		}catch(IOException e){
+//    			e.printStackTrace();
+//    		}
+//    		reader.endArray();
+//    		reader.close();
+//    		
+//    	} catch (IOException e) {
+//    		e.printStackTrace();
+//    	}
+//    	return R.ok();
+//    }
     
     
     /**

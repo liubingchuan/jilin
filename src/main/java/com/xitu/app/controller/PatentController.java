@@ -1385,7 +1385,7 @@ public class PatentController {
 		List<String> missedList = new ArrayList<String>();
 		Random random = new Random();
 		Map<String, String> map = new HashMap<String, String>();
-		int month = 14;
+		int month = 20;
 		while(month<=120) {
 //			if(month==10) {
 //				System.out.println();
