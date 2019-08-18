@@ -9,10 +9,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -62,9 +64,13 @@ import com.xitu.app.common.R;
 import com.xitu.app.common.request.SavePaperRequest;
 import com.xitu.app.mapper.PatentMapper;
 import com.xitu.app.model.AggVO;
+import com.xitu.app.model.Expert;
+import com.xitu.app.model.Org;
 import com.xitu.app.model.Paper;
 import com.xitu.app.model.PaperVO;
 import com.xitu.app.model.Project;
+import com.xitu.app.repository.ExpertRepository;
+import com.xitu.app.repository.OrgRepository;
 import com.xitu.app.repository.PaperRepository;
 import com.xitu.app.service.es.PaperService;
 import com.xitu.app.utils.BeanUtil;
@@ -80,6 +86,12 @@ public class PaperController {
 	
 	@Autowired
     private PaperRepository paperRepository;
+	
+	@Autowired
+	private ExpertRepository expertRepository;
+	
+	@Autowired
+	private OrgRepository orgRepository;
 	
 	@Autowired
 	private ElasticsearchTemplate esTemplate;
@@ -143,6 +155,45 @@ public class PaperController {
 		}
 		return "result-wxCon";
 	}
+	
+	@GetMapping(value = "paper/fetchExpertAndOrg")
+	public String updateExpert() {
+		int i = 0;
+		Set<Expert> persons = new HashSet<Expert>();
+		Set<Org> orgs = new HashSet<Org>();
+		while(i<4721){
+			
+			Pageable pageable = new PageRequest(i, 10);
+			Page<Paper> page = paperRepository.findAll(pageable);
+			Iterator<Paper> papers =page.iterator();
+			System.out.println("********** " + i);
+			while(papers.hasNext()) {
+				Paper paper = papers.next();
+				System.out.println(paper.getId());
+				if(paper.getAuthor() != null && paper.getAuthor().size()>0) {
+					for(String s : paper.getAuthor()) {
+						Expert e = new Expert();
+						e.setName(s);
+						persons.add(e);
+					}
+				}
+				if(paper.getInstitution() != null && paper.getInstitution().size()>0) {
+					for(String s: paper.getInstitution()) {
+						Org o = new Org();
+						o.setName(s);
+						orgs.add(o);
+					}
+				}
+//			List<String> tags = new ArrayList<String>();
+//			tags.add("测试");
+			}
+			i++;
+		}
+		expertRepository.saveAll(persons);
+		orgRepository.saveAll(orgs);
+		return "fasdf";
+	}
+	
 	
 //	@GetMapping(value = "paper/list")
 //	public String projects(@RequestParam(required=false,value="q") String q,

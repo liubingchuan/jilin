@@ -13,8 +13,8 @@ public class Constant {
      * 微信公众号参数
      */
     public class WechatAccount {
-        public static final String APPID = "wxbfb9c369fdaa1e25";
-        public static final String APPSECRET = "1e14e8d54d9696dcae9a26948077f1da";
+        public static final String APPID = "wxbfddb4887bbd4b14";
+        public static final String APPSECRET = "893688bfd55e542cb7ca2428b5d96a06";
         public static final String TOKEN = "lexuan";
         public static final String ENCODINGAESKEY = "UZuANofjLHCcoXe765Or1xoJKABN4IVvWXxdtM4yvPK";
     }

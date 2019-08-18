@@ -72,6 +72,7 @@ public class WeChatController {
 	@RequestMapping(value = "/wx", produces = "application/json;charset=utf-8")
 	public void entry(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println(request.getSession().getId());
+		System.out.println("start to enter wx");
 		// 微信加密签名
 		String msgSignature = request.getParameter("signature");
 		// 时间戳
