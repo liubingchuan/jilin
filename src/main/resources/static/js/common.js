@@ -46,5 +46,15 @@ function showLoginInfoFrontend(){
 			$("#backgroud").css('display','block'); 
 		}
 		$("#logoinName").html($.cookie("nickName"));
+	}else {
+		$("#loginBefore").css('display','block'); 
+		$("#loginAfter").css('display','none'); 
+		
+		document.getElementById("xituzhiku").removeAttribute("href");
+		document.getElementById("chanyejiance").removeAttribute("href");
+		document.getElementById("zhishifuwu").removeAttribute("href");
+		document.getElementById("zhishifuwu2").removeAttribute("href");
+		
+		
 	}
 }
