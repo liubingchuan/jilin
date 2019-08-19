@@ -83,7 +83,7 @@
 				    	</form>
 				       <ul class="clearfix jigouUl">
 				       	<li class="clearfix" th:each="org: ${list}">
-				       		<a th:href="@{/org/get(id=${org.id},front=0)}" class="left jigouliLf">
+				       		<a th:href="@{/org/get(id=${org.id},front=0)}" class="left jigouliLf1">
 				       			<!-- <img th:src="@{/file/fileDownload(filename=${org.frontend})}" /> -->
 				       			<img th:if=" ${org.frontend !=null && org.frontend != ''}" th:src="@{/file/fileDownload(filename=${org.frontend})}" />
 				        			<img th:if=" ${org.frontend ==null || org.frontend == ''}" th:src="@{/images/default.png}" />

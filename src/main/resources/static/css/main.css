@@ -469,6 +469,7 @@ body{font-family:"微软雅黑","Microsoft YaHei"!important;}
 .jigouUl li{border-bottom: 1px solid #EEEEEE;padding: 25px 0px;}
 .jigouliLf{display: block;width: 156px;}
 .jigouliLf img{width: 100%;vertical-align: middle;}
+.jigouliLf1 img {width: 35%;vertical-align: middle;}
 .jigouRt{width: 720px;}
 i{font-style: normal;}
 .jigouUl li:last-child{border-bottom: none;}

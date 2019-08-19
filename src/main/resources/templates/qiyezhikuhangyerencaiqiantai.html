@@ -95,9 +95,13 @@
 				        				<div class="rencailiMList">
 				        					<p th:text="'单位：' + ${expert.unit}">
 				        					</p>
-				        					<p th:text="'担任职务：' + ${expert.duty}">
+				        					<p th:if="${expert.duty != null && expert.duty != '' && #arrays.length(expert.duty) > 0 && !(#arrays.length(expert.duty) == 1 && expert.duty[0] == '')}">
+				        						担任职务：
+				        						<span th:each="duty: ${expert.duty}" th:text="${duty}"></span>
 				        					</p>
-				        					<p th:text="'研究领域:' + ${expert.area}">
+				        					<p th:if="${expert.area != null && expert.area != '' && #arrays.length(expert.area) > 0 && !(#arrays.length(expert.area) == 1 && expert.area[0] == '')}">
+				        						研究领域：
+				        						<span th:each="area: ${expert.area}" th:text="${area}"></span>
 				        					</p>
 				        				</div>
 				        			</div>
