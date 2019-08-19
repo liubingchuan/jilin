@@ -37,7 +37,7 @@
 						<div class="rencaiLFmess">
 							<!-- <img th:src="@{/file/fileDownload(filename=${expert.frontend})}" /> -->
 							<img th:if=" ${expert.frontend !=null && expert.frontend != ''}" th:src="@{/file/fileDownload(filename=${expert.frontend})}" />
-				        	<img th:if=" ${expert.frontend ==null || expert.frontend == ''}" th:src="@{/images/slider.png}" />
+				        	<img th:if=" ${expert.frontend ==null || expert.frontend == ''}" th:src="@{/images/rencai.png}" />
 							<div class="rencaiLFmessText">
 								<p class="rencaiLFmessName">
 									姓名： 
@@ -52,12 +52,13 @@
 								<p class="rencaiLFmessName">
 									研究方向： 
 								</p>
-								<p th:text="*{area}">
+								<p th:each="aa:*{area}" th:text="${aa}">
+								</p>
 								</p>
 								<p class="rencaiLFmessName">
 									担任职务：
 								</p>
-								<p th:text="*{duty}">
+								<p th:each="du:*{duty}" th:text="${du}">
 								</p>
 							</div>
 						</div>
