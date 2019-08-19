@@ -488,6 +488,21 @@ i{font-style: normal;}
 .ysLb .swiper-button-prev{background: url(../images/jt.png) no-repeat;left: 10px;}
 .zengjialx{margin-left: 14px;font-size: 14px;line-height: 32px;}
 .M_messGpImgjg img{width: 254px;height: 137px;}
+.gongneng{background:linear-gradient(91deg,rgba(9,25,73,1) 0%,rgba(22,48,124,1) 24%,rgba(91,91,225,1) 80%,rgba(148,148,242,1) 100%);opacity:0.38409999999999994;}
+.gongneng a{display: inline-block;border-right: 1px solid #fff;padding: 0px 30px;font-size: 20px;color: #fff;line-height: 42px;}
+.gongneng img{display: inline-block;vertical-align: middle;margin-right: 20px;}
+.gongneng a:hover{opacity: 0.8;}
+.gongneng a:last-child{border-right: none;}
+.lingyu {
+    padding-left: 26px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+    line-height: 25px;
+}
+.yuansu {
+    width: 884px;
+}
 .fenxiUl .jigouliLf{width: 81px;}
 .fenxiUl .jigouRt{width: 610px;margin-left: 32px;}
 .fenxiUl .jigouRt .jiansuoLiTextSpan{height: 40px;}
