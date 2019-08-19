@@ -37,9 +37,6 @@ function showLoginInfoFrontend(){
 		if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
 			$(".vip").html("普通用户"); 
 			$("#backgroud").css('display','none'); 
-			document.getElementById("xituzhiku").removeAttribute("href");
-			document.getElementById("chanyejiance").removeAttribute("href");
-			document.getElementById("zhishifuwu").removeAttribute("href");
 		}
 		if($.cookie("role")!=null && $.cookie("role")==="admin"){
 			$(".vip").html("admin"); 
@@ -49,12 +46,6 @@ function showLoginInfoFrontend(){
 	}else {
 		$("#loginBefore").css('display','block'); 
 		$("#loginAfter").css('display','none'); 
-		
-		document.getElementById("xituzhiku").removeAttribute("href");
-		document.getElementById("chanyejiance").removeAttribute("href");
-		document.getElementById("zhishifuwu").removeAttribute("href");
-		document.getElementById("zhishifuwu2").removeAttribute("href");
-		
 		
 	}
 }
