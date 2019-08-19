@@ -61,6 +61,7 @@ public class AccessTokenThread implements Runnable {
         if (null != accessTokenMap && !accessTokenMap.isEmpty()) {
             accessToken = accessTokenMap.get("access_token");
             if (!StringUtils.isEmpty(accessToken)) {
+            	System.out.println("accessToken is " + accessToken);
                 LogUtil.info("时间：" + DateUtil.getCurrentDate(DateUtil.DATETIME_FORMAT) + ";成功获取accessToken；值为：" + accessToken);
             }
         }

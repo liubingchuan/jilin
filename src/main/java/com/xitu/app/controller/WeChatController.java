@@ -128,6 +128,7 @@ public class WeChatController {
 				}
 
 			} else {
+				System.out.println("进入调试环节");
 				if (msgType.equals(Constant.MsgType.TEXT)) {
 					result = msgService.returnText(map);
 				} else if (msgType.equals(Constant.MsgType.EVENT)) { // 事件处理
