@@ -301,57 +301,36 @@
 	                });
 	            }
 	    	
-			 $(document).ready(function () {
-// 				console.log($.cookie("openId"))
-				$.cookie("openId","2");
- 				$.cookie("role","管理员");
-				//$.cookie("role","普通用户");
-				
-				$("#alertbd").css('display','none');
-				if($.cookie("openId")!=null) {
-					$("#loginBefore").css('display','none'); 
-					$("#headImg").attr("src", $.cookie("headImg"));
-					$("#loginAfter").css('display','block');
-					if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
-						$(".vip").html("普通用户"); 
-						$("#backgroud").css('display','none'); 
-						document.getElementById("xituzhiku").removeAttribute("href");
-						document.getElementById("xituzhiku1").removeAttribute("href");
-						document.getElementById("xituzhiku2").removeAttribute("href");
-						document.getElementById("xituzhiku3").removeAttribute("href");
-						document.getElementById("xituzhiku4").removeAttribute("href");
-						document.getElementById("xituzhiku5").removeAttribute("href");
-						document.getElementById("xituzhiku6").removeAttribute("href");
-						document.getElementById("xituzhiku11").removeAttribute("href");
-						
-						document.getElementById("cailiaojisuan").removeAttribute("href");
-						document.getElementById("cailiaojisuan1").removeAttribute("href");
-						document.getElementById("cailiaojisuan2").removeAttribute("href");
-						document.getElementById("cailiaojisuan11").removeAttribute("href");
-						
-						document.getElementById("chanyejiance").removeAttribute("href");
-						document.getElementById("chanyejiance1").removeAttribute("href");
-						document.getElementById("chanyejiance2").removeAttribute("href");
-						document.getElementById("chanyejiance3").removeAttribute("href");
-						document.getElementById("chanyejiance11").removeAttribute("href");
-						
-						document.getElementById("zhishifuwu").removeAttribute("href");
-						document.getElementById("zhishifuwu1").removeAttribute("href");
-						document.getElementById("zhishifuwu2").removeAttribute("href");
-						document.getElementById("zhishifuwu3").removeAttribute("href");
-						document.getElementById("zhishifuwu4").removeAttribute("href");
-						document.getElementById("zhishifuwu11").removeAttribute("href");
-						
-					}
-					if($.cookie("role")!=null && $.cookie("role")==="管理员"){
-						$(".vip").html("管理员"); 
-						$("#backgroud").css('display','block'); 
-					}
-					$("#logoinName").html($.cookie("nickName"));
-				}else {
-					$("#loginBefore").css('display','block'); 
-					$("#loginAfter").css('display','none'); 
+	        $("#alertbd").css('display','none');
+			if($.cookie("openId")!=null) {
+				$("#loginBefore").css('display','none'); 
+				$("#headImg").attr("src", $.cookie("headImg"));
+				$("#loginAfter").css('display','block');
+				if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
+					$(".vip").html("普通用户"); 
+					$("#backgroud").css('display','none'); 
+					document.getElementById("xituzhiku").removeAttribute("href");
+					document.getElementById("chanyejiance").removeAttribute("href");
+					document.getElementById("zhishifuwu").removeAttribute("href");
+					document.getElementById("zhishifuwu2").removeAttribute("href");
+					
 				}
+				if($.cookie("role")!=null && $.cookie("role")==="admin"){
+					$(".vip").html("admin"); 
+					$("#backgroud").css('display','block'); 
+				}
+				$("#logoinName").html($.cookie("nickName"));
+			}else {
+				$("#loginBefore").css('display','block'); 
+				$("#loginAfter").css('display','none'); 
+				
+				document.getElementById("xituzhiku").removeAttribute("href");
+				document.getElementById("chanyejiance").removeAttribute("href");
+				document.getElementById("zhishifuwu").removeAttribute("href");
+				document.getElementById("zhishifuwu2").removeAttribute("href");
+				
+				
+			}
 				
 
 				
