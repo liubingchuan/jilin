@@ -31,7 +31,9 @@ function showLoginInfo(){
 function showLoginInfoFrontend(){
 	//$.cookie("openId","1");
 	if($.cookie("openId")!=null) {
+		$("#loginBefore").css('display','none'); 
 		$("#headImg").attr("src", $.cookie("headImg"));
+		$("#loginAfter").css('display','block');
 		if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
 			$(".vip").html("普通用户"); 
 			$("#backgroud").css('display','none'); 
