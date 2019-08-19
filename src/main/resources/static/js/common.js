@@ -12,33 +12,20 @@ function showLoginInfo(){
 	//$.cookie("role","操作员");
 	//$.cookie("nickName","测试人");
 	if($.cookie("openId")!=null) {
-		$("#loginBefore").css('display','none'); 
 		$("#headImg").attr("src", $.cookie("headImg"));
-		$("#loginAfter").css('display','block');
-		if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
-			$(".vip").html("普通用户"); 
-			$("#backgroud").css('display','none'); 
-			document.getElementById("xituzhiku").removeAttribute("href");
-			document.getElementById("chanyejiance").removeAttribute("href");
-			document.getElementById("zhishifuwu").removeAttribute("href");
-			document.getElementById("zhishifuwu2").removeAttribute("href");
-			
-		}
-		if($.cookie("role")!=null && $.cookie("role")==="admin"){
-			$(".vip").html("admin"); 
-			$("#backgroud").css('display','block'); 
-		}
 		$("#logoinName").html($.cookie("nickName"));
-	}else {
-		$("#loginBefore").css('display','block'); 
-		$("#loginAfter").css('display','none'); 
+		$("#logoinNames").html($.cookie("nickName"));
+		$("#logoinRole").html($.cookie("role"));
 		
-		document.getElementById("xituzhiku").removeAttribute("href");
-		document.getElementById("chanyejiance").removeAttribute("href");
-		document.getElementById("zhishifuwu").removeAttribute("href");
-		document.getElementById("zhishifuwu2").removeAttribute("href");
+		if($.cookie("role")!=null && $.cookie("role")==="操作员"){
+			document.getElementById("fenleishezhi").removeAttribute("href");
+			document.getElementById("hangyerencai").removeAttribute("href");
+			document.getElementById("zhogndianjigou").removeAttribute("href");
+			document.getElementById("fenxibaogao").removeAttribute("href");
+			document.getElementById("jieguoliebiao").removeAttribute("href");
+			document.getElementById("xiangmuxinxi").removeAttribute("href");
+		}
 	}
-	
 }
 
 function showLoginInfoFrontend(){
@@ -52,8 +39,8 @@ function showLoginInfoFrontend(){
 			document.getElementById("chanyejiance").removeAttribute("href");
 			document.getElementById("zhishifuwu").removeAttribute("href");
 		}
-		if($.cookie("role")!=null && $.cookie("role")==="管理员"){
-			$(".vip").html("管理员"); 
+		if($.cookie("role")!=null && $.cookie("role")==="admin"){
+			$(".vip").html("admin"); 
 			$("#backgroud").css('display','block'); 
 		}
 		$("#logoinName").html($.cookie("nickName"));
