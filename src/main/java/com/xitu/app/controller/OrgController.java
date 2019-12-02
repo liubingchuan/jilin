@@ -458,18 +458,23 @@ public class OrgController {
     		JSONObject agg = (JSONObject) aggregations.get("unit");
     		for(Object s:(JSONArray)agg.get("buckets")){
     			JSONObject ss = (JSONObject) s;
-    			expertaggcountMap.put(ss.getString("key"), Integer.valueOf(ss.getString("doc_count")));
-    		}
+    			if (ss != null && !ss.toString().trim().equals("")) {
+    				expertaggcountMap.put(ss.getString("key"), Integer.valueOf(ss.getString("doc_count")));
+    	    		
+				}
+    			}
     		for(Map.Entry<String, Object> entry: map.entrySet()) {
     			String name = entry.getKey();
     			List<String> bieming = (List<String>) entry.getValue();
     			//bieming.add(name);
     			int count = 0;
+    			if(bieming!=null &&  bieming.size()>0){
     			for (String ns:bieming) {
-					if (expertaggcountMap.containsKey(ns)) {
+					if (!ns.equals("") && expertaggcountMap.containsKey(ns)) {
 						count += expertaggcountMap.get(ns);
 					}
 				}
+    			}
     			if (expertaggcountMap.containsKey(name)) {
 					count += expertaggcountMap.get(name);
 				}
@@ -491,11 +496,13 @@ public class OrgController {
     			List<String> bieming = (List<String>) entry.getValue();
     			//bieming.add(name);
     			int count = 0;
+    			if(bieming!=null &&  bieming.size()>0){
     			for (String ns:bieming) {
-					if (patentaggcountMap.containsKey(ns)) {
+					if (!ns.equals("") && patentaggcountMap.containsKey(ns)) {
 						count += patentaggcountMap.get(ns);
 					}
 				}
+    			}
     			if (patentaggcountMap.containsKey(name)) {
 					count += patentaggcountMap.get(name);
 				}
@@ -517,11 +524,13 @@ public class OrgController {
     			List<String> bieming = (List<String>) entry.getValue();
     			//bieming.add(name);
     			int count = 0;
+    			if(bieming!=null &&  bieming.size()>0){
     			for (String ns:bieming) {
-					if (paperaggcountMap.containsKey(ns)) {
+					if (!ns.equals("") && paperaggcountMap.containsKey(ns)) {
 						count += paperaggcountMap.get(ns);
 					}
 				}
+    			}
     			if (paperaggcountMap.containsKey(name)) {
 					count += paperaggcountMap.get(name);
 				}
@@ -544,11 +553,13 @@ public class OrgController {
     			List<String> bieming = (List<String>) entry.getValue();
     			//bieming.add(name);
     			int count = 0;
+    			if(bieming!=null &&  bieming.size()>0){
     			for (String ns:bieming) {
-					if (jianceaggcountMap.containsKey(ns)) {
+					if (!ns.equals("") && jianceaggcountMap.containsKey(ns)) {
 						count += jianceaggcountMap.get(ns);
 					}
 				}
+    			}
     			if (jianceaggcountMap.containsKey(name)) {
 					count += jianceaggcountMap.get(name);
 				}

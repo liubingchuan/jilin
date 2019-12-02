@@ -355,19 +355,19 @@ public class ESHttpClient implements Serializable {
     }
     	
 	 public static JSONObject conexpertESIns(String conn){
-	    	ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "expert","et");
+	    	ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "expertjilin","et");
 	    	ESHttpClient.debug = true;
 	        JSONObject json = indexer.execute(conn);
 	        return json;
 	    }
 	 public static JSONObject conpatentESIns(String conn){
-		ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "patent","pt");
+		ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "patentjilin","pt");
 		ESHttpClient.debug = true;
 	    JSONObject json = indexer.execute(conn);
 	    return json;
 	}
 	 public static JSONObject conpaperESIns(String conn){
-		ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "paper","pr");
+		ESHttpClient indexer = new ESHttpClient("39.96.82.217:9200", "paperjilin","pr");
 		ESHttpClient.debug = true;
 	    JSONObject json = indexer.execute(conn);
 	    return json;

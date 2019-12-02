@@ -35,6 +35,8 @@ public class Patent implements Serializable{
 	private String applytime; // 申请日
 	@Field(type=FieldType.Keyword)
 	private String publictime; // 公开（公告）日
+	
+	@AggQuery
 	@Field(type=FieldType.Keyword)
 	private String applyyear; // 申请年
 	

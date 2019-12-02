@@ -427,7 +427,7 @@ public abstract class AbstractESHttpService implements ESHttpService {
 			terms.put("terms", fz);
 			args.put(type, terms);
 			query.put("aggs",args);
-	    	//System.out.println("*****"+query.toString());
+	    	System.out.println("*****"+query.toString());
 	    	return query.toString();
 	    	
 	    }
