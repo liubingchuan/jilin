@@ -368,6 +368,7 @@
 	    	</div>
 	    </div>
 	    <script type="text/javascript" th:src="@{/js/main.js}" ></script>
+	    <script type="text/javascript" th:src="@{/js/common.js}" ></script>
 	    <script type="text/javascript">
 	    var time;
     	// 获取登录二维码
@@ -417,75 +418,10 @@
             }
     	
 		 $(document).ready(function () {
-//				console.log($.cookie("openId"))
-//				$.cookie("openId","2");
-//				$.cookie("role","管理员");
-			//$.cookie("role","普通用户");
-			
-			$("#alertbd").css('display','none');
-				if($.cookie("openId")!=null) {
-					$("#loginBefore").css('display','none'); 
-					$("#headImg").attr("src", $.cookie("headImg"));
-					$("#loginAfter").css('display','block');
-					if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
-						$(".vip").html("普通用户"); 
-						$("#backgroud").css('display','none'); 
-						document.getElementById("xituzhiku").removeAttribute("href");
-						document.getElementById("chanyejiance").removeAttribute("href");
-						document.getElementById("zhishifuwu").removeAttribute("href");
-						document.getElementById("zhishifuwu2").removeAttribute("href");
-						
-					}
-					if($.cookie("role")!=null && $.cookie("role")==="admin"){
-						$(".vip").html("admin"); 
-						$("#backgroud").css('display','block'); 
-					}
-					$("#logoinName").html($.cookie("nickName"));
-				}else {
-					$("#loginBefore").css('display','block'); 
-					$("#loginAfter").css('display','none'); 
-					
-					document.getElementById("xituzhiku").removeAttribute("href");
-					document.getElementById("chanyejiance").removeAttribute("href");
-					document.getElementById("zhishifuwu").removeAttribute("href");
-					document.getElementById("zhishifuwu2").removeAttribute("href");
-					
-					
-				}
-			
-
-			
+			showLoginInfoFrontend();
 			$("#loginBefore").click(function(){
 				getQcode();
 			});
-			
-			$("#quit").click(function(){
-				$.cookie("openId", "", {expires: -1});
-				$.cookie("nickName", "", {expires: -1});
-				$.cookie("headImg", "", {expires: -1});
-				$.cookie("role", "", {expires: -1});
-				window.location.href = "/";
-			});
-//				if($.cookie("account")!=account){
-//					$.cookie('account', account);
-//				}
-//				if($.cookie("role")!=role){
-//					$.cookie('role', role);
-//				}
-//				if(token == "1"){
-//					$('.alertZh').css('display','block');
-//					alert("密码输入错误")
-//					$('#noaccount').css('display','none');
-//					$('#passworderror').css('display','block');
-//				}
-			
-//				if(token == "2"){
-//					$('.alertZh').css('display','block');
-//					alert("未找到该用户名")
-//					$('#passworderror').css('display','none');
-//					$('#noaccount').css('display','block'); 
-//				}
-			
 			
 			
 			 $("#bindButtion").click(function(){

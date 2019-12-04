@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,9 +71,13 @@ import com.xitu.app.common.request.PatentPageListRequest;
 import com.xitu.app.common.request.PriceAvgRequest;
 import com.xitu.app.mapper.PatentMapper;
 import com.xitu.app.mapper.PriceMapper;
+import com.xitu.app.model.Expert;
+import com.xitu.app.model.Org;
 import com.xitu.app.model.Patent;
 import com.xitu.app.model.PatentMysql;
 import com.xitu.app.model.Price;
+import com.xitu.app.repository.ExpertRepository;
+import com.xitu.app.repository.OrgRepository;
 import com.xitu.app.repository.PatentRepository;
 import com.xitu.app.service.es.JianceService;
 import com.xitu.app.service.es.PatentService;
@@ -88,6 +93,10 @@ public class PatentController {
 	
 	@Autowired
     private PatentRepository patentRepository;
+	@Autowired
+	private ExpertRepository expertRepository;
+	@Autowired
+	private OrgRepository orgRepository;
 	
 	@Autowired
 	private ElasticsearchTemplate esTemplate;
@@ -1175,5 +1184,125 @@ public class PatentController {
 		rs = patentService.executeIns(insname.getString("insname"),pageIndex, pageSize, "creator",i);
 		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
+	
+	@GetMapping(value = "patent/travel")
+	public String updatePatent() {
+		Iterator<Patent> patents = patentRepository.findAll().iterator();
+		Iterator<Org> orgs = orgRepository.findAll().iterator();
+//		Iterator<Expert> experts = expertRepository.findAll().iterator();
+		Map<String, Expert> eMap = new HashMap<String, Expert>();
+		Map<String, Org> oMap = new HashMap<String, Org>();
+//		while(experts.hasNext()) {
+//			Expert e = experts.next();
+//			String ren = e.getName();
+//			String jigou = e.getUnit();
+//			eMap.put(ren + "%" + jigou, e);
+//		}
+		while(orgs.hasNext()) {
+			Org o = orgs.next();
+			String jigou = o.getName();
+			oMap.put(jigou, o);
+		}
+//		List<ElementMaster> masters = elementMapper.selectAllMasters();
+//		List<ElementSlave> slaves = elementMapper.selectAllSlaves();
+		Map<String, Set<String>> expertMap = new HashMap<String, Set<String>>();
+		Map<String, Set<String>> orgMap = new HashMap<String, Set<String>>();
+		int i=0;
+		while(patents.hasNext()) {
+			System.out.println(i);
+			Set<String> tags = new HashSet<String>();
+			Patent patent = patents.next();
+			List<String> rens = patent.getCreator();
+			List<String> jigous = patent.getPerson();
+			
+//			String title = patent.getTitle();
+//			String subject = patent.getSubject();
+//			for(ElementMaster master: masters) {
+//				if( title.contains( master.getName())) {
+//					tags.add(master.getName());
+//				}else if(subject.contains(master.getName())) {
+//					tags.add(master.getName());
+//				}
+//			}
+			
+//			for(ElementSlave slave: slaves) {
+//				if( title.contains( slave.getName())) {
+//					tags.add(slave.getName());
+//				}else if(subject.contains(slave.getName())) {
+//					tags.add(slave.getName());
+//				}
+//			}
+			
+			for(String jigou: jigous) {
+				for(String ren: rens) {
+					String key = ren + "%" + jigou;
+					if (eMap.containsKey(key)) {
+						Expert expert = eMap.get(key);
+						List<String> expertTags = expert.getTags();
+						for(String tag : tags) {
+							if(expertTags == null) {
+								expertTags = new ArrayList<String>();
+							}
+							if(!expertTags.contains(tag)) {
+								expertTags.add(tag);
+							}
+						}
+						expertRepository.save(expert);
+					}else {
+						expertMap.put(key, tags);
+					}
+				}
+				if(oMap.containsKey(jigou)) {
+					Org org = oMap.get(jigou);
+					List<String> orgTags = org.getTags();
+					for(String tag: tags) {
+						if(orgTags == null) {
+							orgTags = new ArrayList<String>();
+						}
+						if(!orgTags.contains(tag)) {
+							orgTags.add(tag);
+						}
+					}
+					orgRepository.save(org);
+				}else {
+					orgMap.put(jigou, tags);
+				}
+			}
+			i++;
+		}
+//		for(Map.Entry<String, Set<String>> entry: expertMap.entrySet()) {
+//			String key = entry.getKey();
+//			String[] eo = key.split("%");
+//			Expert e = new Expert();
+//			e.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+//			e.setName(eo[0]);
+//			e.setAnotherName(eo[0]);
+//			e.setNow(System.currentTimeMillis());
+//			e.setUnit(eo[1]);
+//			e.setTop("0");
+//			List<String> tags = new ArrayList<String>();
+//			tags.addAll(entry.getValue());
+//			e.setTags(tags);
+//			expertRepository.save(e);
+//		}
+		
+		for(Map.Entry<String, Set<String>> entry: orgMap.entrySet()) {
+			if(entry.getValue()!= null) {
+				System.out.println();
+			}
+			String key = entry.getKey();
+			List<String> tags = new ArrayList<String>();
+			tags.addAll(entry.getValue());
+			Org o = new Org();
+			o.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+			o.setName(key);
+			o.setTags(tags);
+			o.setNow(System.currentTimeMillis());
+			o.setAnotherName(key);
+			o.setTop("0");
+			orgRepository.save(o);
+		}
+		return "bsdf";
+	}
 	
 }

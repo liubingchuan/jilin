@@ -12,8 +12,8 @@ import com.xitu.app.annotation.AggQuery;
 import com.xitu.app.annotation.CrossQuery;
 import com.xitu.app.annotation.SingleQuery;
 
-//@Document(indexName = "expertjilin", type = "et")
-@Document(indexName = "expert", type = "et")
+@Document(indexName = "expertjilin", type = "et")
+//@Document(indexName = "expert", type = "et")
 public class Expert implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -63,6 +63,7 @@ public class Expert implements Serializable{
 	private String uploader; // 提交人
 	private Long now;
 	private String frontend; // 专家照片
+	private String top; // 顶置
 	@Field(type=FieldType.Keyword)
 	private String order; // 顺序
 	@Field(type=FieldType.Keyword)
@@ -222,5 +223,12 @@ public class Expert implements Serializable{
 	public void setAnotherName(String anotherName) {
 		this.anotherName = anotherName;
 	}
+	public String getTop() {
+		return top;
+	}
+	public void setTop(String top) {
+		this.top = top;
+	}
+	
 	
 }

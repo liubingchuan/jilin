@@ -6,35 +6,45 @@ $("#quit").click(function(){
 	window.location.href = "/";
 });
 
-function showLoginInfo(){
-	//$.cookie("openId","2");
-	//$.cookie("role","管理员");
-	//$.cookie("role","操作员");
-	//$.cookie("nickName","测试人");
-	if($.cookie("openId")!=null) {
-		$("#headImg").attr("src", $.cookie("headImg"));
-		$("#logoinName").html($.cookie("nickName"));
-		$("#logoinNames").html($.cookie("nickName"));
-		$("#logoinRole").html($.cookie("role"));
-		
-		if($.cookie("role")!=null && $.cookie("role")==="操作员"){
-			document.getElementById("fenleishezhi").removeAttribute("href");
-			document.getElementById("hangyerencai").removeAttribute("href");
-			document.getElementById("zhogndianjigou").removeAttribute("href");
-			document.getElementById("fenxibaogao").removeAttribute("href");
-			document.getElementById("jieguoliebiao").removeAttribute("href");
-			document.getElementById("xiangmuxinxi").removeAttribute("href");
-		}
+$("#login").click(function(){
+	$("#alertbd").css('display','none');
+	$("#alertZh").css('display','block');
+});
+
+$("#chanyejiance").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/jiance/jiancelist";
+	}else {
+		alert("请先登录")
+		$("#login").click()
 	}
-}
+});
+
+$("#xituzhiku").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/org/list";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#zhishifuwu").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/zhishifuwu/zhishifuwu";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
 
 function showLoginInfoFrontend(){
-	//$.cookie("openId","1");
-	if($.cookie("openId")!=null) {
+	$("#alertbd").css('display','none');
+    if($.cookie("role")!=null) {
 		$("#loginBefore").css('display','none'); 
 		$("#headImg").attr("src", $.cookie("headImg"));
 		$("#loginAfter").css('display','block');
-		if($.cookie("role")!=null && $.cookie("role")==="普通用户"){
+		if($.cookie("role")!=null && $.cookie("role")==="visitor"){
 			$(".vip").html("普通用户"); 
 			$("#backgroud").css('display','none'); 
 		}
@@ -42,10 +52,11 @@ function showLoginInfoFrontend(){
 			$(".vip").html("admin"); 
 			$("#backgroud").css('display','block'); 
 		}
-		$("#logoinName").html($.cookie("nickName"));
+		$(".vip").html($.cookie("role"));
+		$("#logoinName").html($.cookie("loginName"));
 	}else {
 		$("#loginBefore").css('display','block'); 
 		$("#loginAfter").css('display','none'); 
-		
+		document.getElementById("xituzhiku").removeAttribute("href");
 	}
 }
