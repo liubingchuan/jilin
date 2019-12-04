@@ -8,7 +8,7 @@
 		<link rel="stylesheet" th:href="@{/css/main.css}" />
 		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/swiper.min.js}" ></script>
-		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		
 		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
 	</head>
 	<body>
@@ -36,7 +36,7 @@
 			
 				<div class="rencaiNr clearfix" th:object="${org}">
 					<div class="rencaiLf left">
-						<div class="rencaiLFmess">
+						<div class="rencaiLFmess1">
 							<!-- <img th:src="@{/file/fileDownload(filename=${org.frontend})}" /> -->
 							<img th:if=" ${org.frontend !=null && org.frontend != ''}" th:src="@{/file/fileDownload(filename=${org.frontend})}" />
 				        	<img th:if=" ${org.frontend ==null || org.frontend == ''}" th:src="@{/images/default.png}" />
@@ -131,6 +131,7 @@
 			</div>
 		<div th:replace="footer :: myfooter"></div>		
 		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
 		<script type="text/javascript" th:inline="javascript">
 		var namebieming = [[${namebieming}]];
 		
@@ -140,7 +141,7 @@
 				getPatent(0);
 		 	});
 
-			function getExpert() { 
+		 	function getExpert() { 
 				var param = {
 						'insname' : namebieming,
 						//'pageIndex' : pageIndex+1
@@ -160,7 +161,11 @@
 								let div1 = $('<div class=\"swiper-slide\"></div>');
 								let div2 = $('<div class=\"ysPer\"></div>');
 								let a2 = $('<a href=\"/expert/get?front=0&id=' + value.id + '\"></a>');
-								let img = $('<img src=\"/images/10.png\" />');
+								let img = $('<img src=\"/images/rencai.png\" />');
+								if(value.frontend !=null && value.frontend != '' ){
+									img = $('<img src=\"/file/fileDownload?filename='+value.frontend+'\" />');
+								}
+								
 								let p1 = $('<p class=\"ysName\">' + value.name+ '</p>');
 								let p2 = $('<p>' + value.duty+ '</p>');
 								a2.append(img);
@@ -169,9 +174,11 @@
 								div2.append(a2);
 								div1.append(div2);
 								$("#expertinfo").append(div1);
+							});
+							if(data.totalCount > 5){
 								document.getElementById("next").style="display:block";
 								document.getElementById("prev").style="display:block";
-							});
+							}
 							var swiper = new Swiper('.ysLb1 .swiper-container', {
 								slidesPerView:5,
 								spaceBetween: 18,

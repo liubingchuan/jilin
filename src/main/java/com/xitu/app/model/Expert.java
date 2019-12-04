@@ -13,7 +13,6 @@ import com.xitu.app.annotation.CrossQuery;
 import com.xitu.app.annotation.SingleQuery;
 
 @Document(indexName = "expertjilin", type = "et")
-//@Document(indexName = "expert", type = "et")
 public class Expert implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

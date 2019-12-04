@@ -88,7 +88,7 @@
 				        		<a th:href="@{/expert/get(id=${expert.id},front=0)}" class="rencailiM clearfix">
 				        			<!-- <img th:src="@{/images/per.png}" class="left rencailiMImg" /> -->
 				        			<img th:if=" ${expert.frontend !=null && expert.frontend != ''}" th:src="@{/file/fileDownload(filename=${expert.frontend})}" class="left rencailiMImg" />
-				        			<img th:if=" ${expert.frontend ==null || expert.frontend == ''}" th:src="@{/images/slider.png}" class="left rencailiMImg" />
+				        			 <img th:if=" ${expert.frontend ==null || expert.frontend == ''}" th:src="@{/images/rencai.png}" class="left rencailiMImg" />
 				        			<div class="rencailiMRt">
 				        				<div class="rencailiMRtName" th:text="${expert.name}">
 				        				</div>
