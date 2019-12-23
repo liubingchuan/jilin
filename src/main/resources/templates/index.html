@@ -175,73 +175,16 @@
 	    		    </div>
 	    		</div>
 	    	    <div class="right indexRt">
-	    	    	<div class="indexRtTL clearfix">
-	    	    		<a href="javascript:;" class="ahover">行业新闻</a>
-	    	    		<a href="javascript:;">国家政策</a>
-	    	    		<a href="javascript:;">产业动态</a>
-	    	    		<a href="javascript:;">科研进展</a>
+	    	    	<div class="indexRtTL clearfix" id="biaoti">
+	    	    		
 	    	    	</div>
 	    	    	<div class="indexRtB">
 	    	    		<div class="indexRtBM active">
-	    	    			<ul class="indexRtUl">
-	    	    				<li class="clearfix">    
-	    	    					<a href="#" class="left">
-	    	    						• 未盈利生物医药将有望在A股上市? 业内人士认为任重道远
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						• 2018第五届诺贝尔奖获得者医学峰会暨全球生物医药创…
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						• 厦门海沧签约项目总额超27亿元 生物医药产业再添新军…
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						• 研究丨有关未盈利生物医药企业在香港及内地上市要求…
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						• 对接生物医药 聚焦行业前沿 
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						• 创投企业奖励最高超过2000万 生物医药企业上市门槛降低 
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
-	    	    				<li class="clearfix">
-	    	    					<a href="#" class="left">
-	    	    						 • 成都生物医药产业发展势头迅猛 生命力旺盛 
-	    	    					</a>
-	    	    					<span class="right">
-	    	    						2018-4-5
-	    	    					</span>
-	    	    				</li>
+	    	    			<ul class="indexRtUl" id="expertinfo">
+	    	    				
 	    	    			</ul>
-	    	    			<a href="#" class="indexRtMore">
+	    	    			
+	    	    			<a th:href="@{/jiance/jiancelist?lanmu=新闻动态}" target="_blank" class="indexRtMore">
 	    	    				更多内容>>
 	    	    			</a>
 	    	    		</div>
@@ -494,11 +437,75 @@
 		        });
 
 			});			
+			 getExperts('新闻动态');
+		 
 		 });
 			function search(){
 			    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
 			    window.location.href="/patent/list?q=" + $("#keywords").val();
 				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+			}
+			function getExperts(index) {
+				if(index == '新闻动态'){
+					var html = "<a href=\"javascript:getExperts('新闻动态');\" class=\"ahover\">行业新闻</a>";
+					html += "<a href=\"javascript:getExperts('国家政策');\" >国家政策</a>";
+					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
+					$("#biaoti").html(html);
+				}
+				if(index == '国家政策'){
+					var html = "<a href=\"javascript:getExperts('新闻动态);\">行业新闻</a>";
+					html += "<a href=\"javascript:getExperts('国家政策');\"  class=\"ahover\">国家政策</a>";
+					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
+					$("#biaoti").html(html);
+				}
+				if(index == '产业动态'){
+					var html = "<a href=\"javascript:getExperts('新闻动态');\">行业新闻</a>";
+					html += "<a href=\"javascript:getExperts('国家政策');\"  >国家政策</a>";
+					html += "<a href=\"javascript:getExperts('产业动态');\" class=\"ahover\">产业动态</a>";
+					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
+					$("#biaoti").html(html);
+				}
+				if(index == '科研进展'){
+					var html = "<a href=\"javascript:getExperts('新闻动态');\">行业新闻</a>";
+					html += "<a href=\"javascript:getExperts('国家政策');\"  >国家政策</a>";
+					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('科研进展');\" class=\"ahover\">科研进展</a>";
+					$("#biaoti").html(html);
+					
+				}
+				
+				var param = {
+						'name' : index,
+						'pageIndex' : 0
+					};
+					 $.ajax({
+						url : "/jiance/jianceIndex",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							$("#expertinfo").html('');
+							let items = data.list;
+							if(JSON.stringify(items) === '[]') {
+								return;
+							}
+							$("#expertinfo").html('');
+				            $.each(items,function(index,value){
+				              var livar = '<li class=\"clearfix\">';
+				              livar += '<a href=\"/jiance/get?id=' + value.id + '\" class=\"left\" target=\"blank\">'+value.title+'</a>';
+				              livar += '<span class=\"right\">'+value.pubtime+'</span>';
+				              livar += '</li>';
+				             
+				              $("#expertinfo").append(livar);
+				            });
+				            
+							
+							}
+							
+					});
 			}
     </script>
 	</body>

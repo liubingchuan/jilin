@@ -29,14 +29,15 @@
 										</span>
 									</p>
 									<p id="backgroud">
-										<!-- <a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}"  th:href="@{/user/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}"> -->
+										
 										<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
 											<img th:src="@{/images/houtai.png}" />
 											进入管理后台
 										</a>
 									</p>
 									<p>
-										<a href="#">
+										<!-- <a href="@{/zhishifuwu/shenqinglist(userid=$.cookie("openId")}"> -->
+										<a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('openId')}"  th:href="@{/zhishifuwu/shenqinglist(userid=${cookie.getValue()})}">
 											<img th:src="@{/images/dingdan.png}" />
 											我的申请
 										</a>

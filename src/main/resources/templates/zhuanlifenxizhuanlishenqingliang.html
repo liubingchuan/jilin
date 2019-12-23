@@ -42,27 +42,27 @@
 						</div>
 						<ul class="rencaiLfUl">
 							<li>
-								<a th:href="@{/patent/agmount}" class="ahover">
+								<a th:href="@{/patent/agmount(q=${query},totalcount=${totalCount})}" class="ahover">
 									<span>专利申请量</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agcountry}">
+								<a th:href="@{/patent/agcountry(q=${query},totalcount=${totalCount})}">
 									<span>专利申请国</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agpeople}">
+								<a th:href="@{/patent/agpeople(q=${query},totalcount=${totalCount})}">
 									<span>发明人及专利权人</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agclassis}">
+								<a th:href="@{/patent/agclassis(q=${query},totalcount=${totalCount})}">
 									<span>技术分类</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agtype}">
+								<a th:href="@{/patent/agtype(q=${query},totalcount=${totalCount})}">
 									<span>专利类型</span>
 								</a>
 							</li>

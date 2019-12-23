@@ -310,6 +310,41 @@ public abstract class AbstractESHttpService implements ESHttpService {
 		return result;
 	}
 	
+//	public JSONObject convert(JSONObject response) {
+//		JSONObject hits = response.getJSONObject("hits");
+//		Integer totalCount = hits.getInteger("total"); 
+//		JSONArray list = hits.getJSONArray("hits");
+//		List sources = new LinkedList();
+//		for(int i=0;i<list.size();i++) {
+//			JSONObject obj = list.getJSONObject(i);
+//			JSONObject source = (JSONObject) obj.get("_source");
+//			sources.add(source);
+//		}
+//		Model model = ThreadLocalUtil.get();
+//		model.addAttribute("list", sources);
+//		model.addAttribute("totalCount", totalCount);
+//		long totalPages = 0L;
+//		if (totalCount > 0) {
+//			if(totalCount % 10 == 0){
+//				totalPages = totalCount/10;
+//			}else{
+//				totalPages = totalCount/10 + 1;
+//			}
+//		}
+//		model.addAttribute("totalPages", totalPages);
+//		JSONObject aggregations = response.getJSONObject("aggregations");
+//		Set<String> keys = aggregations.keySet();
+//		for(String key : keys) {
+//			JSONObject agg = (JSONObject) aggregations.get(key);
+//			model.addAttribute(key, agg.get("buckets"));
+//		}
+//		JSONObject rs = new JSONObject();
+//		rs.put("list", sources);
+//		rs.put("totalPages", totalPages);
+//		rs.put("totalCount", totalCount);
+//		return rs;
+//	}
+	
 	public JSONObject convert(JSONObject response) {
 		JSONObject hits = response.getJSONObject("hits");
 		Integer totalCount = hits.getInteger("total"); 
@@ -338,11 +373,7 @@ public abstract class AbstractESHttpService implements ESHttpService {
 			JSONObject agg = (JSONObject) aggregations.get(key);
 			model.addAttribute(key, agg.get("buckets"));
 		}
-		JSONObject rs = new JSONObject();
-		rs.put("list", sources);
-		rs.put("totalPages", totalPages);
-		rs.put("totalCount", totalCount);
-		return rs;
+		return aggregations;
 	}
 	
 	public JSONObject convertIns(JSONObject response,int pageSize) {
