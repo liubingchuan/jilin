@@ -855,6 +855,47 @@ public class PatentController {
 		return "zhuanlifenxizhuanlishenqingliang";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentMonList", method = RequestMethod.POST,consumes = "application/json")
+	public R patentmonthList(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String query= (String)queryobj.get("querystring");
+    	Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+    	
+		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+		// TODO 静态变量未环绕需调整
+		
+		int[] num = patentService.executeMonth(0, 10, i,query,null,null,""+year,null,null,null,null);
+		return R.ok().put("num", num).put("query", query);
+    }
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentLastMonList", method = RequestMethod.POST,consumes = "application/json")
+	public R patentlastmonthList(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String query= (String)queryobj.get("querystring");
+    	Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        int month = cale.get(Calendar.MONTH)+1;  
+        String[] hengzhoushuju = {month-2+"月",month-1+"月",month+"月"};
+		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+		// TODO 静态变量未环绕需调整
+		
+		int[] num = patentService.executeMonth(0, 10, i,query,null,null,""+year,null,null,null,null);
+		int[] b = new int[3];
+		System.arraycopy(num, month-3, b, 0, 3);
+		return R.ok().put("b", b).put("query", query).put("hengzhoushuju", hengzhoushuju);
+    }
+	
 	@GetMapping(value = "patent/agcountry")
 	public String agcountry() {
 		return "zhuanlifenxizhuanlishenqingguo";

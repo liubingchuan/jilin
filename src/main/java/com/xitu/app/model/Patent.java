@@ -19,24 +19,35 @@ public class Patent implements Serializable{
 	@Id
 	private String id;
 	@CrossQuery
-	private String title;  //标题 （天地锁）
+	private String title;  //标题 （天地锁）   En title
 	@CrossQuery
 	private String subject; //摘要 
+	@CrossQuery
 	@AggQuery
 	@SingleQuery
 	@Field(type=FieldType.Keyword)
 	private List<String> person;   // 专利权人（申请人）
 	@AggQuery
+	@Field(type=FieldType.Keyword)
+	private List<String> applicantipc;   // applicant+_+ipc 的值存入该字段；（专利权人和ipc）
+	@CrossQuery
+	@AggQuery
 	@SingleQuery
 	@Field(type=FieldType.Keyword)
 	private List<String> creator;
 	
+	@AggQuery
+	@Field(type=FieldType.Keyword)
+	private List<String> ipcyear; // 将 ipc+_+applyyear 的值存入该字段
+	@AggQuery
+	@Field(type=FieldType.Keyword)
+	private String month; // 提取自申请日
 	@Field(type=FieldType.Keyword)
 	private String applytime; // 申请日
 	@Field(type=FieldType.Keyword)
-	private String publictime; // 公开（公告）日
-	
+	private String publictime; // 公开（公告）日   En Publication date
 	@AggQuery
+	@SingleQuery
 	@Field(type=FieldType.Keyword)
 	private String applyyear; // 申请年
 	
@@ -45,7 +56,12 @@ public class Patent implements Serializable{
 	@Field(type=FieldType.Keyword)
 	private String publicyear; // 公开年
 	@AggQuery
-	@SingleQuery
+	@Field(type=FieldType.Keyword)
+	private String typeyear; // typeyear
+	@AggQuery
+	@Field(type=FieldType.Keyword)
+	private String typemonth; // typemonth
+	@AggQuery
 	@Field(type=FieldType.Keyword)
 	private String type; // 专利类型
 	private String description; // 专利描述
@@ -53,6 +69,7 @@ public class Patent implements Serializable{
 	private String claim; //权利要求 （主权项）
 	@Field(type=FieldType.Keyword)
 	private String publicnumber; //公开号
+	@AggQuery
 	@Field(type=FieldType.Keyword)
 	private String applynumber; //申请号
 	@AggQuery
@@ -195,5 +212,36 @@ public class Patent implements Serializable{
 	public void setLawstatus(String lawstatus) {
 		this.lawstatus = lawstatus;
 	}
+	public List<String> getApplicantipc() {
+		return applicantipc;
+	}
+	public void setApplicantipc(List<String> applicantipc) {
+		this.applicantipc = applicantipc;
+	}
+	public List<String> getIpcyear() {
+		return ipcyear;
+	}
+	public void setIpcyear(List<String> ipcyear) {
+		this.ipcyear = ipcyear;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public String getTypeyear() {
+		return typeyear;
+	}
+	public void setTypeyear(String typeyear) {
+		this.typeyear = typeyear;
+	}
+	public String getTypemonth() {
+		return typemonth;
+	}
+	public void setTypemonth(String typemonth) {
+		this.typemonth = typemonth;
+	}
+	
 	
 }
