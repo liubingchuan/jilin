@@ -205,7 +205,7 @@
 			//这段要放在文本编辑器的实例化之后
 			function uptext() {
 				if (!UE.getEditor('editor').hasContents()) {
-					alert('请先填写内容!');
+					alert('请先填写机构介绍!');
 				} else {
 					$("#info").val(UE.getEditor('editor').getContent());
 					$("form[name='saveForm']").submit();

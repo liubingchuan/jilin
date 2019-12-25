@@ -79,6 +79,7 @@ public class UserController {
 		user.setAccount(account);
 		user.setPassword(password);
 		user.setEmail(email);
+		user.setRole("visitor");
 		if(user != null && user.getId() != null) {
 			userMapper.updateByOpenId(user);
 			System.out.println("bind successfully");

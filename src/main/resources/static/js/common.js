@@ -44,6 +44,7 @@ function showLoginInfoFrontend(){
 		$("#loginBefore").css('display','none'); 
 		$("#headImg").attr("src", $.cookie("headImg"));
 		$("#loginAfter").css('display','block');
+		console.log($.cookie("role"))
 		if($.cookie("role")!=null && $.cookie("role")==="visitor"){
 			$(".vip").html("普通用户"); 
 			$("#backgroud").css('display','none'); 

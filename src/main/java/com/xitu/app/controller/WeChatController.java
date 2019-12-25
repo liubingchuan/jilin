@@ -150,7 +150,7 @@ public class WeChatController {
 					        	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					        	user.setWechat(nickName);
 					        	user.setOpenId(openId);
-					        	user.setRole("普通用户");
+					        	user.setRole("visitor");
 					        	user.setStamp(df.format(new Date()));
 					        	userMapper.insertUser(user);
 					        	System.out.println("插入新的用户，wechat 名字为 " + nickName);
@@ -268,7 +268,7 @@ public class WeChatController {
         	}
         }
         User user = userMapper.getUserByOpenId(openId);
-        String role = user==null?"普通用户":user.getRole();
+        String role = (user==null?"visitor":user.getRole());
         System.out.println("nickName--"+ nickName);
         System.out.println("headUrl---" + headUrl);
         System.out.println("openId---" + openId);

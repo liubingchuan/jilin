@@ -6,8 +6,8 @@
 					<!--登录前-->
 					<!-- <th:block th:if="${user}==null"> -->
 					<div class="loginbefore" id="loginBefore">
-						<a href="javascript:;" class="loginBtn">登录</a><span>/</span>
-						<a href="javascript:;" class="loginBtn">注册</a>
+						<a href="javascript:;" id="login" class="loginBtn">登录</a><span>/</span>
+						<a href="javascript:;" id="registry" class="loginBtn">注册</a>
 					</div>
 					<!-- </th:block> -->
 					<!--登陆后-->
@@ -16,7 +16,7 @@
 					<div class="loginAfter" id="loginAfter">
 						<div class="loginAfterM">
 							<a href="#" class="loginAfterTx">
-								<img id="headImg" th:src="@{/images/jiazai.png}" />
+								<img id="headImg" th:src="@{/images/tx.jpeg}" />
 							</a>
 							<div class="loginAfterNo">
 
@@ -28,13 +28,14 @@
 										<span class="vip">
 										</span>
 									</p>
-									<p id="backgroud">
-										<!-- <a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('token')}"  th:href="@{/user/list(token=${cookie.getValue()},pageIndex=0,pageSize=10)}"> -->
-										<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
-											<img th:src="@{/images/houtai.png}" />
-											进入管理后台
-										</a>
-									</p>
+									<div id="backgroud">
+										<p >
+											<a th:href="@{/user/list(pageIndex=0,pageSize=10)}">
+												<img th:src="@{/images/houtai.png}" />
+												进入管理后台
+											</a>
+										</p>
+									</div>
 									<p>
 										<a href="#">
 											<img th:src="@{/images/dingdan.png}" />
