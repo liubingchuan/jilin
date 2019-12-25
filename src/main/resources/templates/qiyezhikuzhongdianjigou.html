@@ -64,19 +64,19 @@
 				    				<option>
 				    					全产业链
 				    				</option>
-				    				<option th:each="item : ${link}" th:value="${item.key}" th:text="${item.key}"></option>
+				    				<option th:each="item : ${link}" th:if="${item.key != null && item.key != ''}" th:value="${item.key}" th:text="${item.key}"></option>
 				    			</select>
 				    			<select class="left" id="classicselect">
 				    				<option>
 				    					所有产品类型
 				    				</option>
-				    				<option th:each="item : ${classic}" th:value="${item.key}" th:text="${item.key}"></option>
+				    				<option th:each="item : ${classic}" th:if="${item.key != null && item.key != ''}" th:value="${item.key}" th:text="${item.key}"></option>
 				    			</select>
 				    			<select class="left" id="typeselect">
 				    				<option>
 				    					所有机构类型
 				    				</option>
-				    				<option th:each="item : ${type}" th:value="${item.key}" th:text="${item.key}"></option>
+				    				<option th:each="item : ${type}" th:if="${item.key != null && item.key != ''}" th:value="${item.key}" th:text="${item.key}"></option>
 				    			</select>
 				    			<input type="button" class="left shaixuanbtn" value="筛选" onClick="shuaixuan();">
 				    		</div>

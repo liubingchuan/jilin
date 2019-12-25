@@ -1,6 +1,7 @@
 package com.xitu.app.service.es;
 
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
 
@@ -14,4 +15,6 @@ public interface ESHttpService extends ESService {
     String composefamingrenDSL(int pageIndex, int pageSize,int type,String q,String person,String creator);
     JSONObject convert(JSONObject response);
     JSONObject convertIns(JSONObject response,int pageSize);
+    int[] convertMonth(JSONObject response);
+    Map convertQushi(JSONObject response);
 }

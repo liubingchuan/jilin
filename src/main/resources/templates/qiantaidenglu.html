@@ -37,7 +37,8 @@
 										</p>
 									</div>
 									<p>
-										<a href="#">
+										<!-- <a href="@{/zhishifuwu/shenqinglist(userid=$.cookie("openId")}"> -->
+										<a th:each="cookie :${#httpServletRequest.getCookies()}" th:if="${cookie.getName().equals('openId')}"  th:href="@{/zhishifuwu/shenqinglist(userid=${cookie.getValue()})}">
 											<img th:src="@{/images/dingdan.png}" />
 											我的申请
 										</a>

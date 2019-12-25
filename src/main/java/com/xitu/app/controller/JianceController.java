@@ -484,4 +484,19 @@ public class JianceController {
 		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
 	
+	@ResponseBody
+	@RequestMapping(value = "jiance/jianceIndex", method = RequestMethod.POST,consumes = "application/json")
+	public R jianceIndex(@RequestBody JSONObject insname) {
+    	int pageSize = 7;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	int pageIndex = 0;
+		int i = 3;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+		// TODO 静态变量未环绕需调整
+		JSONObject rs = new JSONObject();
+		rs = jianceService.executeIns(insname.getString("name"),pageIndex, pageSize, "lanmu",i);
+		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
+    }
+	
 }

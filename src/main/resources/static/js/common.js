@@ -58,6 +58,6 @@ function showLoginInfoFrontend(){
 	}else {
 		$("#loginBefore").css('display','block'); 
 		$("#loginAfter").css('display','none'); 
-		document.getElementById("xituzhiku").removeAttribute("href");
+		//document.getElementById("xituzhiku").removeAttribute("href");
 	}
 }
