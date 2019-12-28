@@ -1,7 +1,10 @@
 package com.xitu.app.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
@@ -24,6 +27,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -84,6 +90,8 @@ import com.xitu.app.repository.OrgRepository;
 import com.xitu.app.repository.PatentRepository;
 import com.xitu.app.service.es.JianceService;
 import com.xitu.app.service.es.PatentService;
+import com.xitu.app.utils.DocUtil;
+import com.xitu.app.utils.ImageUtil;
 import com.xitu.app.utils.JsonUtil;
 import com.xitu.app.utils.ThreadLocalUtil;
 
@@ -125,7 +133,64 @@ public class PatentController {
     // 设置IP切换头
     final static String ProxyHeadKey = "Proxy-Switch-Ip";
     final static String ProxyHeadVal = "yes";
-	
+    Map<String, String> countryName = new HashMap<String, String>();
+	public PatentController(){
+		 
+		 countryName.put("中国","China");
+		 countryName.put("韩国","South Korea");
+		 countryName.put("加拿大","Canada");
+		 countryName.put("俄罗斯","Russia");
+		 countryName.put("墨西哥","Mexico");
+		 countryName.put("日本","Japan");
+		 countryName.put("澳大利亚","Australia");
+		 countryName.put("美国","United States of America");
+		 countryName.put("马来西亚","Malaysia");
+		 countryName.put("乌克兰","Ukraine");
+		 countryName.put("菲律宾","Philippines");
+		 countryName.put("南非","South Africa");
+		 
+		 countryName.put("新加坡","Singapore");
+		 countryName.put("印度","India");
+		 countryName.put("葡萄牙","Portugal");
+		 countryName.put("保加利亚","Bulgaria");
+		 countryName.put("新西兰","New Zealand");
+		 countryName.put("希腊","Greece");
+		 
+		 countryName.put("瑞典","Sweden");
+		 countryName.put("匈牙利","Hungary");
+		 countryName.put("波兰","Poland");
+		 countryName.put("挪威","Norway");
+		 countryName.put("英国","United Kingdom");
+		 
+		 countryName.put("以色列","Israel");
+		 countryName.put("卢森堡","Luxembourg");
+		 countryName.put("荷兰","Netherlands");
+		 countryName.put("莫尔多瓦","Moldova");
+		 countryName.put("土耳其","Turkey");
+		 
+		 countryName.put("德国","Germany");
+		 countryName.put("芬兰","Finland");
+		 countryName.put("克罗地亚","Croatia");
+		 countryName.put("拉脱维亚","Latvia");
+		 countryName.put("斯洛文尼亚","Slovenia");
+		 countryName.put("立陶宛","Lithuania");
+		 
+		 countryName.put("格鲁吉亚","Georgia");
+		 countryName.put("突尼斯","Tunisia");
+		 countryName.put("约旦","Jordan");
+		 countryName.put("法国","France");
+		 
+		 countryName.put("丹麦","Denmark");
+		 countryName.put("爱尔兰","Ireland");
+		 countryName.put("埃及","Egypt");
+		 countryName.put("沙特阿拉伯","Saudi Arabia");
+		 
+		 
+		 
+		 
+		 
+	}
+   
 	
 	@GetMapping(value = "patent/get")
 	public String getPatent(@RequestParam(required=false,value="id") String id, Model model) {
@@ -782,9 +847,89 @@ public class PatentController {
 	
 	
 	@GetMapping(value = "patent/agtype")
-	public String agtype() {
+	public String agtype(@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="totalcount") String totalCount,
+			Model model) {
+		CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        String[] str=new String[5];
+        int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	    int lastfive = year-4;
+	    for(int i=0;i<5;i++){
+	    	str[i] = lastfive+"";
+	    	lastfive++;
+	    }
+	    
+	    JSONObject agg = (JSONObject) obj.get("typeyear");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    
+	    for(Object jsonObject : ar){
+	    	for(int j = 0;j<str.length;j++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[j])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("famingnumtotal", famingnumtotal);
+	    model.addAttribute("waiguannum", waiguannum);
+	    model.addAttribute("shiyongnum", shiyongnum);
+	    model.addAttribute("yearstr", str);
+	    if(totalCount == null || totalCount.equals("")){
+	    	totalCount = 129684+"";
+	    }
+	    model.addAttribute("totalCount", totalCount); 
+	    model.addAttribute("query", q);
 		return "zhuanlifenxizhuanlileixing";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentTypeMonList", method = RequestMethod.POST,consumes = "application/json")
+	public R patenttypemonthList(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String query= (String)queryobj.get("querystring");
+    	Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+    	
+		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+		// TODO 静态变量未环绕需调整
+		
+		JSONObject num = patentService.executeTypeMonth(0, 10, i,query,null,null,""+year,null,null,null,null);
+		return R.ok().put("famingnumtotal", num.get("famingnumtotal")).put("waiguannum", num.get("waiguannum")).put("shiyongnum", num.get("shiyongnum")).put("query", query);
+    }
+	
 	/*@GetMapping(value = "patent/agmount")
 	public String agmount(Model model) {
 		String time = priceMapper.getLatestUpdateTime();
@@ -849,7 +994,7 @@ public class PatentController {
 	    model.addAttribute("num", num);
 	    model.addAttribute("yearstr", str);
 	    if(totalCount == null || totalCount.equals("")){
-	    	totalCount = 108768+"";
+	    	totalCount = 129684+"";
 	    }
 	    model.addAttribute("totalCount", totalCount); 
 	    model.addAttribute("query", q);
@@ -897,23 +1042,433 @@ public class PatentController {
 		return R.ok().put("b", b).put("query", query).put("hengzhoushuju", hengzhoushuju);
     }
 	
+//	@GetMapping(value = "patent/agcountry")
+//	public String agcountry() {
+//		return "zhuanlifenxizhuanlishenqingguo";
+//	}
+	
 	@GetMapping(value = "patent/agcountry")
-	public String agcountry() {
+	public String agcountry(@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="totalcount") String totalCount,
+			Model model) {
+		CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+	   
+	    int[] num={0,0,0,0,0};
+	    
+	    JSONObject agg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (agg != null) {
+	    	 JSONArray ar = (JSONArray) agg.get("buckets");
+	 	    int j=0;
+	 	    
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : ar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	   
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("num", num);
+	    model.addAttribute("strings", strings);
+	   // model.addAttribute("yearstr", str);
+	    model.addAttribute("query", q);
+	    model.addAttribute("totalCount", totalCount); 
 		return "zhuanlifenxizhuanlishenqingguo";
 	}
-	@GetMapping(value = "patent/agpeople")
-	public String agpeople() {
-		return "zhuanlifenxifamingrenjizhuanliquanren";
-	}
+	
+//	@GetMapping(value = "patent/agpeople")
+//	public String agpeople() {
+//		return "zhuanlifenxifamingrenjizhuanliquanren";
+//	}
 	@GetMapping(value = "patent/agpeoplecon")
 	public String agpeoplecon() {
 		return "T-hangyeCon";
 	}
 	
+//	@GetMapping(value = "patent/agclassis")
+//	public String agclassis() {
+//		return "zhuanlifenxijishufenlei";
+//	}
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/download", method = RequestMethod.POST,consumes = "application/json")
+	public R xiangguanpaperList(@RequestBody JSONObject info) {
+		String barBase64Info = (String) info.get("barBase64Info");
+		DocUtil docUtil = new DocUtil();
+	    //引入处理图片的工具类，包含将base64编码解析为图片并保存本地，获取图片本地路径
+	    ImageUtil imageUtil = new ImageUtil();
+	    //建立map存储所要导出到word的各种数据和图像，不能使用自己项目封装的类型，例如PageData
+	    Map<String, Object> dataMap = new HashMap<String, Object>(); 
+	    
+	  //这一步，进行图片的处理，获取前台传过来的图片base64编码，在利用工具类解析图片保存到本地，然后利用工具类获取图片本地地址
+	   
+	    String path = "C:";
+	    
+	    //String image1  = imageUtil.getImageStr(image1);
+	    
+	    
+		try {
+			String image1 = ImageUtil.savePictoServer(barBase64Info, path);
+			image1  = imageUtil.getImageStr(image1);
+			
+			dataMap.put("image1", image1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+
+	    File file = null;
+	    InputStream fin = null;
+	    OutputStream out = null;
+	    String filename = "文件名.doc";
+	        //dataMap是上面处理完的数据，MODELPATH是模板文件的存储路径，"模板.xml"是相应的模板文件
+	    file = docUtil.createWordFile(dataMap, "model.xml");
+	    System.out.print(file.getAbsolutePath());
+		return R.ok().put("filename", file.getName());
+	}
+	
+	  @SuppressWarnings("unused")
+	    @RequestMapping(value="pdf/fileDownload")
+	    public void yzmDownload(@RequestParam("filename") String filename,HttpServletRequest request, HttpServletResponse response){
+	    	
+	    	FileInputStream fis = null;  
+	    	OutputStream os = null;  
+	    	try {  
+	    		System.out.println(filename);
+	    		fis = new FileInputStream("C:\\Users\\abc\\git\\jilin" + File.separator + filename);  
+	    		//String path = "C:\\Users\\";
+	    		//fis = new FileInputStream(path + filename); 
+	    		os = response.getOutputStream();  
+	    		int count = 0;  
+	    		byte[] buffer = new byte[1024 * 8];  
+	    		while ((count = fis.read(buffer)) != -1) {  
+	    			os.write(buffer, 0, count);  
+	    			os.flush();  
+	    		}  
+	    	} catch (Exception e) {  
+	    		e.printStackTrace();  
+	    	} finally {  
+	    		try {  
+	    			if(fis != null) {
+	    				fis.close();  
+	    			}
+	    			if(os != null) {
+	    				os.close();  
+	    			}
+	    		} catch (IOException e) {  
+	    			e.printStackTrace();  
+	    		}  
+	    	}  
+	    }
+	
+	@GetMapping(value = "patent/agpeople")
+	public String agpeople(@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="totalcount") String totalCount,
+			Model model) {
+		
+//		int pageSize = 10;
+//		int pageIndex = 0;
+//		
+//		//model.addAttribute("pageIndex", pageIndex);
+//		//model.addAttribute("pageSize", pageSize);
+//		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测
+//		// TODO 静态变量未环绕需调整
+//		ThreadLocalUtil.set(model);
+//		patentService.executefamingren(pageIndex, pageSize, i,null,"person","creator");
+//		ThreadLocalUtil.remove();
+		CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+        String[] str=new String[10];
+	    int[] num=new int[10];
+	    
+	    
+	    JSONObject agg = (JSONObject) obj.get("creator");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : ar){
+	    	
+	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
+		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("num", num);
+	    model.addAttribute("famingren", str);
+	    
+	    String[] zhuanliquanrenstr=new String[10];
+	    int[] zhuanliquanrennum=new int[10];
+	    
+	    
+	    JSONObject zhuanliquanrenagg = (JSONObject) obj.get("person");
+	    JSONArray zhuanliquanrenar = (JSONArray) zhuanliquanrenagg.get("buckets");
+	    int jj = 0;
+	    for(Object jsonObject : zhuanliquanrenar){
+	    	
+	    	zhuanliquanrenstr[jj] = ((JSONObject)jsonObject).get("key").toString();
+	    	zhuanliquanrennum[jj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	jj++;
+		    	if(jj>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("zhuanliquanrennum", zhuanliquanrennum);
+	    model.addAttribute("zhuanliquanrenstr", zhuanliquanrenstr);
+	    
+	    if(totalCount == null || totalCount.equals("")){
+	    	totalCount = 129684+"";
+	    }
+	    model.addAttribute("totalCount", totalCount); 
+	    model.addAttribute("query", q);
+		return "zhuanlifenxifamingrenjizhuanliquanren";
+	}
+	
 	@GetMapping(value = "patent/agclassis")
-	public String agclassis() {
+	public String agclassis(@RequestParam(required=false,value="q") String q,
+			@RequestParam(required=false,value="totalcount") String totalCount,
+			Model model) {
+		CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+        String[] str=new String[10];
+	    int[] num=new int[10];
+	    
+	    
+	    JSONObject agg = (JSONObject) obj.get("ipc");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : ar){
+	    	
+	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
+		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("num", num);
+	    model.addAttribute("famingren", str);
+	    model.addAttribute("query", q);
+	    if(totalCount == null || totalCount.equals("")){
+	    	totalCount = 129684+"";
+	    }
+	    model.addAttribute("totalCount", totalCount); 
+	    model.addAttribute("query", q);
 		return "zhuanlifenxijishufenlei";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentTypeLastMonList", method = RequestMethod.POST,consumes = "application/json")
+	public R patenttypelastmonthList(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String query= (String)queryobj.get("querystring");
+    	Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        int month = cale.get(Calendar.MONTH)+1;  
+        String[] hengzhoushuju = {month-2+"月",month-1+"月",month+"月"};
+		int i = 0;//0代表专利；1代表论文；2代表项目；3代表监测;4代表机构；5代表专家；
+		// TODO 静态变量未环绕需调整
+		
+		JSONObject num = patentService.executeTypeMonth(0, 10, i,query,null,null,""+year,null,null,null,null);
+		int[] b1 = new int[3];
+		int[] b2 = new int[3];
+		int[] b3 = new int[3];
+		System.arraycopy(num.get("famingnumtotal"), month-3, b1, 0, 3);
+		System.arraycopy(num.get("waiguannum"), month-3, b2, 0, 3);
+		System.arraycopy(num.get("shiyongnum"), month-3, b3, 0, 3);
+		
+		return R.ok().put("famingnumtotal", b1).put("waiguannum",b2).put("shiyongnum", b3).put("query", query).put("hengzhoushuju", hengzhoushuju);
+		
+    }
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentJishuqushi", method = RequestMethod.POST,consumes = "application/json")
+	public R patentjishuqushi(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String q= (String)queryobj.get("querystring");
+    	
+    	CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+	    // TODO  ipc
+        String[] str=new String[7];
+	    int[] num=new int[7];
+	    String[] yearstr=new String[24];
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        
+	   // TODO year
+	    int lastfive = year-23;
+	    for(int i=0;i<24;i++){
+	    	yearstr[i] = lastfive+"";
+	    	lastfive++;
+	    }
+	    JSONObject agg = (JSONObject) obj.get("ipc");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : ar){
+	    	
+	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
+		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=7){
+		    		break;
+		    	}
+	    	
+	    }
+	    Map qushinum = patentService.executeQushi(0, 10, 0,q,str); //key  ip_year
+	    int[][] arr = new int[168][3];
+		int i=0;
+		for(int m=0;m<str.length;m++) {
+			for(int k=0;k<yearstr.length;k++) {
+				int[] tmp = new int[3];
+				tmp[0] = m;
+				tmp[1] = k;
+				if(qushinum.containsKey(str[m] + "_" + yearstr[k])) {
+					tmp[2] = (int) qushinum.get(str[m] + "_" + yearstr[k]);
+				}else {
+					tmp[2] = 0;
+				}
+				arr[i] = tmp;
+				i++;
+			}
+		}
+	    
+//	    int[][] data ={{0,0,5},{0,1,1},{0,2,0},{0,3,0},{0,4,0},{0,5,0},{0,6,0},{0,7,0},{0,8,0},{0,9,0},{0,10,0},{0,11,2},{0,12,4},{0,13,1},{0,14,1},{0,15,3},{0,16,4},{0,17,6},{0,18,4},{0,19,4},{0,20,3},{0,21,3},{0,22,2},{0,23,5},{1,0,7},{1,1,0},{1,2,0},{1,3,0},{1,4,0},{1,5,0},{1,6,0},{1,7,0},{1,8,0},{1,9,0},{1,10,5},{1,11,2},{1,12,2},{1,13,6},{1,14,9},{1,15,11},{1,16,6},{1,17,7},{1,18,8},{1,19,12},{1,20,5},{1,21,5},{1,22,7},{1,23,2},{2,0,1},{2,1,1},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0},{2,7,0},{2,8,0},{2,9,0},{2,10,3},{2,11,2},{2,12,1},{2,13,9},{2,14,8},{2,15,10},{2,16,6},{2,17,5},{2,18,5},{2,19,5},{2,20,7},{2,21,4},{2,22,2},{2,23,4},{3,0,7},{3,1,3},{3,2,0},{3,3,0},{3,4,0},{3,5,0},{3,6,0},{3,7,0},{3,8,1},{3,9,0},{3,10,5},{3,11,4},{3,12,7},{3,13,14},{3,14,13},{3,15,12},{3,16,9},{3,17,5},{3,18,5},{3,19,10},{3,20,6},{3,21,4},{3,22,4},{3,23,1},{4,0,1},{4,1,3},{4,2,0},{4,3,0},{4,4,0},{4,5,1},{4,6,0},{4,7,0},{4,8,0},{4,9,2},{4,10,4},{4,11,4},{4,12,2},{4,13,4},{4,14,4},{4,15,14},{4,16,12},{4,17,1},{4,18,8},{4,19,5},{4,20,3},{4,21,7},{4,22,3},{4,23,0},{5,0,2},{5,1,1},{5,2,0},{5,3,3},{5,4,0},{5,5,0},{5,6,0},{5,7,0},{5,8,2},{5,9,0},{5,10,4},{5,11,1},{5,12,5},{5,13,10},{5,14,5},{5,15,7},{5,16,11},{5,17,6},{5,18,0},{5,19,5},{5,20,3},{5,21,4},{5,22,2},{5,23,0},{6,0,1},{6,1,0},{6,2,0},{6,3,0},{6,4,0},{6,5,0},{6,6,0},{6,7,0},{6,8,0},{6,9,0},{6,10,1},{6,11,0},{6,12,2},{6,13,1},{6,14,3},{6,15,4},{6,16,0},{6,17,0},{6,18,0},{6,19,0},{6,20,1},{6,21,2},{6,22,2},{6,23,6}}; 
+	
+		return R.ok().put("qushi", arr).put("ipc", str).put("year", yearstr);
+		
+    }
+	
+	@ResponseBody
+	@RequestMapping(value = "patent/patentJishufenbu", method = RequestMethod.POST,consumes = "application/json")
+	public R patentjishufenbu(@RequestBody JSONObject queryobj) {
+    	int pageSize = 10;
+//		if(pageIndex == null) {
+//		   pageIndex = 0;
+//		}
+    	String q= (String)queryobj.get("querystring");
+    	
+    	CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+	    // TODO  ipc
+        String[] str=new String[7];
+	    int[] num=new int[7];
+	    String[] ipcstr=new String[18];
+	   
+	    JSONObject agg = (JSONObject) obj.get("person");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : ar){
+	    	
+	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
+		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=7){
+		    		break;
+		    	}
+	    	
+	    }
+	    JSONObject aggipc = (JSONObject) obj.get("ipc");
+	    JSONArray aripc = (JSONArray) aggipc.get("buckets");
+	    int jj = 0;
+	    for(Object jsonObject : aripc){
+	    	
+	    	ipcstr[jj] = ((JSONObject)jsonObject).get("key").toString();
+		    
+	    	jj++;
+	    	if(jj>=18){
+	    		break;
+	    	}
+	    	
+	    }
+	    Map qushinum = patentService.executeJishufenbu(0, 10, 0,q,str,ipcstr); //key  ip_year
+	    int[][] arr = new int[126][3];
+		int i=0;
+		for(int m=0;m<str.length;m++) {
+			for(int k=0;k<ipcstr.length;k++) {
+				int[] tmp = new int[3];
+				tmp[0] = m;
+				tmp[1] = k;
+				if(qushinum.containsKey(str[m] + "_" + ipcstr[k])) {
+					tmp[2] = (int) qushinum.get(str[m] + "_" + ipcstr[k]);
+				}else {
+					tmp[2] = 0;
+				}
+				arr[i] = tmp;
+				i++;
+			}
+		}
+	    
+	    //int[][] data ={{0,0,5},{0,1,1},{0,2,0},{0,3,0},{0,4,0},{0,5,0},{0,6,0},{0,7,0},{0,8,0},{0,9,0},{0,10,0},{0,11,2},{0,12,4},{0,13,1},{0,14,1},{0,15,3},{0,16,4},{0,17,6},{0,18,4},{0,19,4},{0,20,3},{0,21,3},{0,22,2},{0,23,5},{1,0,7},{1,1,0},{1,2,0},{1,3,0},{1,4,0},{1,5,0},{1,6,0},{1,7,0},{1,8,0},{1,9,0},{1,10,5},{1,11,2},{1,12,2},{1,13,6},{1,14,9},{1,15,11},{1,16,6},{1,17,7},{1,18,8},{1,19,12},{1,20,5},{1,21,5},{1,22,7},{1,23,2},{2,0,1},{2,1,1},{2,2,0},{2,3,0},{2,4,0},{2,5,0},{2,6,0},{2,7,0},{2,8,0},{2,9,0},{2,10,3},{2,11,2},{2,12,1},{2,13,9},{2,14,8},{2,15,10},{2,16,6},{2,17,5},{2,18,5},{2,19,5},{2,20,7},{2,21,4},{2,22,2},{2,23,4},{3,0,7},{3,1,3},{3,2,0},{3,3,0},{3,4,0},{3,5,0},{3,6,0},{3,7,0},{3,8,1},{3,9,0},{3,10,5},{3,11,4},{3,12,7},{3,13,14},{3,14,13},{3,15,12},{3,16,9},{3,17,5},{3,18,5},{3,19,10},{3,20,6},{3,21,4},{3,22,4},{3,23,1},{4,0,1},{4,1,3},{4,2,0},{4,3,0},{4,4,0},{4,5,1},{4,6,0},{4,7,0},{4,8,0},{4,9,2},{4,10,4},{4,11,4},{4,12,2},{4,13,4},{4,14,4},{4,15,14},{4,16,12},{4,17,1},{4,18,8},{4,19,5},{4,20,3},{4,21,7},{4,22,3},{4,23,0},{5,0,2},{5,1,1},{5,2,0},{5,3,3},{5,4,0},{5,5,0},{5,6,0},{5,7,0},{5,8,2},{5,9,0},{5,10,4},{5,11,1},{5,12,5},{5,13,10},{5,14,5},{5,15,7},{5,16,11},{5,17,6},{5,18,0},{5,19,5},{5,20,3},{5,21,4},{5,22,2},{5,23,0},{6,0,1},{6,1,0},{6,2,0},{6,3,0},{6,4,0},{6,5,0},{6,6,0},{6,7,0},{6,8,0},{6,9,0},{6,10,1},{6,11,0},{6,12,2},{6,13,1},{6,14,3},{6,15,4},{6,16,0},{6,17,0},{6,18,0},{6,19,0},{6,20,1},{6,21,2},{6,22,2},{6,23,6}}; 
+	
+		return R.ok().put("qushi", arr).put("ipc", str).put("year", ipcstr);
+		
+    }
 	
 	@GetMapping(value = "patent/agclassiscon")
 	public String agclassiscon() {
