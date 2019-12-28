@@ -1,14 +1,17 @@
 package com.xitu.app.controller;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1161,34 +1164,54 @@ public class PatentController {
 	    @RequestMapping(value="pdf/fileDownload")
 	    public void yzmDownload(@RequestParam("filename") String filename,HttpServletRequest request, HttpServletResponse response){
 	    	
-	    	FileInputStream fis = null;  
-	    	OutputStream os = null;  
-	    	try {  
-	    		System.out.println(filename);
-	    		fis = new FileInputStream("C:\\Users\\abc\\git\\jilin" + File.separator + filename);  
-	    		//String path = "C:\\Users\\";
-	    		//fis = new FileInputStream(path + filename); 
-	    		os = response.getOutputStream();  
-	    		int count = 0;  
-	    		byte[] buffer = new byte[1024 * 8];  
-	    		while ((count = fis.read(buffer)) != -1) {  
-	    			os.write(buffer, 0, count);  
-	    			os.flush();  
-	    		}  
-	    	} catch (Exception e) {  
-	    		e.printStackTrace();  
-	    	} finally {  
-	    		try {  
-	    			if(fis != null) {
-	    				fis.close();  
-	    			}
-	    			if(os != null) {
-	    				os.close();  
-	    			}
-	    		} catch (IOException e) {  
-	    			e.printStackTrace();  
-	    		}  
+	    	
+	    	File file=new File("C:\\Users\\abc\\git\\jilin" + File.separator + filename);
+			String fileName=file.getName();
+			String ext=fileName.substring(fileName.lastIndexOf(".")+1);
+			String agent=(String)request.getHeader("USER-AGENT"); //判断浏览器类型
+			try {  
+	        	if(agent!=null && agent.indexOf("Fireforx")!=-1) {
+	        		fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");   //UTF-8编码，防止输出文件名乱码
+	        	}
+	        	else {
+	        		fileName=URLEncoder.encode(fileName,"UTF-8");
+	        	}
+			} catch (UnsupportedEncodingException e) {  
+	            e.printStackTrace();  
+			}
+			
+			BufferedInputStream bis=null;
+	        OutputStream os=null;
+		response.reset();
+	    	response.setCharacterEncoding("utf-8"); 
+	    	if(ext=="docx") {
+	    		response.setContentType("application/msword"); // word格式
+	    	}else if(ext=="pdf") {
+	    		response.setContentType("application/pdf"); // word格式
 	    	}  
+	        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+	        
+	        try {
+		        bis=new BufferedInputStream(new FileInputStream(file));
+			byte[] b=new byte[bis.available()+1000];
+			int i=0;
+	        	os = response.getOutputStream();   //直接下载导出
+	        	while((i=bis.read(b))!=-1) {
+	        		os.write(b, 0, i);
+	        	}
+	            os.flush();
+	            os.close();
+	        } catch (IOException e) {  
+	            e.printStackTrace();  
+	        }finally {
+	        	if(os!=null) {
+	        		try {
+				     os.close();
+				} catch (IOException e) {
+				     e.printStackTrace();
+					}
+	        	}
+	        }
 	    }
 	
 	@GetMapping(value = "patent/agpeople")
