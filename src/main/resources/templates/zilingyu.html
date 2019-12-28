@@ -200,9 +200,6 @@
 	    </div>
 	    <script type="text/javascript" th:src="@{/js/main.js}" ></script>
 	    <script type="text/javascript">
-	    	/* var token =  [[${token}]];
-	    	var account =  [[${account}]];
-	    	var role =  [[${role}]]; */
 	    	
 	    	var time;
 	    	// 获取登录二维码
@@ -219,6 +216,7 @@
 	            });
 	    	}
 
+	        var timeRun = 0;
 	      //轮询判断是否登录
 	        function isLogin() {
 	                var url = "/wechat/islogin";
@@ -246,6 +244,11 @@
 	                        } else if (resObj.code == 1) {
 	                            window.clearInterval(time);
 	                            console.log("获取微信用户信息失败")
+	                        }else {
+	                        	timeRun += 1;
+	                        	if(timeRun >= 20) {
+	                        		window.clearInterval(time);
+	                        	}
 	                        }
 	                    }
 	                });
@@ -253,68 +256,11 @@
 	    	
 	      
 	        $(document).ready(function () {
-	        $("#alertbd").css('display','none');
-			if($.cookie("openId")!=null) {
-				$("#loginBefore").css('display','none'); 
-				$("#headImg").attr("src", $.cookie("headImg"));
-				$("#loginAfter").css('display','block');
-				if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
-					$(".vip").html("普通用户"); 
-					$("#backgroud").css('display','none'); 
-					document.getElementById("xituzhiku").removeAttribute("href");
-					document.getElementById("chanyejiance").removeAttribute("href");
-					document.getElementById("zhishifuwu").removeAttribute("href");
-					
-				}
-				if($.cookie("role")!=null && $.cookie("role")==="admin"){
-					$(".vip").html("admin"); 
-					$("#backgroud").css('display','block'); 
-				}
-				$("#logoinName").html($.cookie("nickName"));
-			}else {
-				$("#loginBefore").css('display','block'); 
-				$("#loginAfter").css('display','none'); 
-				
-				document.getElementById("xituzhiku").removeAttribute("href");
-				document.getElementById("chanyejiance").removeAttribute("href");
-				document.getElementById("zhishifuwu").removeAttribute("href");
-				
-				
-			}
-				
-
-				
+	        	showLoginInfoFrontend();
 				$("#loginBefore").click(function(){
 					getQcode();
 				});
-// 				if($.cookie("account")!=account){
-// 					$.cookie('account', account);
-// 				}
-// 				if($.cookie("role")!=role){
-// 					$.cookie('role', role);
-// 				}
-// 				if(token == "1"){
-// 					$('.alertZh').css('display','block');
-// 					alert("密码输入错误")
-// 					$('#noaccount').css('display','none');
-// 					$('#passworderror').css('display','block');
-// 				}
 				
-// 				if(token == "2"){
-// 					$('.alertZh').css('display','block');
-// 					alert("未找到该用户名")
-// 					$('#passworderror').css('display','none');
-// 					$('#noaccount').css('display','block'); 
-// 				}
-				
-				
-				$("#quit").click(function(){
-					$.cookie("openId", "", {expires: -1});
-					$.cookie("nickName", "", {expires: -1});
-					$.cookie("headImg", "", {expires: -1});
-					$.cookie("role", "", {expires: -1});
-					window.location.href = "/";
-				});
 				
 				 $("#bindButtion").click(function(){
 					if($("#bdaccount").val() == ""){
