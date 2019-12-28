@@ -342,6 +342,27 @@
 				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
 			}
 			
+			function downloading() {
+				var param = {
+						'barBase64Info' : barBase64Info
+						
+					};
+					 $.ajax({
+						url : "/patent/download",
+						data : JSON.stringify(param),
+						dataType : 'json',
+						type : 'post',
+						contentType: "application/json; charset=utf-8",
+						success : function(data) {
+							
+							var filename = data.filename;
+							//window.location.href = "http://47.93.216.109:8000/pdf/download/" + number + "/" + applynumbera;
+							window.location.href = "http://localhost/pdf/fileDownload?filename=" + filename;
+							
+						}
+					}); 
+			}
+			
 		</script>
 	</body>
 </html>
