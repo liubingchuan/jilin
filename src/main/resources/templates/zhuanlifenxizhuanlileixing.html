@@ -23,8 +23,8 @@
 				</a>
 				<div class="left headsuos">
 					<em></em>
-					<input type="button" class="headsuosBtn" value="搜索" />
-					<input type="text" class="headsuosInp" />
+					<input type="button" class="headsuosBtn" value="搜索" id="search" onClick="search();"/>
+					<input type="text" class="headsuosInp" id="keywords"/>
 				</div>
 				<div th:replace="qiantaidenglu :: myqiantaidenglu"></div>
 				
@@ -43,27 +43,27 @@
 						</div>
 						<ul class="rencaiLfUl">
 							<li>
-								<a th:href="@{/patent/agmount}">
+								<a th:href="@{/patent/agmount(q=${query},totalcount=${totalCount})}">
 									<span>专利申请量</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agcountry}">
+								<a th:href="@{/patent/agcountry(q=${query},totalcount=${totalCount})}">
 									<span>专利申请国</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agpeople}">
+								<a th:href="@{/patent/agpeople(q=${query},totalcount=${totalCount})}">
 									<span>发明人及专利权人</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agclassis}">
+								<a th:href="@{/patent/agclassis(q=${query},totalcount=${totalCount})}">
 									<span>技术分类</span>
 								</a>
 							</li>
 							<li>
-								<a th:href="@{/patent/agtype}" class="ahover">
+								<a th:href="@{/patent/agtype(q=${query},totalcount=${totalCount})}" class="ahover">
 									<span>专利类型</span>
 								</a>
 							</li>
@@ -71,11 +71,11 @@
 					</div>
 				    <div class="rencaiRt right">
 				    	    <div class="zhuanlFive clearfix">
-				    	    	<span class="left">
-				    	    		检索命中: 108768条 
+				    	    	<span class="left" th:text="检索命中：+ ${totalCount} + 条">
+				    	    		
 				    	    	</span>
-				    	    	<a href="/data/泛在电力物联网产业技术情报.docx" class="right btnYellow">
-				    	    		导出报告
+				    	    	<a href="#" onclick="downloading()" class="right btnYellow">
+				    	    		下载数据
 				    	    	</a>
 				    	    </div>
 				    		<div class="recaiForm clearfix zhuanlOneNr">
@@ -105,7 +105,13 @@
 		<div th:replace="footer :: myfooter"></div>
 		
 		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
-		<script type="text/javascript">
+		<script type="text/javascript" th:inline="javascript">
+		var yearstr =  [[${yearstr}]];
+		var famingnumtotal =  [[${famingnumtotal}]];
+		var waiguannum =  [[${waiguannum}]];
+		var shiyongnum =  [[${shiyongnum}]];
+		var query =  [[${query}]];
+		var barBase64Info = '';
 			
 			$(document).ready(function() {
 				showLoginInfoFrontend();
@@ -113,10 +119,10 @@
 			});
 			function showleixing(type) {
 				if(type == 'jinwunian'){
-					var hengzhoushuju = ['2015','2016','2017','2018','2019'];
-					var faming = [7521, 6999, 13972, 27527, 17164];
-					var waiguan = [132, 124, 173, 335, 286];
-					var shiyongxinxing = [2067, 1716, 3283, 9105, 4334];
+					var hengzhoushuju = yearstr;
+					var faming = famingnumtotal;
+					var waiguan = waiguannum;
+					var shiyongxinxing = shiyongnum;
 					var myChart = echarts.init(document.getElementById('leixing'));
 					var titles = ['发明专利','外观专利','实用新型专利'];
 					option = {
@@ -150,21 +156,21 @@
 							{
 								name:titles[0],
 								type:'line',
-								stack: '总量',
+								
 								data: faming,
 								itemStyle : { normal: {label : {show: true}}}
 							},
 							{
 								name:titles[1],
 								type:'line',
-								stack: '总量',
+								
 								data: waiguan,
 								itemStyle : { normal: {label : {show: true}}}
 							},
 							{
 								name:titles[2],
 								type:'line',
-								stack: '总量',
+								
 								data: shiyongxinxing,
 								itemStyle : { normal: {label : {show: true}}}
 							}
@@ -174,128 +180,167 @@
 				   myChart.setOption(option);
 				}
 				if(type == 'jinyinian'){
-					var hengzhoushuju = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-					var faming = [1174, 551, 1151, 817, 212,14,0, 0, 0, 0, 0,0];
-					var waiguan = [18, 4, 0, 2, 1,1,0, 0, 0, 0, 0,0];
-					var shiyongxinxing = [57, 5, 1, 3, 3,0,0, 0, 0, 0, 0,0];
-					var myChart = echarts.init(document.getElementById('leixing'));
-					var titles = ['发明专利','外观专利','实用新型专利'];
-					option = {
-						
-						tooltip: {
-							trigger: 'axis'
-						},
-						legend: {
-							data:titles
-						},
-						grid: {
-							left: '3%',
-							right: '4%',
-							bottom: '3%',
-							containLabel: true
-						},
-						toolbox: {
-							feature: {
-								saveAsImage: {}
-							}
-						},
-						xAxis: {
-							type: 'category',
+					var param = {};
+					 
+				    param['querystring'] = query;
+					
+					var url = "/patent/patentTypeMonList";
+					$.ajax({
+						url : url,
+						data : JSON.stringify(param),
+						contentType: "application/json; charset=utf-8",
+						dataType : 'json',
+						type : 'post',
+						success : function(data) {
 							
-							data: hengzhoushuju
-						},
-						yAxis: {
-							type: 'value'
-						},
-						series: [
-							{
-								name:titles[0],
-								type:'line',
-								stack: '总量',
-								data: faming,
-								itemStyle : { normal: {label : {show: true}}}
-							},
-							{
-								name:titles[1],
-								type:'line',
-								stack: '总量',
-								data: waiguan,
-								itemStyle : { normal: {label : {show: true}}}
-							},
-							{
-								name:titles[2],
-								type:'line',
-								stack: '总量',
-								data: shiyongxinxing,
-								itemStyle : { normal: {label : {show: true}}}
-							}
-						]
-					};
+							var hengzhoushuju = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+							
+							var faming = data.famingnumtotal;
+							var waiguan = data.waiguannum;
+							var shiyongxinxing = data.shiyongnum;
+							var myChart = echarts.init(document.getElementById('leixing'));
+							var titles = ['发明专利','外观专利','实用新型专利'];
+							option = {
+								
+								tooltip: {
+									trigger: 'axis'
+								},
+								legend: {
+									data:titles
+								},
+								grid: {
+									left: '3%',
+									right: '4%',
+									bottom: '3%',
+									containLabel: true
+								},
+								toolbox: {
+									feature: {
+										saveAsImage: {}
+									}
+								},
+								xAxis: {
+									type: 'category',
+									
+									data: hengzhoushuju
+								},
+								yAxis: {
+									type: 'value'
+								},
+								series: [
+									{
+										name:titles[0],
+										type:'line',
+										
+										data: faming,
+										itemStyle : { normal: {label : {show: true}}}
+									},
+									{
+										name:titles[1],
+										type:'line',
+										
+										data: waiguan,
+										itemStyle : { normal: {label : {show: true}}}
+									},
+									{
+										name:titles[2],
+										type:'line',
+										
+										data: shiyongxinxing,
+										itemStyle : { normal: {label : {show: true}}}
+									}
+								]
+							};
 
-				   myChart.setOption(option);
+						   myChart.setOption(option);
+						}
+					}); 
+					
 				}
 				if(type == 'jinsanyue'){
-					var hengzhoushuju = ['1月','2月','3月'];
-					var faming = [1174, 551, 1151];
-					var waiguan = [18, 4, 0];
-					var shiyongxinxing = [57, 5, 1];
-					var myChart = echarts.init(document.getElementById('leixing'));
-					var titles = ['发明专利','外观专利','实用新型专利'];
-					option = {
-						
-						tooltip: {
-							trigger: 'axis'
-						},
-						legend: {
-							data:titles
-						},
-						grid: {
-							left: '3%',
-							right: '4%',
-							bottom: '3%',
-							containLabel: true
-						},
-						toolbox: {
-							feature: {
-								saveAsImage: {}
-							}
-						},
-						xAxis: {
-							type: 'category',
+					var param = {};
+					 
+				    param['querystring'] = query;
+					
+					var url = "/patent/patentTypeLastMonList";
+					$.ajax({
+						url : url,
+						data : JSON.stringify(param),
+						contentType: "application/json; charset=utf-8",
+						dataType : 'json',
+						type : 'post',
+						success : function(data) {
 							
-							data: hengzhoushuju
-						},
-						yAxis: {
-							type: 'value'
-						},
-						series: [
-							{
-								name:titles[0],
-								type:'line',
-								stack: '总量',
-								data: faming,
-								itemStyle : { normal: {label : {show: true}}}
-							},
-							{
-								name:titles[1],
-								type:'line',
-								stack: '总量',
-								data: waiguan,
-								itemStyle : { normal: {label : {show: true}}}
-							},
-							{
-								name:titles[2],
-								type:'line',
-								stack: '总量',
-								data: shiyongxinxing,
-								itemStyle : { normal: {label : {show: true}}}
-							}
-						]
-					};
+							var hengzhoushuju = data.hengzhoushuju;
+							
+							var faming = data.famingnumtotal;
+							var waiguan = data.waiguannum;
+							var shiyongxinxing = data.shiyongnum;
+							var myChart = echarts.init(document.getElementById('leixing'));
+							var titles = ['发明专利','外观专利','实用新型专利'];
+							option = {
+								
+								tooltip: {
+									trigger: 'axis'
+								},
+								legend: {
+									data:titles
+								},
+								grid: {
+									left: '3%',
+									right: '4%',
+									bottom: '3%',
+									containLabel: true
+								},
+								toolbox: {
+									feature: {
+										saveAsImage: {}
+									}
+								},
+								xAxis: {
+									type: 'category',
+									
+									data: hengzhoushuju
+								},
+								yAxis: {
+									type: 'value'
+								},
+								series: [
+									{
+										name:titles[0],
+										type:'line',
+										
+										data: faming,
+										itemStyle : { normal: {label : {show: true}}}
+									},
+									{
+										name:titles[1],
+										type:'line',
+										
+										data: waiguan,
+										itemStyle : { normal: {label : {show: true}}}
+									},
+									{
+										name:titles[2],
+										type:'line',
+										
+										data: shiyongxinxing,
+										itemStyle : { normal: {label : {show: true}}}
+									}
+								]
+							};
 
-				   myChart.setOption(option);
+						   myChart.setOption(option);
+						}
+					}); 
+					
 				}
 			}
+			 function search(){
+				    /*  window.location.href="http://127.0.0.1:8088/project/list?q=" + $("#keywords").val(); */
+				    window.location.href="/patent/list?q=" + $("#keywords").val();
+					/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
+				}
 		</script>
 	</body>
 </html>
