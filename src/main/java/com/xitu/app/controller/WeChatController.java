@@ -20,6 +20,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -275,6 +276,15 @@ public class WeChatController {
         System.out.println("role---" + role);
 		return R.ok().put("openId", openId).put("bind", bind).put("nickName", nickName).put("headUrl", headUrl).put("role", role);
 
+	}
+	
+	@GetMapping(value = "wechat/quit")
+	public String quit(HttpServletRequest request, Model model) {
+		String sessionId = request.getSession().getId();
+		User user = new User();
+		model.addAttribute("user", user);
+		cache.delete(sessionId);
+		return "index";
 	}
 	
 	/**

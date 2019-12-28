@@ -1,5 +1,6 @@
 package com.xitu.app.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -1295,6 +1296,87 @@ public class PatentController {
 		rs = patentService.executeIns(insname.getString("insname"),pageIndex, pageSize, "creator",i);
 		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
+	
+	@GetMapping(value = "patent/transterToNewProp")
+	public String eout() {
+		Iterator<Patent> patents = patentRepository.findAll().iterator();
+		int i=0;
+		List<Patent> patentList = new LinkedList<Patent>();
+		while(patents.hasNext()) {
+			System.out.println(i);
+			Patent patent = patents.next();
+			List<String> persons = patent.getPerson();
+			List<String> ipcs = patent.getIpc();
+			List<String> applicantipc = new ArrayList<String>();
+			if(persons != null) {
+				for(String person : persons) {
+					if(ipcs !=null) {
+						for(String ipc: ipcs) {
+							applicantipc.add(person+"_"+ipc);
+						}
+					}else {
+						applicantipc.add(person+"_0");
+					}
+				}
+			}else {
+				if(ipcs != null) {
+					for(String ipc: ipcs) {
+						applicantipc.add("0_" + ipc);
+					}
+				}else {
+					applicantipc.add("0_0");
+				}
+			}
+			patent.setApplicantipc(applicantipc);
+			
+			String applyyear = patent.getApplyyear();
+			List<String> ipcyear = new ArrayList<String>();
+			if(ipcs != null) {
+				for(String ipc: ipcs) {
+					if(applyyear != null) {
+						ipcyear.add(ipc+"_"+applyyear);
+					}else {
+						ipcyear.add(ipc+"_0");
+					}
+				}
+			}else {
+				if(applyyear != null) {
+					ipcyear.add("0_"+ applyyear);
+				}else {
+					ipcyear.add("0_0");
+				}
+			}
+			patent.setIpcyear(ipcyear);
+			
+			String month = "";
+			String applytime = patent.getApplytime();
+			if(applytime != null) {
+				String[] mats = applytime.split("-");
+				if(mats != null && mats.length>1) {
+					month = applytime.split("-")[1];
+				}else {
+					month = "01";
+				}
+			}
+			patent.setMonth(month);
+			String type = patent.getType();
+			if(type != null && applytime != null) {
+				String[] args = applytime.split("-");
+				if(args != null && args.length>1) {
+					patent.setTypemonth(type+"_"+args[1]);
+					patent.setTypeyear(type+"_"+args[0]);
+				}else {
+					patent.setTypemonth(type+"_01");
+					patent.setTypeyear(type+"_"+args[0]);
+				}
+			}
+			patentList.add(patent);
+			i++;
+		}
+		System.out.println("");
+		patentRepository.saveAll(patentList);
+		return "bsdf";
+	}
 	
 	@GetMapping(value = "patent/travel")
 	public String updatePatent() {

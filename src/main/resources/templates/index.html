@@ -20,10 +20,10 @@
 				</a>
 				<div class="left menu clearfix">
 					<a href="/">平台首页</a>
-					<a id="chanyejiance" th:href="@{/jiance/jiancelist}">产业监测</a>
-					<a id="xituzhiku" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}">企业智库</a>
-					<a id="zhishifuwu" th:href="@{/zhishifuwu/zhishifuwu}">知识服务</a>
-					<a th:href="@{/patent/agmount}">专利分析</a>
+					<a id="chanyejiance" href="#">产业监测</a>
+					<a id="xituzhiku" href="#">企业智库</a>
+					<a id="zhishifuwu" href="#">知识服务</a>
+					<a id="zhuanlifenxi" href="#">专利分析</a>
 					<!-- <a href="#">园区介绍</a>
 					<a href="#">关于我们</a> -->
 					
@@ -328,6 +328,7 @@
             });
     	}
 
+        var timeRun = 0;
       //轮询判断是否登录
         function isLogin() {
                 var url = "/wechat/islogin";
@@ -344,17 +345,23 @@
 	        				$.cookie("headImg",resObj.headUrl);
 	        				$.cookie("role",resObj.role);
 	        				console.log("openId inserted into cookie " + resObj.openId)
+	        				
 
                             if(resObj.bind==="false") {
 								$("#showcode").css('display','none');
 								// $("#showqrcode").css('display','none');
                             	$("#alertbd").css('display','block');
                             }else {
-								window.location.href = "/";
-							}
+		        				window.location.href = "/";
+                            }
                         } else if (resObj.code == 1) {
                             window.clearInterval(time);
                             console.log("获取微信用户信息失败")
+                        }else {
+                        	timeRun += 1;
+                        	if(timeRun >= 20) {
+                        		window.clearInterval(time);
+                        	}
                         }
                     }
                 });
