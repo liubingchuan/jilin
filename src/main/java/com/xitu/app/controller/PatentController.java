@@ -1054,25 +1054,42 @@ public class PatentController {
 	    int[] num={0,0,0,0,0};
 	    
 	    JSONObject agg = (JSONObject) obj.get("country");
-	    JSONArray ar = (JSONArray) agg.get("buckets");
-	    int j=0;
-	    for(Object jsonObject : ar){
-	    	//countryName
-//	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
-//		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
-//		    }
-//	    	j++;
-	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
-	    	if(countryName.containsKey(countrycn)){
-	    		String countryen = countryName.get(countrycn);
-	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
-	    		
-	    	}
-	    	
-	    	
-	    }
+	    JSONObject[] strings = null;
+	    
+	    if (agg != null) {
+	    	 JSONArray ar = (JSONArray) agg.get("buckets");
+	 	    int j=0;
+	 	    
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : ar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	   
 		//model.addAttribute(key, agg.get("buckets"));
 	    model.addAttribute("num", num);
+	    model.addAttribute("strings", strings);
 	   // model.addAttribute("yearstr", str);
 	    model.addAttribute("query", q);
 	    model.addAttribute("totalCount", totalCount); 

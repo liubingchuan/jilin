@@ -97,6 +97,7 @@
 		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
 		<script type="text/javascript" th:inline="javascript">
 		var num =  [[${num}]];
+		var strings =  [[${strings}]];
 			$(document).ready(function() {
 
 				shenqingguo();
@@ -151,9 +152,7 @@
 	                        itemStyle:{
 	                        	emphasis:{label:{show:true}}
 	                        },
-	                        data:[
-	                        {name : 'China', value : num[0]}
-	                        ]
+	                        data:strings
 	                        }
 	                    ]
 	               };
