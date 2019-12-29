@@ -2077,12 +2077,167 @@ public class PatentController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "patent/download", method = RequestMethod.POST,consumes = "application/json")
+	@RequestMapping(value = "patent/downloadtotal", method = RequestMethod.POST,consumes = "application/json")
 	public R daochutotal(@RequestBody JSONObject info) {
-		
-		
-		
-		return R.ok();
+		String q = info.get("q").toString();
+		CachePool cache = CachePool.getInstance();
+	    JSONObject obj = new JSONObject();
+	    //cache.putCacheItem("abc", obj);
+	    if (q == null || "".equals(q)) {
+	    	 obj = (JSONObject) cache.getCacheItem("total");
+	    	 if (obj == null) {
+    			JSONObject jObject = patentService.execute(0, 10, 0,q,null,null,null,null,null,null,null);
+    			if (jObject != null) {
+    				
+    				cache.putCacheItem("total", jObject);
+    				obj = (JSONObject) cache.getCacheItem("total");
+    			}
+    			
+			}
+		}else{
+			 obj = (JSONObject) cache.getCacheItem(q);
+		}
+	    System.out.println(JsonUtil.toJSONString(obj));
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        String[] str=new String[5];
+	    int[] shuliangnum={0,0,0,0,0};
+	    int lastfive = year-4;
+	    for(int i=0;i<5;i++){
+	    	str[i] = lastfive+"";
+	    	lastfive++;
+	    }
+	    
+	    JSONObject agg = (JSONObject) obj.get("applyyear");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    
+	    for(Object jsonObject : ar){
+	    	for(int j = 0;j<str.length;j++){
+	    		if(((JSONObject)jsonObject).get("key").equals(str[j])){
+	    			shuliangnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	}
+	    	}
+	    	
+	    }
+		//model.addAttribute(key, agg.get("buckets"));
+	    //model.addAttribute("num", num);
+	   // model.addAttribute("yearstr", str)
+	    
+	    JSONObject shenqingguoagg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (shenqingguoagg != null) {
+	    	 JSONArray shenqingguoar = (JSONArray) shenqingguoagg.get("buckets");
+	 	    int j=0;
+	 	    
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : shenqingguoar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	    
+	    String[] famingrenstr=new String[10];
+	    int[] famingrennum=new int[10];
+	    
+	    
+	    JSONObject famingrenagg = (JSONObject) obj.get("creator");
+	    JSONArray famingrenar = (JSONArray) famingrenagg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : famingrenar){
+	    	
+	    	famingrenstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    //model.addAttribute("num", num);
+	   // model.addAttribute("famingren", str);
+	    
+	    String[] classisstr=new String[10];
+	    int[] classisnum=new int[10];
+	    
+	    
+	    JSONObject classisagg = (JSONObject) obj.get("ipc");
+	    JSONArray classisar = (JSONArray) classisagg.get("buckets");
+	    int jj = 0;
+	    for(Object jsonObject : ar){
+	    	
+	    	classisstr[jj] = ((JSONObject)jsonObject).get("key").toString();
+	    	classisnum[jj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	jj++;
+		    	if(jj>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    //model.addAttribute("num", num);
+	   // model.addAttribute("famingren", str);
+	   
+	   
+       
+        int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	    
+	    
+	    JSONObject typeagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typear = (JSONArray) typeagg.get("buckets");
+	    
+	    for(Object jsonObject : typear){
+	    	for(int jjj = 0;jjj<str.length;j++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[j])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+//	    model.addAttribute("famingnumtotal", famingnumtotal);
+//	    model.addAttribute("waiguannum", waiguannum);
+//	    model.addAttribute("shiyongnum", shiyongnum);
+//	    model.addAttribute("yearstr", str);
+		return R.ok().put("shuliangnum", shuliangnum).put("yearstr", str).put("strings", strings).put("famingrennum", famingrennum).put("famingrenstr", famingrenstr).put("classisnum", classisnum).put("classisstr", classisstr).put("famingnumtotal", famingnumtotal).put("waiguannum", waiguannum).put("shiyongnum", shiyongnum);
 	}
 	
 }
