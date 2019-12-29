@@ -121,7 +121,7 @@ body{background-color: rgba(249,249,249,1);}
 .alertbdSub{font-size: 14px;height: 36px;border: none;width: 80px;border: none;background: #1D85A8;border-radius: 3px;font-size: 14px;color: #fff;text-align: center;cursor: pointer;line-height: 36px;margin-top: 14px;display: block;}
 .alertbdSub:hover{opacity: 0.8;}
 /*检索页*/
-.nyMain{background: url(../images/header-bg.png) no-repeat center top;margin-bottom: 50px;width:100%}
+.nyMain{background: url(../images/header-bg.png) no-repeat center top;background-size: cover;margin-bottom: 50px;width:100%}
 .nycontainer{width: 1220px;margin: 0px auto;}
 .jiansuoOne{line-height: 42px;background-color: #F7F7F7;position: relative;}
 .jiansuoOnelf{width: 296px;text-align: center;border-right: 1px solid #D2CFCF;color: #595968;font-size: 14px;height: 42px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}

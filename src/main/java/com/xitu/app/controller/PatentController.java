@@ -2076,4 +2076,13 @@ public class PatentController {
 		return "bsdf";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "patent/download", method = RequestMethod.POST,consumes = "application/json")
+	public R daochutotal(@RequestBody JSONObject info) {
+		
+		
+		
+		return R.ok();
+	}
+	
 }
