@@ -1471,7 +1471,8 @@ public class PatentController {
 	    
 	  //这一步，进行图片的处理，获取前台传过来的图片base64编码，在利用工具类解析图片保存到本地，然后利用工具类获取图片本地地址
 	   
-	    String path = "C:";
+//	    String path = "C:";
+	    String path = "/root/files";
 	    
 	    //String image1  = imageUtil.getImageStr(image1);
 	    

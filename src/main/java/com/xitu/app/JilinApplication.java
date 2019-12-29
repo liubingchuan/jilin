@@ -8,11 +8,11 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 @EnableCaching
 @ServletComponentScan
-public class XituApplication {
+public class JilinApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(XituApplication.class, args);
+		SpringApplication.run(JilinApplication.class, args);
 		
 	}
 

@@ -64,7 +64,8 @@ public class DocUtil {
             String path="";
             
             //使用FileTemplateLoader
-           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\shengwu\\src\\main\\resources"));
+//           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\shengwu\\src\\main\\resources"));
+           templateLoader=new FileTemplateLoader(new File("/root/files"));
            path="\\model1.xml";
                         
            configure.setTemplateLoader(templateLoader);
@@ -90,8 +91,9 @@ public class DocUtil {
             String path="";
             
             //使用FileTemplateLoader
-           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\jilin\\src\\main\\resources"));
-           path="\\"+modelname;
+//           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\jilin\\src\\main\\resources"));
+           templateLoader=new FileTemplateLoader(new File("/root/files"));
+           path=File.pathSeparator+modelname;
                         
            configure.setTemplateLoader(templateLoader);
            template=configure.getTemplate(path,"UTF-8");

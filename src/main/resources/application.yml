@@ -1,13 +1,13 @@
 spring:
   application:
-     name: shengwu
+     name: jilin
   datasource:
      #url: 'jdbc:mysql://45.76.75.11:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
      #url: 'jdbc:mysql://47.104.7.73:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
-     #url: 'jdbc:mysql://47.93.216.109:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
-     url: 'jdbc:mysql://127.0.0..1:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
+     url: 'jdbc:mysql://47.93.216.109:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
+     #url: 'jdbc:mysql://127.0.0.1:3306/?useUnicode=true&characterEncoding=utf-8&useSSL=false'
      username: root
-     password: 123456
+     password: FirefoxBufferFly%13579
      driver-class: 'com.mysql.jdbc.Driver'
      database-name: jilin
      init-sql: mysql/init.sql
@@ -26,7 +26,7 @@ spring:
        cluster-nodes: 39.96.82.217:9300
 
 server:
-  port: 80
+  port: 8090
     
 mybatis:
   configuration:

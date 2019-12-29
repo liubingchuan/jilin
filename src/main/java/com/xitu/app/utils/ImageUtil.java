@@ -60,7 +60,7 @@ public class ImageUtil {
          if(!dir.exists()){
           dir.mkdirs();
          }
-         String fileName=path+"\\"+"echarts"+"\\"+UUID.randomUUID().toString()+".png";
+         String fileName=path+ File.pathSeparator +"echarts"+File.pathSeparator +UUID.randomUUID().toString()+".png";
          try {  
              byte[] buffer = decoder.decodeBuffer(base64String);  
              OutputStream os = new FileOutputStream(fileName);
