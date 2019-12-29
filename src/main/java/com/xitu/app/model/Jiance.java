@@ -12,8 +12,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-//@Document(indexName = "jiancejilin", type = "jc")
-@Document(indexName = "jiance", type = "jc")
+@Document(indexName = "jiancejilin", type = "jc")
+//@Document(indexName = "jiance", type = "jc")
 public class Jiance implements Serializable{
 	private static final long serialVersionUID = 1L;
 
