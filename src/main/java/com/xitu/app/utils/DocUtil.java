@@ -12,6 +12,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.util.ResourceUtils;
+
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.TemplateLoader;
 //import Decoder.BASE64Encoder;
@@ -83,7 +85,7 @@ public class DocUtil {
     }
     public File createWordFile(Map<String,Object> dataMap,String modelname){
         String name = "temp" + (int) (Math.random() * 100000) + ".doc";  
-        File f = new File(name); 
+        File f = new File("/root/files/" + name); 
         //加载需要装填的模板
         Template template=null;
         try {
@@ -92,8 +94,8 @@ public class DocUtil {
             
             //使用FileTemplateLoader
 //           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\jilin\\src\\main\\resources"));
-           templateLoader=new FileTemplateLoader(new File("/root/files"));
-           path=File.pathSeparator+modelname;
+           templateLoader=new FileTemplateLoader(new File("/root/files/"));
+           path=modelname;
                         
            configure.setTemplateLoader(templateLoader);
            template=configure.getTemplate(path,"UTF-8");

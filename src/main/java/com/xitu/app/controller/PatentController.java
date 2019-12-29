@@ -1521,7 +1521,7 @@ public class PatentController {
 	    public void yzmDownload(@RequestParam("filename") String filename,HttpServletRequest request, HttpServletResponse response){
 	    	
 	    	
-	    	File file=new File("C:\\Users\\abc\\git\\jilin" + File.separator + filename);
+	    	File file=new File("/root/files" + File.separator + filename);
 			String fileName=file.getName();
 			String ext=fileName.substring(fileName.lastIndexOf(".")+1);
 			String agent=(String)request.getHeader("USER-AGENT"); //判断浏览器类型
