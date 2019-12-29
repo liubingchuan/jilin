@@ -2240,4 +2240,45 @@ public class PatentController {
 		return R.ok().put("shuliangnum", shuliangnum).put("yearstr", str).put("strings", strings).put("famingrennum", famingrennum).put("famingrenstr", famingrenstr).put("classisnum", classisnum).put("classisstr", classisstr).put("famingnumtotal", famingnumtotal).put("waiguannum", waiguannum).put("shiyongnum", shiyongnum);
 	}
 	
+	
+	@GetMapping(value = "patent/renorg")
+	public String bianlipatentzhaorenheorg() {
+		Iterator<Patent> patents = patentRepository.findAll().iterator();
+		List<Org> orgs = new LinkedList<Org>();
+		List<Expert> experts = new LinkedList<Expert>();
+		Map<String, Expert> eMap = new HashMap<String, Expert>();
+		Map<String, Org> oMap = new HashMap<String, Org>();
+		int i=0;
+		while(patents.hasNext()) {
+			System.out.println(i);
+			Patent patent = patents.next();
+			List<String> rens = patent.getCreator();
+			List<String> jigous = patent.getPerson();
+			
+			for(String jigou: jigous) {
+				for(String ren: rens) {
+					Expert e = new Expert();
+					e.setUnit(jigou);
+					e.setName(ren);
+					e.setAnotherName(ren);
+					e.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+					experts.add(e);
+					System.out.println("***************");
+				}
+				Org org = new Org();
+				org.setName(jigou);
+				org.setAnotherName(jigou);
+				org.setId(UUID.randomUUID().toString().replaceAll("\\-", ""));
+				orgs.add(org);
+				System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			}
+			
+			orgRepository.saveAll(orgs);
+			expertRepository.saveAll(experts);
+			
+			i++;
+		}
+		return "bsdf";
+	}
+	
 }

@@ -184,7 +184,7 @@
 	    	    				
 	    	    			</ul>
 	    	    			
-	    	    			<a th:href="@{/jiance/jiancelist?lanmu=新闻动态}" target="_blank" class="indexRtMore">
+	    	    			<a th:href="@{/jiance/jiancelist?lanmu=产业动态}" target="_blank" class="indexRtMore">
 	    	    				更多内容>>
 	    	    			</a>
 	    	    		</div>
@@ -444,7 +444,7 @@
 		        });
 
 			});			
-			 getExperts('新闻动态');
+			 getExperts('产业动态');
 		 
 		 });
 			function search(){
@@ -453,31 +453,31 @@
 				/* window.location.href="http://47.104.7.73/patent/list?q=" + $("#keywords").val(); */
 			}
 			function getExperts(index) {
-				if(index == '新闻动态'){
-					var html = "<a href=\"javascript:getExperts('新闻动态');\" class=\"ahover\">行业新闻</a>";
+				if(index == '产业动态'){
+					var html = "<a href=\"javascript:getExperts('产业动态');\" class=\"ahover\">产业动态</a>";
 					html += "<a href=\"javascript:getExperts('国家政策');\" >国家政策</a>";
-					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('行业新闻');\" >行业新闻</a>";
 					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
 					$("#biaoti").html(html);
 				}
 				if(index == '国家政策'){
-					var html = "<a href=\"javascript:getExperts('新闻动态);\">行业新闻</a>";
+					var html = "<a href=\"javascript:getExperts('产业动态);\">产业动态</a>";
 					html += "<a href=\"javascript:getExperts('国家政策');\"  class=\"ahover\">国家政策</a>";
-					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('行业新闻');\" >行业新闻</a>";
 					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
 					$("#biaoti").html(html);
 				}
 				if(index == '产业动态'){
-					var html = "<a href=\"javascript:getExperts('新闻动态');\">行业新闻</a>";
+					var html = "<a href=\"javascript:getExperts('产业动态');\">产业动态</a>";
 					html += "<a href=\"javascript:getExperts('国家政策');\"  >国家政策</a>";
-					html += "<a href=\"javascript:getExperts('产业动态');\" class=\"ahover\">产业动态</a>";
+					html += "<a href=\"javascript:getExperts('行业新闻');\" class=\"ahover\">行业新闻</a>";
 					html += "<a href=\"javascript:getExperts('科研进展');\" >科研进展</a>";
 					$("#biaoti").html(html);
 				}
 				if(index == '科研进展'){
-					var html = "<a href=\"javascript:getExperts('新闻动态');\">行业新闻</a>";
+					var html = "<a href=\"javascript:getExperts('产业动态');\">产业动态</a>";
 					html += "<a href=\"javascript:getExperts('国家政策');\"  >国家政策</a>";
-					html += "<a href=\"javascript:getExperts('产业动态');\" >产业动态</a>";
+					html += "<a href=\"javascript:getExperts('行业新闻');\" >行业新闻</a>";
 					html += "<a href=\"javascript:getExperts('科研进展');\" class=\"ahover\">科研进展</a>";
 					$("#biaoti").html(html);
 					

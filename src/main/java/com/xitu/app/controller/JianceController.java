@@ -404,13 +404,9 @@ public class JianceController {
 	@GetMapping(value = "jiance/subcribe")
 	public String subcribe() {
 		List<Jiance> objs = new LinkedList<Jiance>();
-    	try {
-    		Map<String, String> map = new TreeMap<String, String>();
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/15/xituzixun.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/18/xituguojiazhengce.xml", "国家政策");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/37/xituzaixian.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/40/ruidaoxitu.xml", "新闻动态");
-    		map.put("http://35.201.235.191:3000/users/1/web_requests/42/SCI.xml", "科研进展");
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/64/guojiazhengce.xml", "国家政策");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			int i=1;
 			for(Map.Entry<String, String> kv: map.entrySet()) {
@@ -419,27 +415,16 @@ public class JianceController {
 					System.out.println(feed.getTitle());
 					System.out.println("***********************************");
 					for (SyndEntry entry : feed.getEntries()) {
-						System.out.println(entry.getPublishedDate());
-						if(this.isNow(sdf.format(entry.getPublishedDate()))) {
-							System.out.println();
-						}else {
-							System.out.println();
-						}
+//						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+//							continue;
+//						}
 						Jiance jiance = new Jiance();
 						jiance.setId(UUID.randomUUID().toString());
 						jiance.setTitle(entry.getTitle());
 						jiance.setDescription(entry.getDescription().getValue());
 						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
 						jiance.setLanmu(kv.getValue());
-						if(i==3){
-							jiance.setInstitution("稀土在线");
-						}else if(i==4) {
-							jiance.setInstitution("瑞道稀土");
-						}else if(i==5) {
-							jiance.setInstitution("科睿唯安");
-						}else {
-							jiance.setInstitution("中国稀土网");
-						}
+						jiance.setInstitution("吉林能源");
 						objs.add(jiance);
 						System.out.println("***********************************");
 					}
@@ -447,13 +432,126 @@ public class JianceController {
 				}
 				i++;
 			}
-//			jianceRepository.saveAll(objs);
+			jianceRepository.saveAll(objs);
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
     	return "success";
+	}
+	
+	@GetMapping(value = "jiance/subcribe1")
+	public String subcribe1() {
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/58/sohuyiyao.xml", "行业新闻");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+//						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+//							continue;
+//						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("吉林能源");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
+	
+	@GetMapping(value = "jiance/subcribe2")
+	public String subcribe2() {
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/61/chanyedongtai.xml", "产业动态");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+//						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+//							continue;
+//						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("吉林能源");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
+	}
+	
+	@GetMapping(value = "jiance/subcribe3")
+	public String subcribe3() {
+		List<Jiance> objs = new LinkedList<Jiance>();
+		try {
+			Map<String, String> map = new TreeMap<String, String>();
+			map.put("http://35.201.235.191:3000/users/1/web_requests/66/keyanqianyan.xml", "科研进展");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(Map.Entry<String, String> kv: map.entrySet()) {
+				try (XmlReader reader = new XmlReader(new URL(kv.getKey()))) {
+					SyndFeed feed = new SyndFeedInput().build(reader);
+					System.out.println(feed.getTitle());
+					System.out.println("***********************************");
+					for (SyndEntry entry : feed.getEntries()) {
+//						if(!this.isNow(sdf.format(entry.getPublishedDate()))) {
+//							continue;
+//						}
+						Jiance jiance = new Jiance();
+						jiance.setId(UUID.randomUUID().toString());
+						jiance.setTitle(entry.getTitle());
+						jiance.setDescription(entry.getDescription().getValue());
+						jiance.setPubtime(sdf.format(entry.getPublishedDate()));
+						jiance.setLanmu(kv.getValue());
+						jiance.setInstitution("吉林能源");
+						objs.add(jiance);
+						System.out.println("***********************************");
+					}
+					System.out.println("Done");
+				}
+			}
+			jianceRepository.saveAll(objs);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "success";
 	}
 	
 	private boolean isNow(String date) {
@@ -498,5 +596,7 @@ public class JianceController {
 		rs = jianceService.executeIns(insname.getString("name"),pageIndex, pageSize, "lanmu",i);
 		return R.ok().put("list", rs.get("list")).put("totalPages", rs.get("totalPages")).put("totalCount", rs.get("totalCount")).put("pageIndex", pageIndex);
     }
+	
+	
 	
 }
