@@ -7,6 +7,7 @@
 		<link rel="stylesheet" th:href="@{/css/main.css}" />
 		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/echarts.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/world.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
 	</head>
@@ -127,19 +128,22 @@
 				    				</a>
 				    			</div>
 				    		</div>
-				    	<div class="zhuanlThree" id="leixing" style="display:none">
+				    	<div class="zhuanlThree" id="leixing" style="width: 100%; height: 500px;">
 				    		
 				    	</div>
-				    	<div class="zhuanlThree" id="shenqingguo" style="display:none">
+				    	<div class="zhuanlThree" id="shenqingliang" style="width: 100%; height: 500px;visibility: hidden;">
 				    		
 				    	</div>
-				    	<div class="zhuanlThree" id="famingren" style="display:none">
+				    	<div class="zhuanlThree" id="shenqingguo1" style="width: 100%; height: 500px;visibility: hidden;">
 				    		
 				    	</div>
-				    	<div class="zhuanlThree" id="jishufenlei" style="display:none">
+				    	<div class="zhuanlThree" id="famingren" style="width: 100%; height: 500px;visibility: hidden;">
 				    		
 				    	</div>
-				    	<div class="zhuanlThree" id="zhuanlileixing" style="display:none">
+				    	<div class="zhuanlThree" id="jishufenlei" style="width: 100%; height: 500px;visibility: hidden;">
+				    		
+				    	</div>
+				    	<div class="zhuanlThree" id="zhuanlileixing" style="width: 100%; height: 500px;visibility: hidden;">
 				    		
 				    	</div>
 				       
@@ -150,10 +154,29 @@
 		<div th:replace="footer :: myfooter"></div>
 		<script type="text/javascript" th:src="@{/js/main.js}" ></script>
 		<script type="text/javascript" th:inline="javascript">
+		//申请量
 		var yearstr =  [[${yearstr}]];
 		var num =  [[${num}]];
+		//申请国
+		var strings =  [[${strings}]];
+		//发明人
+		var famingrennum =  [[${famingrennum}]];
+		var famingrenstr =  [[${famingrenstr}]];
+		//技术分类
+		var ipcnum =  [[${ipcnum}]];
+		var ipcstr =  [[${ipcstr}]];
+		//专利类型
+		
+		var famingnumtotal =  [[${famingnumtotal}]];
+		var waiguannum =  [[${waiguannum}]];
+		var shiyongnum =  [[${shiyongnum}]];
+		
 		var query =  [[${query}]];
 		var barBase64Info = '';
+		var barBase64Info1 = '';
+		var barBase64Info2 = '';
+		var barBase64Info3 = '';
+		var barBase64Info4 = '';
 		
 			$(document).ready(function() {
 				showLoginInfoFrontend();
@@ -201,7 +224,7 @@
 					};
 
 				   myChart.setOption(option);
-				   barBase64Info = myChart.getDataURL();
+				   //barBase64Info = myChart.getDataURL();
 				  // var con = '<a href="/patent/download?barBase64Info='+barBase64Info+'" class="right btnYellow">下载数据</a>';
 				  // $("#downloaddata").html(con);
 				}
@@ -339,10 +362,14 @@
 			
 			function downloading() {
 				
-				
+				makeechart();
+
 				var param = {
-						'barBase64Info' : barBase64Info
-						
+						'barBase64Info' : barBase64Info,
+						'barBase64Info1' : barBase64Info1,
+						'barBase64Info2' : barBase64Info2,
+						'barBase64Info3' : barBase64Info3,
+						'barBase64Info4' : barBase64Info4
 					};
 					 $.ajax({
 						url : "/patent/download",
@@ -360,10 +387,57 @@
 					}); 
 			}
 			
+			function shenqingliang() {
+					var hengzhoushuju = yearstr;
+					var faming = num;
+					
+					var myChart = echarts.init(document.getElementById('shenqingliang'));
+					option = {
+						
+						tooltip: {
+							trigger: 'axis'
+						},
+						grid: {
+							left: '3%',
+							right: '4%',
+							bottom: '3%',
+							containLabel: true
+						},
+						toolbox: {
+							feature: {
+								saveAsImage: {}
+							}
+						},
+						animation:false,
+						xAxis: {
+							type: 'category',
+							
+							data: hengzhoushuju
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [
+							{
+								type:'line',
+								stack: '总量',
+								data: faming,
+								itemStyle : { normal: {label : {show: true}}}
+							}
+						]
+					};
+
+				   myChart.setOption(option);
+				   barBase64Info = myChart.getDataURL();
+				  // var con = '<a href="/patent/download?barBase64Info='+barBase64Info+'" class="right btnYellow">下载数据</a>';
+				  // $("#downloaddata").html(con);
+				
+			}
+			
 			function shenqingguo(){
 				 
 				
-				var myChart1 = echarts.init(document.getElementById('shenqingguo'));
+				var myChart1 = echarts.init(document.getElementById('shenqingguo1'));
 				option = {
           		title : {
                         	
@@ -378,6 +452,7 @@
                         		return params.name + ' : ' + value;
                         	}
                         },
+                        
                         toolbox: {
                         	show : true,
                         	orient : 'vertical',
@@ -401,6 +476,7 @@
                         series : [
                         {
                         	type: 'map',
+                        	
                         	mapType: 'world',
                         	roam: true,
                         	mapLocation: {
@@ -414,6 +490,197 @@
                     ]
                };
 				myChart1.setOption(option);
+				barBase64Info1 = myChart1.getDataURL();
+			}
+			
+			function showfamingrenshenqingliang(){
+					var arr =[];
+
+					var arr1= ['score', 'amount', 'product'];
+
+					arr.push(arr1);
+					for(i = 9; i >=0; i--){
+						arr.push(['0', famingrennum[i], famingrenstr[i]]);
+					}
+					
+					var myChart1 = echarts.init(document.getElementById('famingren'));
+					var option = {
+						dataset: {
+							source: arr 
+						},
+						grid: {containLabel: true},
+						animation:false,
+						xAxis: {name: ''},
+						yAxis: {type: 'category'},
+						visualMap:false,
+						series: [
+							{
+								type: 'bar',
+								 "label": {
+										"normal": {
+											"show": true,
+											"position": "right",
+											"formatter": function(params) {
+												return params.data.name;
+											}
+										}
+									},
+								encode: {
+									// Map the "amount" column to X axis.
+									x: 'amount',
+									// Map the "product" column to Y axis
+									y: 'product'
+								},
+								itemStyle: {
+									normal: {
+										//通过数组下标选择颜色
+										color: function(params) {
+											var colorList = [
+											 '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+											 '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD'
+											 ];
+											return colorList[params.dataIndex]
+										},
+									}
+								}
+							}
+						]
+					};
+
+					myChart1.setOption(option);
+					barBase64Info2 = myChart1.getDataURL();
+			}
+			
+			 function shuliang(){
+				 
+					var arr =[];
+					var arr1= ['score', 'amount', 'product'];
+
+					arr.push(arr1);
+					for(i = 9; i >=0; i--){
+						arr.push([10.7, ipcnum[i], ipcstr[i]]);
+					}
+					
+					var myChart1 = echarts.init(document.getElementById('jishufenlei'));
+					var option = {
+						dataset: {
+							source: arr 
+						},
+						grid: {containLabel: true},
+						animation:false,
+						xAxis: {name: ''},
+						yAxis: {type: 'category'},
+						visualMap:false,
+						series: [
+							{
+								type: 'bar',
+								 "label": {
+										"normal": {
+											"show": true,
+											"position": "right",
+											"formatter": function(params) {
+												return params.data.name;
+											}
+										}
+									},
+								encode: {
+									// Map the "amount" column to X axis.
+									x: 'amount',
+									// Map the "product" column to Y axis
+									y: 'product'
+								},
+								 itemStyle: {
+									normal: {
+										//通过数组下标选择颜色
+										color: function(params) {
+											var colorList = [
+											 '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+											 '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD'
+											 ];
+											return colorList[params.dataIndex]
+										},
+									}
+								}
+							}
+						]
+					};
+
+					myChart1.setOption(option);
+					barBase64Info3 = myChart1.getDataURL();
+				}
+			 
+			 function showzleixing() {
+					
+						var hengzhoushuju = yearstr;
+						var faming = famingnumtotal;
+						var waiguan = waiguannum;
+						var shiyongxinxing = shiyongnum;
+						var myChart = echarts.init(document.getElementById('zhuanlileixing'));
+						var titles = ['发明专利','外观专利','实用新型专利'];
+						option = {
+							
+							tooltip: {
+								trigger: 'axis'
+							},
+							legend: {
+								data:titles
+							},
+							grid: {
+								left: '3%',
+								right: '4%',
+								bottom: '3%',
+								containLabel: true
+							},
+							toolbox: {
+								feature: {
+									saveAsImage: {}
+								}
+							},
+							animation:false,
+							xAxis: {
+								type: 'category',
+								
+								data: hengzhoushuju
+							},
+							yAxis: {
+								type: 'value'
+							},
+							series: [
+								{
+									name:titles[0],
+									type:'line',
+									
+									data: faming,
+									itemStyle : { normal: {label : {show: true}}}
+								},
+								{
+									name:titles[1],
+									type:'line',
+									
+									data: waiguan,
+									itemStyle : { normal: {label : {show: true}}}
+								},
+								{
+									name:titles[2],
+									type:'line',
+									
+									data: shiyongxinxing,
+									itemStyle : { normal: {label : {show: true}}}
+								}
+							]
+						};
+
+					   myChart.setOption(option);
+					   barBase64Info4 = myChart.getDataURL();
+					
+			 }
+			
+			function makeechart() {
+				shenqingliang() 
+				shenqingguo();
+				showfamingrenshenqingliang();
+				shuliang();
+				showzleixing();
 			}
 			
 		</script>

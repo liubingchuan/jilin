@@ -861,38 +861,141 @@ public class PatentController {
 		}else{
 			 obj = (JSONObject) cache.getCacheItem(q);
 		}
+	    
+	    String[] ipcstr=new String[10];
+	    int[] ipcnum=new int[10];
+	    
+	    
+	    JSONObject ipcagg = (JSONObject) obj.get("ipc");
+	    JSONArray ipcar = (JSONArray) ipcagg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : ipcar){
+	    	
+	    	ipcstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	ipcnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("ipcnum", ipcnum);
+	    model.addAttribute("ipcstr", ipcstr);
+	    model.addAttribute("query", q);
+	    if(totalCount == null || totalCount.equals("")){
+	    	totalCount = 129684+"";
+	    }
+	    model.addAttribute("totalCount", totalCount); 
+	    model.addAttribute("query", q);
+	    
 	    Calendar cale = null;  
         cale = Calendar.getInstance();  
         int year = cale.get(Calendar.YEAR);  
         String[] str=new String[5];
-        int[] famingnumtotal={0,0,0,0,0};
-	    int[] famingnum={0,0,0,0,0};
-	    int[] famingshouquannum={0,0,0,0,0};
-	    int[] shiyongnum={0,0,0,0,0};
-	    int[] waiguannum={0,0,0,0,0};
+	    int[] num={0,0,0,0,0};
 	    int lastfive = year-4;
 	    for(int i=0;i<5;i++){
 	    	str[i] = lastfive+"";
 	    	lastfive++;
 	    }
 	    
-	    JSONObject agg = (JSONObject) obj.get("typeyear");
+	    JSONObject agg = (JSONObject) obj.get("applyyear");
 	    JSONArray ar = (JSONArray) agg.get("buckets");
 	    
 	    for(Object jsonObject : ar){
-	    	for(int j = 0;j<str.length;j++){
-	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[j])){
+	    	for(int n = 0;n<str.length;n++){
+	    		if(((JSONObject)jsonObject).get("key").equals(str[n])){
+		    		num[n] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	}
+	    	}
+	    	
+	    }
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("num", num);
+	    model.addAttribute("yearstr", str);
+	   
+	    
+	    //申请国
+	    JSONObject countryagg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (countryagg != null) {
+	    	 JSONArray countryar = (JSONArray) countryagg.get("buckets");
+	 	   
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : countryar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	    model.addAttribute("strings", strings);
+	    
+	    //发明人
+	    String[] famingrenstr=new String[10];
+	    int[] famingrennum=new int[10];
+	    
+	    
+	    JSONObject famingrenagg = (JSONObject) obj.get("creator");
+	    JSONArray famingrenar = (JSONArray) famingrenagg.get("buckets");
+	    int nn = 0;
+	    for(Object jsonObject : famingrenar){
+	    	
+	    	famingrenstr[nn] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[nn] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	nn++;
+		    	if(nn>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("famingrennum", famingrennum);
+	    model.addAttribute("famingrenstr", famingrenstr);
+	    
+	    //专利类型
+	    int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	   
+	    
+	    JSONObject typeyearagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typeyearar = (JSONArray) typeyearagg.get("buckets");
+	    
+	    for(Object jsonObject : typeyearar){
+	    	for(int jjj = 0;jjj<str.length;jjj++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[jjj])){
 	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
-	    				famingnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 	    			}
 	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
-	    				famingshouquannum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 	    			}
 	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
-	    				shiyongnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 	    			}
 	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
-	    				waiguannum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 	    			}
 		    	}
 	    	}
@@ -905,12 +1008,7 @@ public class PatentController {
 	    model.addAttribute("famingnumtotal", famingnumtotal);
 	    model.addAttribute("waiguannum", waiguannum);
 	    model.addAttribute("shiyongnum", shiyongnum);
-	    model.addAttribute("yearstr", str);
-	    if(totalCount == null || totalCount.equals("")){
-	    	totalCount = 129684+"";
-	    }
-	    model.addAttribute("totalCount", totalCount); 
-	    model.addAttribute("query", q);
+	    
 		return "zhuanlifenxizhuanlileixing";
 	}
 	
@@ -1001,6 +1099,123 @@ public class PatentController {
 	    }
 	    model.addAttribute("totalCount", totalCount); 
 	    model.addAttribute("query", q);
+	    
+	    //申请国
+	    JSONObject countryagg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (countryagg != null) {
+	    	 JSONArray countryar = (JSONArray) countryagg.get("buckets");
+	 	    int j=0;
+	 	    
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : countryar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	    model.addAttribute("strings", strings);
+	    
+	    //发明人
+	    String[] famingrenstr=new String[10];
+	    int[] famingrennum=new int[10];
+	    
+	    
+	    JSONObject famingrenagg = (JSONObject) obj.get("creator");
+	    JSONArray famingrenar = (JSONArray) famingrenagg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : famingrenar){
+	    	
+	    	famingrenstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("famingrennum", famingrennum);
+	    model.addAttribute("famingrenstr", famingrenstr);
+	    
+	    //技术分类
+	    String[] ipcstr=new String[10];
+	    int[] ipcnum=new int[10];
+	    
+	    
+	    JSONObject ipcagg = (JSONObject) obj.get("ipc");
+	    JSONArray ipcar = (JSONArray) ipcagg.get("buckets");
+	    int jj = 0;
+	    for(Object jsonObject : ipcar){
+	    	
+	    	ipcstr[jj] = ((JSONObject)jsonObject).get("key").toString();
+	    	ipcnum[jj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	jj++;
+		    	if(jj>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("ipcnum", ipcnum);
+	    model.addAttribute("ipcstr", ipcstr);
+	    
+	    //专利类型
+	    int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	   
+	    
+	    JSONObject typeyearagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typeyearar = (JSONArray) typeyearagg.get("buckets");
+	    
+	    for(Object jsonObject : typeyearar){
+	    	for(int jjj = 0;jjj<str.length;jjj++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[jjj])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("famingnumtotal", famingnumtotal);
+	    model.addAttribute("waiguannum", waiguannum);
+	    model.addAttribute("shiyongnum", shiyongnum);
+	   
 		return "zhuanlifenxizhuanlishenqingliang";
 	}
 	
@@ -1059,22 +1274,63 @@ public class PatentController {
 	    //cache.putCacheItem("abc", obj);
 	    if (q == null || "".equals(q)) {
 	    	 obj = (JSONObject) cache.getCacheItem("total");
+	    	 if (obj == null) {
+	    		 
+	    		ThreadLocalUtil.set(model);
+    			JSONObject jObject = patentService.execute(0, 10, 0,q,null,null,null,null,null,null,null);
+    			if (jObject != null) {
+    				
+    				cache.putCacheItem("total", jObject);
+    				obj = (JSONObject) cache.getCacheItem("total");
+    			}
+    			ThreadLocalUtil.remove();
+			}
 		}else{
 			 obj = (JSONObject) cache.getCacheItem(q);
 		}
-	   
+	    System.out.println(JsonUtil.toJSONString(obj));
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        String[] str=new String[5];
 	    int[] num={0,0,0,0,0};
+	    int lastfive = year-4;
+	    for(int i=0;i<5;i++){
+	    	str[i] = lastfive+"";
+	    	lastfive++;
+	    }
 	    
-	    JSONObject agg = (JSONObject) obj.get("country");
+	    JSONObject agg = (JSONObject) obj.get("applyyear");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    
+	    for(Object jsonObject : ar){
+	    	for(int j = 0;j<str.length;j++){
+	    		if(((JSONObject)jsonObject).get("key").equals(str[j])){
+		    		num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	}
+	    	}
+	    	
+	    }
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("num", num);
+	    model.addAttribute("yearstr", str);
+	    if(totalCount == null || totalCount.equals("")){
+	    	totalCount = 129684+"";
+	    }
+	    model.addAttribute("totalCount", totalCount); 
+	    model.addAttribute("query", q);
+	    
+	    //申请国
+	    JSONObject countryagg = (JSONObject) obj.get("country");
 	    JSONObject[] strings = null;
 	    
-	    if (agg != null) {
-	    	 JSONArray ar = (JSONArray) agg.get("buckets");
+	    if (countryagg != null) {
+	    	 JSONArray countryar = (JSONArray) countryagg.get("buckets");
 	 	    int j=0;
 	 	    
 	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
 	 	    
-	 	    for(Object jsonObject : ar){
+	 	    for(Object jsonObject : countryar){
 	 	    	//countryName
 //	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
 //	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
@@ -1098,13 +1354,87 @@ public class PatentController {
 	 	   joList.toArray(strings);
 	 	    
 		}
-	   
-		//model.addAttribute(key, agg.get("buckets"));
-	    model.addAttribute("num", num);
 	    model.addAttribute("strings", strings);
-	   // model.addAttribute("yearstr", str);
-	    model.addAttribute("query", q);
-	    model.addAttribute("totalCount", totalCount); 
+	    
+	    //发明人
+	    String[] famingrenstr=new String[10];
+	    int[] famingrennum=new int[10];
+	    
+	    
+	    JSONObject famingrenagg = (JSONObject) obj.get("creator");
+	    JSONArray famingrenar = (JSONArray) famingrenagg.get("buckets");
+	    int j = 0;
+	    for(Object jsonObject : famingrenar){
+	    	
+	    	famingrenstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	j++;
+		    	if(j>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("famingrennum", famingrennum);
+	    model.addAttribute("famingrenstr", famingrenstr);
+	    
+	    //技术分类
+	    String[] ipcstr=new String[10];
+	    int[] ipcnum=new int[10];
+	    
+	    
+	    JSONObject ipcagg = (JSONObject) obj.get("ipc");
+	    JSONArray ipcar = (JSONArray) ipcagg.get("buckets");
+	    int jj = 0;
+	    for(Object jsonObject : ipcar){
+	    	
+	    	ipcstr[jj] = ((JSONObject)jsonObject).get("key").toString();
+	    	ipcnum[jj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	jj++;
+		    	if(jj>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("ipcnum", ipcnum);
+	    model.addAttribute("ipcstr", ipcstr);
+	    
+	    //专利类型
+	    int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	   
+	    
+	    JSONObject typeyearagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typeyearar = (JSONArray) typeyearagg.get("buckets");
+	    
+	    for(Object jsonObject : typeyearar){
+	    	for(int jjj = 0;jjj<str.length;jjj++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[jjj])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("famingnumtotal", famingnumtotal);
+	    model.addAttribute("waiguannum", waiguannum);
+	    model.addAttribute("shiyongnum", shiyongnum);
 		return "zhuanlifenxizhuanlishenqingguo";
 	}
 	
@@ -1126,6 +1456,13 @@ public class PatentController {
 	@RequestMapping(value = "patent/download", method = RequestMethod.POST,consumes = "application/json")
 	public R xiangguanpaperList(@RequestBody JSONObject info) {
 		String barBase64Info = (String) info.get("barBase64Info");
+		String barBase64Info1 = (String) info.get("barBase64Info1");
+		String barBase64Info2 = (String) info.get("barBase64Info2");
+		String barBase64Info3 = (String) info.get("barBase64Info3");
+		String barBase64Info4 = (String) info.get("barBase64Info4");
+		
+		
+		
 		DocUtil docUtil = new DocUtil();
 	    //引入处理图片的工具类，包含将base64编码解析为图片并保存本地，获取图片本地路径
 	    ImageUtil imageUtil = new ImageUtil();
@@ -1142,8 +1479,26 @@ public class PatentController {
 		try {
 			String image1 = ImageUtil.savePictoServer(barBase64Info, path);
 			image1  = imageUtil.getImageStr(image1);
-			
 			dataMap.put("image1", image1);
+			
+			
+			String image2 = ImageUtil.savePictoServer(barBase64Info1, path);
+			image2 = imageUtil.getImageStr(image2);
+			dataMap.put("image2", image2);
+			
+			String image3 = ImageUtil.savePictoServer(barBase64Info2, path);
+			image3  = imageUtil.getImageStr(image3);
+			dataMap.put("image3", image3);
+			
+			String image4 = ImageUtil.savePictoServer(barBase64Info3, path);
+			image4  = imageUtil.getImageStr(image4);
+			dataMap.put("image4", image4);
+			
+			String image5 = ImageUtil.savePictoServer(barBase64Info4, path);
+			image5  = imageUtil.getImageStr(image5);
+			dataMap.put("image5", image5);
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1237,8 +1592,8 @@ public class PatentController {
 		}else{
 			 obj = (JSONObject) cache.getCacheItem(q);
 		}
-        String[] str=new String[10];
-	    int[] num=new int[10];
+        String[] famingrenstr=new String[10];
+	    int[] famingrennum =new int[10];
 	    
 	    
 	    JSONObject agg = (JSONObject) obj.get("creator");
@@ -1246,16 +1601,16 @@ public class PatentController {
 	    int j = 0;
 	    for(Object jsonObject : ar){
 	    	
-	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
-		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    	famingrenstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 		    	j++;
 		    	if(j>=10){
 		    		break;
 		    	}
 	    	
 	    }
-	    model.addAttribute("num", num);
-	    model.addAttribute("famingren", str);
+	    model.addAttribute("famingrennum", famingrennum);
+	    model.addAttribute("famingrenstr", famingrenstr);
 	    
 	    String[] zhuanliquanrenstr=new String[10];
 	    int[] zhuanliquanrennum=new int[10];
@@ -1282,6 +1637,133 @@ public class PatentController {
 	    }
 	    model.addAttribute("totalCount", totalCount); 
 	    model.addAttribute("query", q);
+	    
+	    
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        String[] str=new String[5];
+	    int[] num={0,0,0,0,0};
+	    int lastfive = year-4;
+	    for(int i=0;i<5;i++){
+	    	str[i] = lastfive+"";
+	    	lastfive++;
+	    }
+	    
+	    JSONObject applyyearagg = (JSONObject) obj.get("applyyear");
+	    JSONArray applyyearar = (JSONArray) applyyearagg.get("buckets");
+	    
+	    for(Object jsonObject : applyyearar){
+	    	for(int n = 0;n<str.length;n++){
+	    		if(((JSONObject)jsonObject).get("key").equals(str[n])){
+		    		num[n] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	}
+	    	}
+	    	
+	    }
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("num", num);
+	    model.addAttribute("yearstr", str);
+	   
+	    
+	    //申请国
+	    JSONObject countryagg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (countryagg != null) {
+	    	 JSONArray countryar = (JSONArray) countryagg.get("buckets");
+	 	    
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : countryar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	    model.addAttribute("strings", strings);
+	    
+	    
+	    //技术分类
+	    String[] ipcstr=new String[10];
+	    int[] ipcnum=new int[10];
+	    
+	    
+	    JSONObject ipcagg = (JSONObject) obj.get("ipc");
+	    JSONArray ipcar = (JSONArray) ipcagg.get("buckets");
+	    int nn = 0;
+	    for(Object jsonObject : ipcar){
+	    	
+	    	ipcstr[nn] = ((JSONObject)jsonObject).get("key").toString();
+	    	ipcnum[nn] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	nn++;
+		    	if(nn>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("ipcnum", ipcnum);
+	    model.addAttribute("ipcstr", ipcstr);
+	    
+	    //专利类型
+	    int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	   
+	    
+	    JSONObject typeyearagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typeyearar = (JSONArray) typeyearagg.get("buckets");
+	    
+	    for(Object jsonObject : typeyearar){
+	    	for(int jjj = 0;jjj<str.length;jjj++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[jjj])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("famingnumtotal", famingnumtotal);
+	    model.addAttribute("waiguannum", waiguannum);
+	    model.addAttribute("shiyongnum", shiyongnum);
+	    
+	    
+	    
+	    
 		return "zhuanlifenxifamingrenjizhuanliquanren";
 	}
 	
@@ -1297,31 +1779,157 @@ public class PatentController {
 		}else{
 			 obj = (JSONObject) cache.getCacheItem(q);
 		}
-        String[] str=new String[10];
-	    int[] num=new int[10];
+        String[] ipcstr=new String[10];
+	    int[] ipcnum=new int[10];
 	    
 	    
-	    JSONObject agg = (JSONObject) obj.get("ipc");
-	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    JSONObject ipcagg = (JSONObject) obj.get("ipc");
+	    JSONArray ipcar = (JSONArray) ipcagg.get("buckets");
 	    int j = 0;
-	    for(Object jsonObject : ar){
+	    for(Object jsonObject : ipcar){
 	    	
-	    		str[j] = ((JSONObject)jsonObject).get("key").toString();
-		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    	ipcstr[j] = ((JSONObject)jsonObject).get("key").toString();
+	    	ipcnum[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
 		    	j++;
 		    	if(j>=10){
 		    		break;
 		    	}
 	    	
 	    }
-	    model.addAttribute("num", num);
-	    model.addAttribute("famingren", str);
+	    model.addAttribute("ipcnum", ipcnum);
+	    model.addAttribute("ipcstr", ipcstr);
 	    model.addAttribute("query", q);
 	    if(totalCount == null || totalCount.equals("")){
 	    	totalCount = 129684+"";
 	    }
 	    model.addAttribute("totalCount", totalCount); 
 	    model.addAttribute("query", q);
+	    
+	    Calendar cale = null;  
+        cale = Calendar.getInstance();  
+        int year = cale.get(Calendar.YEAR);  
+        String[] str=new String[5];
+	    int[] num={0,0,0,0,0};
+	    int lastfive = year-4;
+	    for(int i=0;i<5;i++){
+	    	str[i] = lastfive+"";
+	    	lastfive++;
+	    }
+	    
+	    JSONObject agg = (JSONObject) obj.get("applyyear");
+	    JSONArray ar = (JSONArray) agg.get("buckets");
+	    
+	    for(Object jsonObject : ar){
+	    	for(int n = 0;n<str.length;n++){
+	    		if(((JSONObject)jsonObject).get("key").equals(str[n])){
+		    		num[n] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	}
+	    	}
+	    	
+	    }
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("num", num);
+	    model.addAttribute("yearstr", str);
+	   
+	    
+	    //申请国
+	    JSONObject countryagg = (JSONObject) obj.get("country");
+	    JSONObject[] strings = null;
+	    
+	    if (countryagg != null) {
+	    	 JSONArray countryar = (JSONArray) countryagg.get("buckets");
+	 	   
+	 	    List<JSONObject> joList = new ArrayList<JSONObject>();
+	 	    
+	 	    for(Object jsonObject : countryar){
+	 	    	//countryName
+//	 	    	if(((JSONObject)jsonObject).get("key").equals("中国")){
+//	 		    	num[j] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+//	 		    }
+//	 	    	j++;
+	 	    	String countrycn = ((JSONObject)jsonObject).get("key").toString();
+	 	    	if(countryName.containsKey(countrycn)){
+	 	    		String countryen = countryName.get(countrycn);
+	 	    		int nums= Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	 	    		JSONObject jo = new JSONObject();
+	 	    	    jo.put("name", countryen);
+	 	    	    jo.put("value", nums);
+	 	    	    joList.add(jo);
+	 	    	}
+	 	    	
+	 	    	
+	 	    }
+	 	    
+	 	   strings = new JSONObject[joList.size()];
+
+	 	   joList.toArray(strings);
+	 	    
+		}
+	    model.addAttribute("strings", strings);
+	    
+	    //发明人
+	    String[] famingrenstr=new String[10];
+	    int[] famingrennum=new int[10];
+	    
+	    
+	    JSONObject famingrenagg = (JSONObject) obj.get("creator");
+	    JSONArray famingrenar = (JSONArray) famingrenagg.get("buckets");
+	    int nn = 0;
+	    for(Object jsonObject : famingrenar){
+	    	
+	    	famingrenstr[nn] = ((JSONObject)jsonObject).get("key").toString();
+	    	famingrennum[nn] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+		    	nn++;
+		    	if(nn>=10){
+		    		break;
+		    	}
+	    	
+	    }
+	    model.addAttribute("famingrennum", famingrennum);
+	    model.addAttribute("famingrenstr", famingrenstr);
+	    
+	    //专利类型
+	    int[] famingnumtotal={0,0,0,0,0};
+	    int[] famingnum={0,0,0,0,0};
+	    int[] famingshouquannum={0,0,0,0,0};
+	    int[] shiyongnum={0,0,0,0,0};
+	    int[] waiguannum={0,0,0,0,0};
+	   
+	    
+	    JSONObject typeyearagg = (JSONObject) obj.get("typeyear");
+	    JSONArray typeyearar = (JSONArray) typeyearagg.get("buckets");
+	    
+	    for(Object jsonObject : typeyearar){
+	    	for(int jjj = 0;jjj<str.length;jjj++){
+	    		if(((JSONObject)jsonObject).get("key").toString().contains(str[jjj])){
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明_")){
+	    				famingnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("发明授权_")){
+	    				famingshouquannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("实用新型_")){
+	    				shiyongnum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+	    			if(((JSONObject)jsonObject).get("key").toString().contains("外观_")){
+	    				waiguannum[jjj] = Integer.valueOf(((JSONObject)jsonObject).get("doc_count").toString());
+	    			}
+		    	}
+	    	}
+	    	
+	    }
+	    for(int i=0; i<5; i++){
+	    	famingnumtotal[i] = famingnum[i] + famingshouquannum[i];
+		}
+		//model.addAttribute(key, agg.get("buckets"));
+	    model.addAttribute("famingnumtotal", famingnumtotal);
+	    model.addAttribute("waiguannum", waiguannum);
+	    model.addAttribute("shiyongnum", shiyongnum);
+	    
+	    
+	    
+	    
+	    
 		return "zhuanlifenxijishufenlei";
 	}
 	
