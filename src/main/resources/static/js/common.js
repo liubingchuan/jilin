@@ -49,6 +49,71 @@ $("#zhuanlifenxi").click(function(){
 	}
 });
 
+$("#chanyejiance11").click(function(){
+	console.log($.cookie("role"))
+	if($.cookie("role")!=null) {
+		console.log($.cookie("role"))
+		window.location.href = "/jiance/jiancelist";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#xituzhiku11").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/org/list?pageSize=10&pageIndex=0&front=0";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#zhishifuwu11").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/zhishifuwu/zhishifuwu";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#zhuanlifenxi11").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/patent/agmount";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#xituzhiku1").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/org/list?pageSize=10&pageIndex=0&front=0";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#zhishifuwu1").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/zhishifuwu/zhishifuwu";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
+$("#zhuanlifenxi1").click(function(){
+	if($.cookie("role")!=null) {
+		window.location.href = "/patent/agmount";
+	}else {
+		alert("请先登录")
+		$("#login").click()
+	}
+});
+
 $("#chanyejiancezly").click(function(){
 	console.log($.cookie("role"))
 	if($.cookie("role")!=null) {

@@ -9,7 +9,7 @@
 		<script type="text/javascript" th:src="@{/js/jquery-1.7.2.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/jquery.cookie.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/swiper.min.js}" ></script>
-		<script type="text/javascript" th:src="@{/js/common.js}" ></script>
+		
 	</head>
 	<body class="indexBody">
 		<div class="indexbanner">
@@ -61,19 +61,19 @@
 		</div>
 		<div class="gongneng">
 			<div class="index-container clearfix">
-				<a id="xituzhiku11" th:href="@{/org/list(pageSize=10,pageIndex=0,front=0)}" class="left">
+				<a id="xituzhiku11" href="#" class="left">
 					<img th:src="@{/ximages/gongneg4.png}" />
 					企业智库
 				</a>
-				<a id="zhishifuwu11" th:href="@{/zhishifuwu/zhishifuwu}" class="left">
+				<a id="zhishifuwu11" href="#" class="left">
 					<img th:src="@{/ximages/gongneng3.png}" />
 					知识服务
 				</a>
-				<a id="cailiaojisuan11" th:href="@{/patent/agmount}" class="left">
+				<a id="zhuanlifenxi11" href="#" class="left">
 					<img th:src="@{/ximages/gongneng1.png}" />
 					专利分析
 				</a>
-				<a id="chanyejiance11" th:href="@{/jiance/jiancelist}" class="left">
+				<a id="chanyejiance11" href="#" class="left">
 					<img th:src="@{/ximages/gongneng2.png}" />
 					产业监测
 				</a>
@@ -199,10 +199,8 @@
 	    	</div>
 	    </div>
 	    <script type="text/javascript" th:src="@{/js/main.js}" ></script>
+	    <script type="text/javascript" th:src="@{/js/common.js}" ></script>
 	    <script type="text/javascript">
-	    	/* var token =  [[${token}]];
-	    	var account =  [[${account}]];
-	    	var role =  [[${role}]]; */
 	    	
 	    	var time;
 	    	// 获取登录二维码
@@ -219,6 +217,7 @@
 	            });
 	    	}
 
+	        var timeRun = 0;
 	      //轮询判断是否登录
 	        function isLogin() {
 	                var url = "/wechat/islogin";
@@ -246,6 +245,11 @@
 	                        } else if (resObj.code == 1) {
 	                            window.clearInterval(time);
 	                            console.log("获取微信用户信息失败")
+	                        }else {
+	                        	timeRun += 1;
+	                        	if(timeRun >= 20) {
+	                        		window.clearInterval(time);
+	                        	}
 	                        }
 	                    }
 	                });
@@ -253,68 +257,11 @@
 	    	
 	      
 	        $(document).ready(function () {
-	        $("#alertbd").css('display','none');
-			if($.cookie("openId")!=null) {
-				$("#loginBefore").css('display','none'); 
-				$("#headImg").attr("src", $.cookie("headImg"));
-				$("#loginAfter").css('display','block');
-				if(($.cookie("role")==null) || ($.cookie("role")!=null && $.cookie("role")==="普通用户")){
-					$(".vip").html("普通用户"); 
-					$("#backgroud").css('display','none'); 
-					document.getElementById("xituzhiku").removeAttribute("href");
-					document.getElementById("chanyejiance").removeAttribute("href");
-					document.getElementById("zhishifuwu").removeAttribute("href");
-					
-				}
-				if($.cookie("role")!=null && $.cookie("role")==="admin"){
-					$(".vip").html("admin"); 
-					$("#backgroud").css('display','block'); 
-				}
-				$("#logoinName").html($.cookie("nickName"));
-			}else {
-				$("#loginBefore").css('display','block'); 
-				$("#loginAfter").css('display','none'); 
-				
-				document.getElementById("xituzhiku").removeAttribute("href");
-				document.getElementById("chanyejiance").removeAttribute("href");
-				document.getElementById("zhishifuwu").removeAttribute("href");
-				
-				
-			}
-				
-
-				
+	        	showLoginInfoFrontend();
 				$("#loginBefore").click(function(){
 					getQcode();
 				});
-// 				if($.cookie("account")!=account){
-// 					$.cookie('account', account);
-// 				}
-// 				if($.cookie("role")!=role){
-// 					$.cookie('role', role);
-// 				}
-// 				if(token == "1"){
-// 					$('.alertZh').css('display','block');
-// 					alert("密码输入错误")
-// 					$('#noaccount').css('display','none');
-// 					$('#passworderror').css('display','block');
-// 				}
 				
-// 				if(token == "2"){
-// 					$('.alertZh').css('display','block');
-// 					alert("未找到该用户名")
-// 					$('#passworderror').css('display','none');
-// 					$('#noaccount').css('display','block'); 
-// 				}
-				
-				
-				$("#quit").click(function(){
-					$.cookie("openId", "", {expires: -1});
-					$.cookie("nickName", "", {expires: -1});
-					$.cookie("headImg", "", {expires: -1});
-					$.cookie("role", "", {expires: -1});
-					window.location.href = "/";
-				});
 				
 				 $("#bindButtion").click(function(){
 					if($("#bdaccount").val() == ""){
