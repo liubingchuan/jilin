@@ -90,7 +90,7 @@ public class DocUtil {
             String path="";
             
             //使用FileTemplateLoader
-           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\shengwu\\src\\main\\resources"));
+           templateLoader=new FileTemplateLoader(new File("C:\\Users\\abc\\git\\jilin\\src\\main\\resources"));
            path="\\"+modelname;
                         
            configure.setTemplateLoader(templateLoader);
